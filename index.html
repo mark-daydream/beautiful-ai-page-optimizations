@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beautiful.ai Optimization Drafts</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="daydream-tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
+  body { font-family: 'Raleway', sans-serif; background: var(--warm-cream); color: var(--near-black); overflow-x: hidden; }
+
+  /* full-width hero band */
+  .dir-hero { background: var(--near-black); padding: clamp(48px,7vw,88px) 0 clamp(40px,6vw,72px); }
+  .dir-hero-inner { max-width: clamp(960px,68vw,1800px); margin: 0 auto; padding: 0 clamp(24px,2.5vw,48px); }
+  .dir-logo { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 26px; }
+  .dir-logo span { color: #e8e8e8; font-weight: 800; font-size: 14px; letter-spacing: -0.01em; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mint); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .eyebrow::before { content: '✦'; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .dir-hero h1 { font-size: clamp(30px,4.4vw,56px); font-weight: 800; color: var(--off-white); letter-spacing: -0.025em; line-height: 1.05; }
+  .dir-hero h1 .grad { background: var(--grad-h); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grad-bar { height: 5px; width: 72px; background: var(--grad-h); border-radius: 3px; margin: 24px 0 22px; }
+  .dir-sub { font-size: clamp(14px,1.4vw,17px); color: #b8b8b8; line-height: 1.6; max-width: 60ch; }
+
+  /* list */
+  .dir-wrap { max-width: clamp(960px,68vw,1800px); margin: 0 auto; padding: clamp(36px,4vw,56px) clamp(24px,2.5vw,48px) 96px; }
+  .dir-meta-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+  .dir-meta-row .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); }
+  .dir-count { font-size: 12px; color: var(--text-subtle); }
+  .dir-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+
+  .dir-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: var(--off-white); border: 1px solid var(--border); border-radius: 16px; padding: 22px 26px; text-decoration: none; color: inherit; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s; }
+  .dir-card:hover { border-color: var(--peach-warm); box-shadow: 0 8px 28px rgba(40,30,60,0.10); transform: translateY(-2px); }
+  .dir-card-main { display: flex; align-items: center; gap: 20px; min-width: 0; }
+  .dir-num { font-size: 13px; font-weight: 800; color: #fff; background: var(--near-black); border-radius: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dir-card h2 { font-size: clamp(17px,1.6vw,21px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 5px; }
+  .dir-card-meta { font-size: 12.5px; color: var(--text-subtle); line-height: 1.5; }
+  .dir-card-meta code { font-family: 'Raleway', sans-serif; background: var(--warm-cream); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-size: 11.5px; }
+  .dir-card-side { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  .dir-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.04em; padding: 4px 11px; border-radius: 999px; background: var(--mint); color: #1a5c2a; border: 1px solid #8edda0; white-space: nowrap; }
+  .dir-date { font-size: 12px; font-weight: 600; color: var(--text-subtle); white-space: nowrap; }
+  .dir-arrow { font-size: 20px; color: var(--text-subtle); transition: transform 0.15s, color 0.15s; }
+  .dir-card:hover .dir-arrow { color: var(--near-black); transform: translateX(3px); }
+
+  .dir-foot { margin-top: 40px; font-size: 11.5px; color: var(--text-subtle); }
+
+  @media (max-width: 720px) {
+    .dir-card { flex-direction: column; align-items: flex-start; }
+    .dir-card-side { width: 100%; justify-content: space-between; }
+  }
+</style>
+</head>
+<body>
+
+<header class="dir-hero">
+  <div class="dir-hero-inner">
+    <div class="dir-logo">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+        <rect width="32" height="32" rx="8" fill="url(#ng)"/>
+        <path d="M9 22L16 10L23 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#C3F2D0"/><stop offset="53%" stop-color="#B3EAFF"/><stop offset="100%" stop-color="#FEE3CC"/></linearGradient></defs>
+      </svg>
+      <span>Beautiful.ai</span>
+    </div>
+    <div class="eyebrow">SEO Content Strategy &middot; On-Page Optimization</div>
+    <h1>Beautiful.ai <span class="grad">Optimization Drafts</span></h1>
+    <div class="grad-bar"></div>
+    <p class="dir-sub">A running index of on-page SEO optimization drafts prepared for Beautiful.ai. Each entry opens a full 3-tab bundle: optimization draft, wireframe mockup, and research appendix.</p>
+  </div>
+</header>
+
+<main class="dir-wrap">
+  <div class="dir-meta-row">
+    <span class="label">Drafts</span>
+    <span class="dir-count" id="dir-count">1 document</span>
+  </div>
+
+  <ul class="dir-list" id="dir-list">
+
+    <!-- ============ DRAFT ENTRY ============ -->
+    <li>
+      <a class="dir-card" href="beautiful.ai-what-is-presentation-software-optimization.html">
+        <div class="dir-card-main">
+          <span class="dir-num">01</span>
+          <div>
+            <h2>What Is Presentation Software</h2>
+            <p class="dir-card-meta">Primary keyword: <strong>what is presentation software</strong> &middot; <code>/blog/what-is-presentation-software</code></p>
+          </div>
+        </div>
+        <div class="dir-card-side">
+          <span class="dir-pill">Delivered</span>
+          <span class="dir-date">June 2026</span>
+          <span class="dir-arrow">&rarr;</span>
+        </div>
+      </a>
+    </li>
+    <!-- ====================================== -->
+
+    <!-- TO ADD A NEW DRAFT: copy one <li>…</li> block above, then update:
+         href (the bundle file), dir-num (02, 03, …), <h2> title, primary keyword,
+         <code> page path, dir-pill status, and dir-date. Also bump #dir-count text. -->
+
+  </ul>
+
+  <p class="dir-foot">Add new optimization drafts to this index as they are completed.</p>
+</main>
+
+</body>
+</html>
