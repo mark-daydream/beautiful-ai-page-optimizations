@@ -1,0 +1,20 @@
+/* Daydream tokens — https://melodic-daifuku-b26a1a.netlify.app/ */
+:root {
+  --pink: #FFCADF;
+  --lavender: #EED1FF;
+  --lavender-lt: #F7E8FD;
+  --blue-ice: #D0F2FF;
+  --blue-sky: #B7EBFF;
+  --mint: #C3F2D0;
+  --peach-lt: #FFECDB;
+  --peach-warm: #D8AAFF;
+  --off-white: #FFFFFB;
+  --warm-cream: #FFF9F4;
+  --near-black: #232323;
+  --text-subtle: #6B6B6B;
+  --border: #E8E2DC;
+  --grad: linear-gradient(135deg, #C3F2D0 0%, #B3EAFF 53%, #FEE3CC 100%);
+  --grad-h: linear-gradient(90deg, #C3F2D0 0%, #B3EAFF 53%, #FEE3CC 100%);
+  --nav-h: 44px;
+}
+body { font-family: 'Raleway', sans-serif; background: var(--warm-cream); color: var(--near-black); }

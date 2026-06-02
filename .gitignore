@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Firecrawl scrape cache (not part of the deliverable)
+.firecrawl/
+
+# Editor cruft
+*.swp
+.idea/
+.vscode/
