@@ -101,8 +101,12 @@
 .panel-footer{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
 .export-btn{width:100%;background:var(--near-black);color:var(--off-white);border:none;border-radius:8px;padding:9px;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
 .export-btn:hover{background:#3a3a3a;}
-/* walk-through — CRITICAL: top:44px, z-index below nav */
-.wt-overlay{position:fixed;top:44px;left:0;right:0;bottom:0;background:rgba(20,20,20,0.75);z-index:8500;display:flex;align-items:center;justify-content:center;padding:24px;}
+/* walk-through — CRITICAL: top:44px, z-index below nav.
+   Opacity kept moderate so the dimmed tab stays visible behind the card on the Mockup/Appendix steps. */
+.wt-overlay{position:fixed;top:44px;left:0;right:0;bottom:0;background:rgba(20,20,20,0.62);z-index:8500;display:flex;align-items:center;justify-content:center;padding:24px;}
+/* relaunch the tour — bottom-left so it never overlaps the bottom-right comments FAB */
+.wt-relaunch{position:fixed;bottom:28px;left:28px;z-index:9000;background:var(--off-white);color:var(--near-black);border:1px solid var(--border);border-radius:999px;padding:9px 16px;font-family:'Raleway',sans-serif;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.12);transition:all 0.15s;}
+.wt-relaunch:hover{background:var(--warm-cream);transform:translateY(-1px);}
 .wt-card{background:var(--near-black);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:32px 36px;max-width:480px;width:100%;}
 .wt-step{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.12em;color:var(--mint);margin-bottom:10px;}
 .wt-card h2{font-size:20px;font-weight:800;color:var(--off-white);margin-bottom:10px;}

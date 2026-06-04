@@ -12,9 +12,9 @@ Open **`index.html`** — the directory page that lists every draft and links to
 
 ## Drafts
 
-| # | Page | Primary keyword | File |
-|---|------|-----------------|------|
-| 01 | What Is Presentation Software | what is presentation software | `beautiful.ai-what-is-presentation-software-optimization.html` |
+| # | Page | Primary keyword | URL |
+|---|------|-----------------|-----|
+| 01 | What Is Presentation Software | what is presentation software | `what-is-presentation-software/` (clean URL `/what-is-presentation-software`) |
 
 ## Supporting research (per draft)
 
