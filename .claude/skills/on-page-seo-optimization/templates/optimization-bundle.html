@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{CLIENT} — {PAGE_PATH} | SEO Optimization</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="daydream-tokens.css">
+<link rel="stylesheet" href="bundle-shell.css">
+<link rel="stylesheet" href="tab-draft-styles.css">
+<link rel="stylesheet" href="tab-mockup-styles.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-logo">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+      <rect width="32" height="32" rx="8" fill="url(#ng)"/>
+      <path d="M9 22L16 10L23 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs><linearGradient id="ng" x1="0" y1="0" x2="32" y2="32"><stop offset="0%" stop-color="#C3F2D0"/><stop offset="53%" stop-color="#B3EAFF"/><stop offset="100%" stop-color="#FEE3CC"/></linearGradient></defs>
+    </svg>
+  </div>
+  <div class="nav-divider"></div>
+  <a href="#" class="tab-link active" onclick="switchTab('tab1',this);return false;"><span class="tab-num">1</span> Optimization Draft</a>
+  <a href="#" class="tab-link" onclick="switchTab('tab2',this);return false;"><span class="tab-num">2</span> Mockup</a>
+  <a href="#" class="tab-link" onclick="switchTab('tab3',this);return false;"><span class="tab-num">3</span> Appendix</a>
+</nav>
+
+<div id="tab1" class="tab-panel active">
+<!-- TAB1_START -->
+<!-- Hero is a FULL-WIDTH band: direct child of #tab1 (NOT inside .draft-wrap), no 100vw hacks.
+     .draft-header-inner re-centers the text to the same 960px column as the body. -->
+<div class="draft-header">
+  <div class="draft-header-inner">
+    <div class="eyebrow">SEO Content Strategy · On-Page Optimization Draft</div>
+    <h1>{CLIENT} {PAGE_PATH} — Optimization Draft</h1>
+    <p class="sub">Primary keyword: <strong style="color:#e8e8e8;">{PRIMARY_KEYWORD}</strong> · Prepared {DATE}</p>
+    <div class="grad-bar"></div>
+    <!-- INJECT: legend -->
+  </div>
+</div>
+<div class="draft-wrap">
+  <!-- INJECT: meta-table, change-blocks, kw-tables, schema, comment UI -->
+</div>
+<!-- TAB1_END -->
+</div>
+
+<div id="tab2" class="tab-panel">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- TAB2_START -->
+<div class="placeholder-screen" id="mockup-placeholder" style="display:none;min-height:calc(100vh - var(--nav-h));align-items:center;justify-content:center;flex-direction:column;">
+  <strong>Optimization stopped</strong>
+  <p>SERP page-type mismatch — see Appendix tab.</p>
+</div>
+<div id="mockup-content">
+  <!-- INJECT: wireframe sections from tab-mockup-partial pattern -->
+</div>
+<!-- TAB2_END -->
+</div>
+
+<div id="tab3" class="tab-panel">
+<!-- TAB3_START -->
+<div class="deck" id="deck3">
+  <!-- INJECT: 7 slides (pass) or 3 slides (SERP fail) — see appendix-slides.md -->
+</div>
+<nav class="dots" id="dots3"></nav>
+<!-- TAB3_END -->
+</div>
+
+<script>
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-link').forEach(a => { a.classList.remove('active'); a.classList.remove('inactive'); });
+  var panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  if (el) el.classList.add('active');
+}
+(function() {
+  var deck = document.getElementById('deck3');
+  if (!deck) return;
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var dotsWrap = document.getElementById('dots3');
+  if (!dotsWrap || !slides.length) return;
+  slides.forEach(function(s, i) {
+    var a = document.createElement('a');
+    a.href = '#';
+    if (i === 0) a.className = 'active';
+    a.onclick = function(e) { e.preventDefault(); s.scrollIntoView({ behavior: 'smooth' }); };
+    dotsWrap.appendChild(a);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var idx = slides.indexOf(e.target);
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+      }
+    });
+  }, { root: deck, threshold: 0.55 });
+  slides.forEach(function(s) { obs.observe(s); });
+})();
+</script>
+</body>
+</html>
+
+<!-- INJECT inside tab1 after draft content: comments FAB + panel.
+     bundle-ui.js wires the rest automatically: the per-section inline comment boxes
+     (created on demand when a `+` button is clicked — no per-block markup needed) and
+     the guided walkthrough (auto-shown once on first load + a "Take a tour" button). -->
+<button class="comments-fab" id="commentsFab" onclick="togglePanel()">Comments <span class="fab-count" id="fabCount" style="display:none">0</span></button>
+<div class="comments-panel" id="commentsPanel">
+  <div class="panel-header"><strong>Comments</strong><button class="panel-close" onclick="togglePanel()">×</button></div>
+  <div class="panel-body" id="panelBody"></div>
+  <div class="panel-footer"><button class="export-btn" onclick="exportComments()">Export JSON</button></div>
+</div>
+<script src="bundle-ui.js"></script>
