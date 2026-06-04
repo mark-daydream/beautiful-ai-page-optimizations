@@ -15,6 +15,7 @@ Open **`index.html`** — the directory page that lists every draft and links to
 | # | Page | Primary keyword | URL |
 |---|------|-----------------|-----|
 | 01 | What Is Presentation Software | what is presentation software | `what-is-presentation-software/` (clean URL `/what-is-presentation-software`) |
+| 02 | The 10/20/30 Rule for Presentations | 10/20/30 rule for presentations | `10-20-30-rule-for-presentations/` (clean URL `/10-20-30-rule-for-presentations`) |
 
 ## Supporting research (per draft)
 
