@@ -1,0 +1,72 @@
+<!-- Hero is a FULL-WIDTH band: direct child of #tab1, OUTSIDE .draft-wrap. No 100vw hacks. -->
+<div class="draft-header">
+  <div class="draft-header-inner">
+    <div class="eyebrow">SEO Content Strategy &middot; On-Page Optimization Draft</div>
+    <h1>{CLIENT} {PAGE_PATH} &mdash; Optimization Draft</h1>
+    <p class="sub">Primary keyword: <strong style="color:#e8e8e8;">{PRIMARY_KEYWORD}</strong> &nbsp;&middot;&nbsp; Prepared May 2026</p>
+    <div class="grad-bar"></div>
+    <div class="legend">
+      <span>Legend</span>
+      <span class="leg-pill leg-opt">Optimized</span>
+      <span class="leg-pill leg-new">New</span>
+      <span class="leg-pill leg-unch">Unchanged</span>
+      <span class="leg-pill leg-rev">Revised FAQ</span>
+    </div>
+  </div>
+</div>
+<div class="draft-wrap">
+
+  <table class="meta-table">
+    <tr><td>Page URL</td><td>https://www.beautiful.ai/sales</td></tr>
+    <tr><td>Primary Keyword</td><td>{PRIMARY_KEYWORD}</td></tr>
+    <tr><td>Supporting Keywords</td><td>proposal generator &middot; ai for proposal writing &middot; ai proposal &middot; proposal writing ai &middot; ai proposal writing &middot; ai proposal builder &middot; proposal generator tool &middot; business proposal ai</td></tr>
+    <tr><td>Proposed Title Tag</td><td>AI Proposal Generator for Sales Teams | Beautiful.ai <span style="color:var(--text-subtle);font-size:11px;">(56 chars)</span></td></tr>
+    <tr><td>Proposed Meta Description</td><td>Beautiful.ai is the AI proposal generator built for sales teams. Create polished, on-brand proposals in minutes with Smart Slides, viewer analytics, and real-time collaboration. <span style="color:var(--text-subtle);font-size:11px;">(181 chars)</span></td></tr>
+    <tr><td>Summary</td><td>Light-touch reframe of the /sales page to target "{PRIMARY_KEYWORD}" intent. The page's existing sales deck and pitch deck content is preserved. Key changes: new H1 and hero copy leading with the proposal angle, a new definition block, 9+ primary keyword instances introduced across existing sections, and a hybrid FAQ replacing 4 generic questions with PAA-targeted Q&amp;As while retaining 4 brand-critical and optimizing 2 existing questions. FAQPage schema replaced and SoftwareApplication schema added.</td></tr>
+  </table>
+
+  <!-- INJECT: section-label + change-block elements in live page order.
+       COMPLETENESS RULE: emit one change-block per live section, in order,
+       covering the WHOLE page — changed and unchanged alike — each with FULL body copy.
+       Use the patterns below. Never summarize body text as "[... unchanged]".
+
+       STATE COLOR MATCH (pill = box class = label/heading color):
+         Unchanged → pill-unch (blue)  + box .unch-block (blue fill, blue label)
+         Optimized → pill-opt  (purple)+ box .ba-after   (purple fill, purple label)  via .ba-grid
+         New       → pill-new  (green) + box .new-block   (green fill, green label)
+         Revised FAQ → pill-rev (amber) — use .ba-grid Before/After like Optimized.
+       Do NOT wrap unchanged/new content in .ba-after (that is the purple Optimized style). -->
+
+  <!-- PATTERN A — Optimized/Revised section: Before/After with COMPLETE copy (purple) -->
+  <div class="change-block" id="block-title">
+    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Title Tag</div><button class="comment-btn" onclick="toggleComment('block-title')">+</button></div>
+    <div class="ba-grid">
+      <div class="ba-before"><div class="ba-label">Before</div><p>AI Sales Proposal Generator, Fast, Branded Templates</p></div>
+      <div class="ba-after"><div class="ba-label">After</div><p><strong>AI Proposal Generator</strong> for Sales Teams | {BRAND}</p></div>
+    </div>
+  </div>
+
+  <!-- PATTERN B — Unchanged section (BLUE): full-width .unch-block with the section's ENTIRE body copy verbatim.
+       Repeat for every unchanged/branded/locked section. Show every paragraph, list, and subsection. -->
+  <div class="change-block" id="block-{section-slug}">
+    <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> {Section heading}</div><button class="comment-btn" onclick="toggleComment('block-{section-slug}')">+</button></div>
+    <div class="unch-block">
+      <div class="ba-label">Unchanged</div>
+      <h3>{Subheading, if any}</h3>
+      <p>{Full paragraph 1 of this section, verbatim.}</p>
+      <p>{Full paragraph 2, verbatim.}</p>
+      <ul><li>{Each bullet, verbatim}</li></ul>
+      <!-- include EVERY paragraph / list / nested subsection of this section -->
+    </div>
+  </div>
+
+  <!-- PATTERN C — New section (GREEN): full-width .new-block with the net-new copy (e.g. FAQ). -->
+  <div class="change-block" id="block-{new-section-slug}">
+    <div class="block-header"><div class="block-label"><span class="pill-new">New</span> {New section heading}</div><button class="comment-btn" onclick="toggleComment('block-{new-section-slug}')">+</button></div>
+    <div class="new-block">
+      <div class="ba-label">New</div>
+      <p>{Full net-new copy, e.g. each FAQ question and answer.}</p>
+    </div>
+  </div>
+
+  <!-- INJECT: remaining sections (all of them), then keyword tables, schema, comments fab -->

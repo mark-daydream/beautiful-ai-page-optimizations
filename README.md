@@ -20,3 +20,11 @@ Open **`index.html`** — the directory page that lists every draft and links to
 ## Supporting research (per draft)
 
 `onpage-strategy-*.md` · `brand-voice-profile.md` · `branded-lexicon.md` · `content-quality-review.md` · `onpage-serp-primary.json`
+
+## Reproducing a draft (the skill travels with this repo)
+
+The on-page SEO workflow is bundled at **`.claude/skills/on-page-seo-optimization/`**, so it's available wherever this repo is opened (local Claude Code, Claude Code on the web, or Claude Cowork) — not just on one machine.
+
+- **Run it:** in Claude Code, invoke `/on-page-seo-optimization` (or ask for an "on-page optimization" draft), then provide the target URL, primary keyword, and supporting keywords.
+- **Firecrawl:** the skill works with either the **Firecrawl CLI** (local) or the **Firecrawl MCP server** (portable, for Cowork / web). See the "Firecrawl access (CLI or MCP)" section in the skill's `SKILL.md`. You only need a `FIRECRAWL_API_KEY` for the MCP path.
+- Intermediate research is written to `.firecrawl/` (gitignored); the committed deliverable is each draft's clean-URL folder.
