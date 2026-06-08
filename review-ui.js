@@ -1,0 +1,365 @@
+/* ============================================================================
+   review-ui.js — Approve / Reject review system for optimization bundles.
+
+   Replaces the old "comment + export JSON" flow (bundle-ui.js). Each section
+   gets an Approve / Reject bar at the bottom; Reject requires a reason. The
+   floating button (bottom-right) lists every rejected section and its reason.
+
+   Persistence:
+     - If window.REVIEW_CONFIG.firebase is a real Firebase web config object,
+       decisions are saved to Cloud Firestore (collection "reviews", live via
+       onSnapshot) so they persist across devices with no JSON download.
+     - Otherwise decisions persist to this browser via localStorage, so the
+       UX is fully testable before Firebase is wired up.
+
+   Page setup (in the bundle HTML, replacing the old FAB markup + bundle-ui.js):
+     <script>
+       window.REVIEW_CONFIG = {
+         pageId: 'creative-presentation-ideas-college',
+         firebase: null   // paste your Firebase web config here to go live
+       };
+     </script>
+     <script src="../review-ui.js"></script>
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  var CFG = global.REVIEW_CONFIG || {};
+  var PAGE_ID = CFG.pageId ||
+    (location.pathname.replace(/\/+$/, '').split('/').pop() || 'page');
+  var FB = (CFG.firebase && CFG.firebase.projectId) ? CFG.firebase : null;
+  var FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.0/';
+
+  var bars = {};   // blockId -> { wrap, chip, reasonView, approveBtn, rejectBtn }
+  var order = [];  // blockId order for the panel
+
+  /* ---- small helpers ----------------------------------------------------- */
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+  function onReady(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else { fn(); }
+  }
+  function loadScript(src, cb) {
+    var s = document.createElement('script');
+    s.src = src; s.onload = cb;
+    s.onerror = function () { console.warn('[review-ui] failed to load ' + src); cb(); };
+    document.head.appendChild(s);
+  }
+
+  /* ---- styles (injected; uses Daydream tokens when present) --------------- */
+  var CSS = [
+    '.comment-btn{display:none !important;}',
+    '.review-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;',
+    '  margin-top:14px;padding:12px 14px;border-radius:12px;background:#fafafa;',
+    "  border:1px solid #ececec;font-family:'Raleway',sans-serif;}",
+    '.review-bar .rv-status{font-size:11px;font-weight:800;letter-spacing:.04em;',
+    '  text-transform:uppercase;padding:4px 11px;border-radius:999px;',
+    '  background:#eee;color:#666;border:1px solid #ddd;white-space:nowrap;}',
+    '.review-bar.is-approved{background:#eefcf2;border-color:#bfe9cd;}',
+    '.review-bar.is-approved .rv-status{background:#d6f5e1;color:#1a7a45;border-color:#8edda0;}',
+    '.review-bar.is-rejected{background:#fdeeee;border-color:#f3c9c9;}',
+    '.review-bar.is-rejected .rv-status{background:#f9d9d9;color:#a52727;border-color:#eaa9a9;}',
+    '.review-bar .rv-spacer{flex:1 1 auto;}',
+    '.rv-btn{font-size:12px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;',
+    "  border:1px solid transparent;font-family:'Raleway',sans-serif;transition:all .12s;}",
+    '.rv-approve{background:#fff;color:#1a7a45;border-color:#8edda0;}',
+    '.rv-approve:hover{background:#eefcf2;}',
+    '.rv-approve.active{background:#1a7a45;color:#fff;border-color:#1a7a45;}',
+    '.rv-reject{background:#fff;color:#a52727;border-color:#eaa9a9;}',
+    '.rv-reject:hover{background:#fdeeee;}',
+    '.rv-reject.active{background:#a52727;color:#fff;border-color:#a52727;}',
+    '.rv-reason{flex-basis:100%;margin-top:4px;display:none;}',
+    '.rv-reason.open{display:block;}',
+    '.rv-reason textarea{width:100%;min-height:62px;border:1px solid #eaa9a9;border-radius:8px;',
+    "  padding:9px 11px;font-size:13px;font-family:'Raleway',sans-serif;resize:vertical;color:#222;}",
+    '.rv-reason textarea:focus{outline:none;border-color:#a52727;}',
+    '.rv-reason-row{display:flex;align-items:center;gap:10px;margin-top:8px;}',
+    '.rv-reason-save{background:#a52727;color:#fff;border-color:#a52727;}',
+    '.rv-reason-save:hover{background:#8a1f1f;}',
+    '.rv-reason-err{font-size:12px;color:#a52727;font-weight:600;display:none;}',
+    '.rv-reason-err.show{display:inline;}',
+    '.review-bar .rv-reason-shown{flex-basis:100%;font-size:12.5px;color:#7a2c2c;',
+    '  margin-top:6px;line-height:1.5;}',
+    '.review-bar .rv-reason-shown b{font-weight:800;}',
+    /* floating button + panel */
+    '.rv-fab{position:fixed;right:22px;bottom:22px;z-index:9000;',
+    "  font-family:'Raleway',sans-serif;font-size:13px;font-weight:700;cursor:pointer;",
+    '  padding:12px 18px;border-radius:999px;border:none;color:#fff;background:#1a1a1a;',
+    '  box-shadow:0 8px 28px rgba(0,0,0,.22);display:flex;align-items:center;gap:9px;}',
+    '.rv-fab .rv-fab-count{background:#a52727;color:#fff;font-size:11px;font-weight:800;',
+    '  min-width:20px;height:20px;border-radius:999px;display:inline-flex;align-items:center;',
+    '  justify-content:center;padding:0 6px;}',
+    '.rv-fab .rv-fab-count.zero{background:#3a8f57;}',
+    '.rv-panel{position:fixed;right:22px;bottom:74px;z-index:9000;width:min(380px,calc(100vw - 44px));',
+    '  max-height:min(70vh,560px);background:#fff;border:1px solid #e4e4e4;border-radius:16px;',
+    '  box-shadow:0 18px 50px rgba(0,0,0,.22);display:none;flex-direction:column;overflow:hidden;',
+    "  font-family:'Raleway',sans-serif;}",
+    '.rv-panel.open{display:flex;}',
+    '.rv-panel-head{padding:15px 18px;border-bottom:1px solid #eee;display:flex;align-items:center;',
+    '  justify-content:space-between;}',
+    '.rv-panel-head strong{font-size:14px;}',
+    '.rv-panel-sum{font-size:11px;color:#888;font-weight:600;margin-top:2px;}',
+    '.rv-panel-close{background:none;border:none;font-size:20px;line-height:1;cursor:pointer;color:#999;}',
+    '.rv-panel-body{padding:8px;overflow-y:auto;}',
+    '.rv-empty{padding:26px 18px;text-align:center;color:#999;font-size:13px;}',
+    '.rv-item{padding:12px 13px;border-radius:11px;cursor:pointer;border:1px solid transparent;}',
+    '.rv-item:hover{background:#fdeeee;border-color:#f3c9c9;}',
+    '.rv-item-label{font-size:12.5px;font-weight:700;color:#a52727;margin-bottom:4px;}',
+    '.rv-item-reason{font-size:12.5px;color:#444;line-height:1.5;}',
+    '.rv-mode{font-size:10px;color:#aaa;text-align:center;padding:6px 0 10px;font-weight:600;letter-spacing:.03em;}'
+  ].join('');
+
+  function injectStyle() {
+    var s = el('style'); s.textContent = CSS; document.head.appendChild(s);
+  }
+
+  /* ---- storage backends -------------------------------------------------- */
+  function firebaseStore() {
+    var app = global.firebase.apps && global.firebase.apps.length
+      ? global.firebase.app() : global.firebase.initializeApp(FB);
+    var db = global.firebase.firestore();
+    var col = db.collection('reviews');
+    return {
+      mode: 'Firebase (Firestore)',
+      save: function (blockId, rec) {
+        return col.doc(PAGE_ID + '__' + blockId).set({
+          page: PAGE_ID, blockId: blockId,
+          status: rec.status, reason: rec.reason || '', label: rec.label || '',
+          updatedAt: global.firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+      },
+      subscribe: function (cb) {
+        col.where('page', '==', PAGE_ID).onSnapshot(function (snap) {
+          var m = {};
+          snap.forEach(function (d) {
+            var x = d.data();
+            m[x.blockId] = { status: x.status, reason: x.reason, label: x.label };
+          });
+          cb(m);
+        }, function (err) { console.warn('[review-ui] Firestore error', err); });
+      }
+    };
+  }
+  function localStore() {
+    var KEY = 'review_' + PAGE_ID, listeners = [];
+    function read() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+    function emit() { var m = read(); listeners.forEach(function (cb) { cb(m); }); }
+    return {
+      mode: 'Local (this browser only)',
+      save: function (blockId, rec) {
+        var m = read();
+        m[blockId] = { status: rec.status, reason: rec.reason || '', label: rec.label || '' };
+        localStorage.setItem(KEY, JSON.stringify(m)); emit();
+        return Promise.resolve();
+      },
+      subscribe: function (cb) { listeners.push(cb); cb(read()); }
+    };
+  }
+
+  /* ---- collect reviewable sections --------------------------------------- */
+  function labelFor(node, fallback) {
+    var l = node.querySelector('.block-label');
+    if (l) return l.textContent.replace(/\s+/g, ' ').replace(/^\+?\s*/, '').trim();
+    return fallback;
+  }
+  function collectTargets() {
+    var out = [];
+    document.querySelectorAll('#tab1 .change-block[id]').forEach(function (node) {
+      var blockId = node.id.replace(/^block-/, '');
+      out.push({ blockId: blockId, host: node, append: true, label: labelFor(node, blockId) });
+    });
+    var schema = document.querySelector('#tab1 .schema-wrap');
+    if (schema) {
+      var lab = 'Structured Data';
+      var sl = schema.previousElementSibling;
+      if (sl && sl.classList.contains('section-label')) lab = sl.textContent.trim();
+      out.push({ blockId: 'structured-data', host: schema, append: false, label: lab });
+    }
+    return out;
+  }
+
+  /* ---- build one review bar ---------------------------------------------- */
+  function buildBar(t) {
+    var store = global.__reviewStore;
+    var wrap = el('div', 'review-bar');
+    wrap.setAttribute('data-block', t.blockId);
+
+    var chip = el('span', 'rv-status', 'Pending');
+    var spacer = el('div', 'rv-spacer');
+    var approve = el('button', 'rv-btn rv-approve', 'Approve');
+    var reject = el('button', 'rv-btn rv-reject', 'Reject');
+
+    var reason = el('div', 'rv-reason');
+    var ta = el('textarea');
+    ta.placeholder = 'Reason for rejection (required)…';
+    var row = el('div', 'rv-reason-row');
+    var saveBtn = el('button', 'rv-btn rv-reason-save', 'Save rejection');
+    var err = el('span', 'rv-reason-err', 'A reason is required to reject.');
+    row.appendChild(saveBtn); row.appendChild(err);
+    reason.appendChild(ta); reason.appendChild(row);
+
+    var reasonShown = el('div', 'rv-reason-shown');
+    reasonShown.style.display = 'none';
+
+    approve.addEventListener('click', function () {
+      reason.classList.remove('open');
+      store.save(t.blockId, { status: 'approved', reason: '', label: t.label });
+    });
+    reject.addEventListener('click', function () {
+      reason.classList.add('open');
+      ta.focus();
+    });
+    saveBtn.addEventListener('click', function () {
+      var v = ta.value.trim();
+      if (!v) { err.classList.add('show'); return; }
+      err.classList.remove('show');
+      reason.classList.remove('open');
+      store.save(t.blockId, { status: 'rejected', reason: v, label: t.label });
+    });
+
+    wrap.appendChild(chip);
+    wrap.appendChild(spacer);
+    wrap.appendChild(approve);
+    wrap.appendChild(reject);
+    wrap.appendChild(reason);
+    wrap.appendChild(reasonShown);
+
+    if (t.append) t.host.appendChild(wrap);
+    else t.host.insertAdjacentElement('afterend', wrap);
+
+    bars[t.blockId] = {
+      wrap: wrap, chip: chip, approve: approve, reject: reject,
+      ta: ta, reasonShown: reasonShown, label: t.label
+    };
+    order.push(t.blockId);
+  }
+
+  /* ---- floating button + panel ------------------------------------------- */
+  var fab, fabCount, panel, panelBody, panelSum;
+  function buildFab() {
+    fab = el('button', 'rv-fab');
+    fabCount = el('span', 'rv-fab-count zero', '0');
+    fab.appendChild(document.createTextNode('Rejected '));
+    fab.appendChild(fabCount);
+
+    panel = el('div', 'rv-panel');
+    var head = el('div', 'rv-panel-head');
+    var titleWrap = el('div');
+    titleWrap.appendChild(el('strong', null, 'Rejected sections'));
+    panelSum = el('div', 'rv-panel-sum', '');
+    titleWrap.appendChild(panelSum);
+    var close = el('button', 'rv-panel-close', '&times;');
+    head.appendChild(titleWrap); head.appendChild(close);
+    panelBody = el('div', 'rv-panel-body');
+    var mode = el('div', 'rv-mode', 'Saved to: ' + (global.__reviewStore.mode || ''));
+    panel.appendChild(head); panel.appendChild(panelBody); panel.appendChild(mode);
+
+    fab.addEventListener('click', function () { panel.classList.toggle('open'); });
+    close.addEventListener('click', function () { panel.classList.remove('open'); });
+
+    document.body.appendChild(fab);
+    document.body.appendChild(panel);
+  }
+
+  /* ---- render from state -------------------------------------------------- */
+  function render(map) {
+    var approved = 0, rejected = 0, pending = 0;
+    order.forEach(function (id) {
+      var b = bars[id], st = map[id];
+      var status = st && st.status;
+      b.wrap.classList.remove('is-approved', 'is-rejected');
+      b.approve.classList.remove('active');
+      b.reject.classList.remove('active');
+      if (status === 'approved') {
+        approved++;
+        b.wrap.classList.add('is-approved');
+        b.chip.textContent = 'Approved';
+        b.approve.classList.add('active');
+        b.reasonShown.style.display = 'none';
+        b.ta.value = '';
+      } else if (status === 'rejected') {
+        rejected++;
+        b.wrap.classList.add('is-rejected');
+        b.chip.textContent = 'Rejected';
+        b.reject.classList.add('active');
+        b.reasonShown.style.display = 'block';
+        b.reasonShown.innerHTML = '<b>Reason:</b> ' + escapeHtml(st.reason || '');
+        b.ta.value = st.reason || '';
+      } else {
+        pending++;
+        b.chip.textContent = 'Pending';
+        b.reasonShown.style.display = 'none';
+      }
+    });
+
+    fabCount.textContent = String(rejected);
+    fabCount.classList.toggle('zero', rejected === 0);
+    panelSum.textContent = approved + ' approved · ' + rejected + ' rejected · ' + pending + ' pending';
+
+    panelBody.innerHTML = '';
+    var rejects = order.filter(function (id) { return map[id] && map[id].status === 'rejected'; });
+    if (!rejects.length) {
+      panelBody.appendChild(el('div', 'rv-empty', 'No rejected sections yet.'));
+      return;
+    }
+    rejects.forEach(function (id) {
+      var st = map[id];
+      var item = el('div', 'rv-item');
+      item.appendChild(el('div', 'rv-item-label', escapeHtml(bars[id].label)));
+      item.appendChild(el('div', 'rv-item-reason', escapeHtml(st.reason || '')));
+      item.addEventListener('click', function () {
+        switchToTab1();
+        bars[id].wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        panel.classList.remove('open');
+      });
+      panelBody.appendChild(item);
+    });
+  }
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function switchToTab1() {
+    if (typeof global.switchTab === 'function') {
+      var link = document.querySelector('.tab-link');
+      global.switchTab('tab1', link);
+    }
+  }
+
+  /* ---- keep the schema Copy button working (was in bundle-ui.js) --------- */
+  global.copySchema = function () {
+    var node = document.getElementById('schema-json-store');
+    if (!node || !navigator.clipboard) return;
+    navigator.clipboard.writeText(node.textContent).then(function () {
+      var btn = document.querySelector('.schema-copy-btn');
+      if (btn) { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 2000); }
+    });
+  };
+  /* neutralize legacy comment hook if any markup still calls it */
+  global.toggleComment = global.toggleComment || function () {};
+
+  /* ---- boot -------------------------------------------------------------- */
+  onReady(function () {
+    injectStyle();
+    var go = function () {
+      global.__reviewStore = (FB && global.firebase && global.firebase.firestore)
+        ? firebaseStore() : localStore();
+      collectTargets().forEach(buildBar);
+      buildFab();
+      global.__reviewStore.subscribe(render);
+    };
+    if (FB) {
+      loadScript(FB_SDK + 'firebase-app-compat.js', function () {
+        loadScript(FB_SDK + 'firebase-firestore-compat.js', go);
+      });
+    } else { go(); }
+  });
+
+})(window);
