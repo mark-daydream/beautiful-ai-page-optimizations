@@ -155,11 +155,11 @@ Log each pass's score to `.firecrawl/ai-detection-audit.md` (append, don't overw
 3. Inject Tab 1 between `<!-- TAB1_START -->` / `<!-- TAB1_END -->` — pattern in [tab-draft-partial.html](templates/tab-draft-partial.html)
 4. Inject Tab 2 wireframe — [tab-mockup-partial.html](templates/tab-mockup-partial.html) (Inter B&W only)
 5. Inject Tab 3 slides — [templates/appendix-slides.md](templates/appendix-slides.md)
-6. Include [templates/bundle-ui.js](templates/bundle-ui.js) for comments, schema copy, and the guided walkthrough (parameterize storage key)
+6. Include [templates/review-ui.js](templates/review-ui.js) for the approve/reject review system, schema copy, and the guided tour. Set `window.REVIEW_CONFIG.pageId` to the page's clean-URL slug (the `optimization-bundle.html` scaffold already has the `REVIEW_CONFIG` block + `<script src="review-ui.js">` — just fill in the slug). The Firebase config in the scaffold is **shared across all drafts** (Firestore docs are namespaced by `pageId`); leave it as-is, or set `firebase: null` to fall back to per-browser `localStorage` for offline testing.
 
-**Interactive UI (handled by `bundle-ui.js`, no extra markup needed):**
-- **Comments:** each section's `+` button calls `toggleComment('block-id')`; the inline comment box is created on demand, so sections only need the `+` button (already in the partials). Notes persist to `localStorage`; the FAB + panel reveal once a comment exists, and export to JSON.
-- **Walkthrough:** auto-shown once on first load (remembered in `localStorage`), re-openable via the "Take a tour" button. 4 steps introduce the draft elements (legend, Before/After cards), the `+` comment feature, the **Mockup** tab (preview), and the **Appendix** tab (rationale); each step switches the underlying tab. Only appears when Tab 1 has real `.change-block` content (suppressed on SERP-fail bundles).
+**Interactive UI (handled by `review-ui.js`, no extra markup needed):**
+- **Approve / Reject:** review-ui auto-discovers every `#tab1 .change-block[id]` and the `.schema-wrap` block and appends an **Approve / Reject** bar to each — sections need no extra markup. Approve turns the section green; Reject opens a required-reason box and turns it red; a per-section **Clear** link resets the decision. Decisions persist live to Firestore (cross-device) when `firebase` is set, else to `localStorage`. A floating **Rejected** button (bottom-right) lists every rejected section + reason; clicking one jumps to it. The legacy `comment-btn` `+` buttons in the partials are auto-hidden (`.comment-btn{display:none}`), so they can stay in the markup harmlessly.
+- **Walkthrough:** auto-shown once on first load (remembered in `localStorage`), re-openable via the "Take a tour" button. 8 steps introduce the draft elements (legend, Before/After cards), the Approve/Reject controls, the required reject reason, the per-section Clear, the **Mockup** tab (preview), and the **Appendix** tab (rationale); each step switches the underlying tab. Only appears when Tab 1 has real `.change-block` content (suppressed on SERP-fail bundles).
 
 **Sync:** Mockup = Tab 1 **After** copy. Appendix = SERP/strategy evidence. Draft drives mockup.
 
@@ -169,9 +169,9 @@ Log each pass's score to `.firecrawl/ai-detection-audit.md` (append, don't overw
 
 ### Tab 1 — Optimization Draft (Daydream)
 
-Legend · meta table · callouts · change-blocks · keyword tables · **Structured Data section (canonical)** · comments FAB.
+Legend · meta table · callouts · change-blocks · keyword tables · **Structured Data section (canonical)** · approve/reject bars + Rejected FAB (auto-built by `review-ui.js`).
 
-**Structured Data section (REQUIRED, standardized across all pages):** Model = the `what-is-presentation-software` bundle. Render it as its own `.section-label` "Structured Data" + `.schema-wrap` card, as the **last block in Tab 1** (after the final body/CTA block, before `<!-- TAB1_END -->`). The `<pre>` **must** carry `id="schema-json-store"` so the Copy button (`copySchema()` in `bundle-ui.js`) works. Show the FAQPage JSON-LD mirroring the visible FAQ verbatim; add Article/BlogPosting, HowTo, SoftwareApplication, or BreadcrumbList in the same card when the page warrants. Do **not** put the schema JSON inside a `change-block`/`new-block` — use the canonical `.schema-wrap`. Exact markup in [templates/tab-draft-partial.html](templates/tab-draft-partial.html).
+**Structured Data section (REQUIRED, standardized across all pages):** Model = the `what-is-presentation-software` bundle. Render it as its own `.section-label` "Structured Data" + `.schema-wrap` card, as the **last block in Tab 1** (after the final body/CTA block, before `<!-- TAB1_END -->`). The `<pre>` **must** carry `id="schema-json-store"` so the Copy button (`copySchema()` in `review-ui.js`) works. Show the FAQPage JSON-LD mirroring the visible FAQ verbatim; add Article/BlogPosting, HowTo, SoftwareApplication, or BreadcrumbList in the same card when the page warrants. Do **not** put the schema JSON inside a `change-block`/`new-block` — use the canonical `.schema-wrap`. Exact markup in [templates/tab-draft-partial.html](templates/tab-draft-partial.html).
 
 **Pills:** `pill-opt` Optimized · `pill-new` New · `pill-unch` Unchanged · `pill-rev` Revised FAQ
 

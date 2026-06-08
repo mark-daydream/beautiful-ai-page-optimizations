@@ -600,9 +600,20 @@ function switchTab(id, el) {
   <div class="panel-footer"><button class="export-btn" onclick="exportComments()">Export JSON</button></div>
 </div>
 <script>
-  window.ONPAGE_COMMENT_KEY = 'onpage_beautifulai_what_is_presentation_software';
-  window.ONPAGE_EXPORT_NAME = 'beautifulai-what-is-presentation-software-comments.json';
+  // Approve / Reject review system. Decisions persist to Firebase when a config
+  // is supplied below; until then they persist to this browser via localStorage.
+  window.REVIEW_CONFIG = {
+    pageId: 'what-is-presentation-software',
+    firebase: {
+      apiKey: "AIzaSyAAkYPdh9tPXHkn1UBmnGKfVuZYL9yae6w",
+      authDomain: "on-page-optimizations.firebaseapp.com",
+      projectId: "on-page-optimizations",
+      storageBucket: "on-page-optimizations.firebasestorage.app",
+      messagingSenderId: "40690507441",
+      appId: "1:40690507441:web:52a220fe7755cd2cc94c90"
+    }
+  };
 </script>
-<script src="../bundle-ui.js"></script>
+<script src="../review-ui.js"></script>
 </body>
 </html>

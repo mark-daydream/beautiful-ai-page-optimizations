@@ -103,14 +103,27 @@ function switchTab(id, el) {
 </body>
 </html>
 
-<!-- INJECT inside tab1 after draft content: comments FAB + panel.
-     bundle-ui.js wires the rest automatically: the per-section inline comment boxes
-     (created on demand when a `+` button is clicked — no per-block markup needed) and
-     the guided walkthrough (auto-shown once on first load + a "Take a tour" button). -->
-<button class="comments-fab" id="commentsFab" onclick="togglePanel()">Comments <span class="fab-count" id="fabCount" style="display:none">0</span></button>
-<div class="comments-panel" id="commentsPanel">
-  <div class="panel-header"><strong>Comments</strong><button class="panel-close" onclick="togglePanel()">×</button></div>
-  <div class="panel-body" id="panelBody"></div>
-  <div class="panel-footer"><button class="export-btn" onclick="exportComments()">Export JSON</button></div>
-</div>
-<script src="bundle-ui.js"></script>
+<!-- Approve / Reject review system. review-ui.js builds everything automatically
+     from the existing draft markup — it discovers each `#tab1 .change-block[id]`
+     and the `.schema-wrap` block, appends an Approve/Reject bar to each, and adds
+     the floating "Rejected" panel + guided tour. No per-section markup is needed
+     (the legacy `comment-btn` buttons in the partials are auto-hidden).
+
+     Set pageId to this page's clean-URL slug. The Firebase config below is shared
+     across all on-page-optimization drafts — Firestore docs are namespaced by
+     pageId, so every draft can reuse the same config. Set firebase: null to fall
+     back to per-browser localStorage (fully testable before Firebase is wired). -->
+<script>
+  window.REVIEW_CONFIG = {
+    pageId: '{page-slug}',
+    firebase: {
+      apiKey: "AIzaSyAAkYPdh9tPXHkn1UBmnGKfVuZYL9yae6w",
+      authDomain: "on-page-optimizations.firebaseapp.com",
+      projectId: "on-page-optimizations",
+      storageBucket: "on-page-optimizations.firebasestorage.app",
+      messagingSenderId: "40690507441",
+      appId: "1:40690507441:web:52a220fe7755cd2cc94c90"
+    }
+  };
+</script>
+<script src="review-ui.js"></script>

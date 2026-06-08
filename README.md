@@ -7,7 +7,7 @@ On-page SEO optimization deliverables for Beautiful.ai. Each draft is a self-con
 Open **`index.html`** — the directory page that lists every draft and links to each bundle.
 
 > The HTML loads styling from the local CSS/JS files, so keep these together in one folder:
-> `daydream-tokens.css`, `bundle-shell.css`, `tab-draft-styles.css`, `tab-mockup-styles.css`, `bundle-ui.js`, and `logo-icon-rounded.svg`.
+> `daydream-tokens.css`, `bundle-shell.css`, `tab-draft-styles.css`, `tab-mockup-styles.css`, `review-ui.js`, and `logo-icon-rounded.svg`.
 > Fonts load from Google Fonts (needs an internet connection).
 
 ## Drafts
@@ -16,6 +16,14 @@ Open **`index.html`** — the directory page that lists every draft and links to
 |---|------|-----------------|-----|
 | 01 | What Is Presentation Software | what is presentation software | `what-is-presentation-software/` (clean URL `/what-is-presentation-software`) |
 | 02 | The 10/20/30 Rule for Presentations | 10/20/30 rule for presentations | `10-20-30-rule-for-presentations/` (clean URL `/10-20-30-rule-for-presentations`) |
+| 03 | Team SWOT Analysis | team swot analysis | `team-swot-analysis/` (clean URL `/team-swot-analysis`) |
+| 04 | Creative Presentation Ideas for College | creative presentation ideas for college | `creative-presentation-ideas-college/` (clean URL `/creative-presentation-ideas-college`) |
+
+## Reviewing a draft (Approve / Reject)
+
+Every draft carries the same review layer (`review-ui.js`): each section in the **Optimization Draft** tab gets an **Approve / Reject** bar (Reject requires a reason), a per-section **Clear** to undo, and a floating **Rejected** panel listing every rejection. A one-time guided tour (re-openable via **Take a tour**) explains the flow.
+
+Decisions sync live to a shared Cloud Firestore project (`on-page-optimizations`), namespaced per page by `pageId`, so reviewers on any device see the same state with nothing to download or email back. With no Firebase config the same UI falls back to per-browser `localStorage` for offline testing. This wiring is part of the skill scaffold, so **all future drafts get it automatically**.
 
 ## Supporting research (per draft)
 
