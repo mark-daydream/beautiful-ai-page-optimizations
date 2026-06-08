@@ -61,7 +61,7 @@ After **branded terminology checkpoint**:
 - [ ] Phase 5: Competitors (if pass)
 - [ ] Phase 6: onpage-strategy-{slug}.md
 - [ ] Phase 6b: content-quality-review.md PASS
-- [ ] Phase 6c (optional): AI detection audit on Tab 1 After copy
+- [ ] Phase 6c (GATING): AI detection audit + auto-apply loop on Tab 1 After copy → risk must be Low before Phase 7
 - [ ] Phase 7–9: HTML bundle + copy CSS alongside
 ```
 
@@ -124,15 +124,25 @@ Matched SERP URLs only. Pattern table, success patterns, gaps, **unique strength
 
 [content-quality-gate.md](content-quality-gate.md): no em dashes, no AI slop, brand voice match, locked terms verbatim. Log `.firecrawl/content-quality-review.md`. **Do not ship on FAIL.**
 
-## Phase 6c — AI detection audit (optional)
+## Phase 6c — AI detection audit + auto-apply loop (GATING)
 
-Run the `ai-content-detection` skill on Tab 1 **After** copy (changed sections, or full page if requested).
+Runs **before** Phase 7. The bundle is **not** assembled until the optimized copy clears the AI-risk gate. The skill is bundled in this repo at `.claude/skills/ai-content-detection/`, so it travels (local, Cowork, web).
 
-1. Extract optimized copy from the draft
-2. Follow `ai-content-detection` workflow (script + qualitative audit)
-3. Save `.firecrawl/ai-detection-audit.md`
+**Gate threshold:** overall risk must be **Low**. Medium or High **blocks** bundle assembly.
 
-Does **not** block bundle ship unless the user asks. Use for passage-level detector risk before client delivery.
+**Scope of revision (guardrails — do not violate):**
+- Only revise `generic` (keyword-eligible) copy.
+- **Never** rewrite `locked` terms, `branded` sections, CTA blocks, or anything that would drift from `brand-voice-profile.md`. If a flag lands inside a branded/locked span, report it but leave the copy as-is.
+
+**Loop:**
+1. Extract Tab 1 **After** copy (changed sections; full page if the user requests).
+2. Run the `ai-content-detection` workflow (`scripts/analyze_text.py` + qualitative pass). Save `.firecrawl/ai-detection-audit.md`.
+3. If overall risk is **Low** → proceed to Phase 7.
+4. If **Medium/High** → **apply** the report's revisions to the flagged generic spans (within the guardrails above), then re-run step 2. Repeat (cap at 3 passes).
+5. If still not Low after 3 passes → stop, surface the residual flags, and ask the user how to proceed (do not silently ship).
+6. Before building, present a **before/after diff** of every applied change at the branded-terminology-style checkpoint for approval.
+
+Log each pass's score to `.firecrawl/ai-detection-audit.md` (append, don't overwrite) so the loop is auditable.
 
 ## Phase 7–9 — HTML bundle
 
@@ -157,7 +167,9 @@ Does **not** block bundle ship unless the user asks. Use for passage-level detec
 
 ### Tab 1 — Optimization Draft (Daydream)
 
-Legend · meta table · callouts · change-blocks · keyword tables · FAQPage schema · comments FAB.
+Legend · meta table · callouts · change-blocks · keyword tables · **Structured Data section (canonical)** · comments FAB.
+
+**Structured Data section (REQUIRED, standardized across all pages):** Model = the `what-is-presentation-software` bundle. Render it as its own `.section-label` "Structured Data" + `.schema-wrap` card, as the **last block in Tab 1** (after the final body/CTA block, before `<!-- TAB1_END -->`). The `<pre>` **must** carry `id="schema-json-store"` so the Copy button (`copySchema()` in `bundle-ui.js`) works. Show the FAQPage JSON-LD mirroring the visible FAQ verbatim; add Article/BlogPosting, HowTo, SoftwareApplication, or BreadcrumbList in the same card when the page warrants. Do **not** put the schema JSON inside a `change-block`/`new-block` — use the canonical `.schema-wrap`. Exact markup in [templates/tab-draft-partial.html](templates/tab-draft-partial.html).
 
 **Pills:** `pill-opt` Optimized · `pill-new` New · `pill-unch` Unchanged · `pill-rev` Revised FAQ
 
@@ -206,7 +218,7 @@ See [templates/appendix-slides.md](templates/appendix-slides.md).
 
 ## Related skills
 
-- `ai-content-detection` — Phase 6c AI detector audit (passage flags + revision report)
+- `ai-content-detection` — Phase 6c GATING AI detector audit + auto-apply loop (bundled at `.claude/skills/ai-content-detection/`; must clear Low risk before bundle build)
 - `firecrawl-seo-audit` — whole-site audits  
 - `firecrawl-competitive-intel` — ongoing monitoring  
 

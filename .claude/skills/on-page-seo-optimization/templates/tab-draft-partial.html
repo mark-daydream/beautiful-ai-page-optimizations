@@ -69,4 +69,31 @@
     </div>
   </div>
 
-  <!-- INJECT: remaining sections (all of them), then keyword tables, schema, comments fab -->
+  <!-- INJECT: remaining sections (all of them), then keyword tables, comments fab -->
+
+  <!-- ===== SCHEMA (CANONICAL — keep this exact structure on EVERY page) =====
+       This is the standardized "Structured Data" section. Modeled on the
+       what-is-presentation-software bundle. Requirements:
+       - Always its own `.section-label` "Structured Data" + `.schema-wrap` (dark card).
+       - Always the LAST block in Tab 1 (after the final body/CTA block, before TAB1_END).
+       - The <pre> MUST carry id="schema-json-store" so the Copy button works
+         (copySchema() in bundle-ui.js reads that id).
+       - Display the FAQPage JSON-LD that mirrors the visible FAQ verbatim. If the
+         page warrants additional types (Article/BlogPosting, HowTo, SoftwareApplication,
+         BreadcrumbList), add them in the same card and note "Keep/Add/Revise". -->
+  <div class="section-label">Structured Data</div>
+  <div class="schema-wrap">
+    <div class="schema-header"><span>FAQPage JSON-LD &middot; ADD (mirrors visible FAQ)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-display"><pre id="schema-json-store">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{Question 1 — verbatim from the visible FAQ}",
+      "acceptedAnswer": { "@type": "Answer", "text": "{Answer 1 — verbatim}" }
+    }
+  ]
+}</pre></div>
+  </div>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">{One line: which schema to Keep (e.g. Article/BlogPosting), what to Add (this FAQPage), and any cannibalization note.}</p>

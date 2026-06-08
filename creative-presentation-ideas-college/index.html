@@ -206,12 +206,25 @@
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">Net-new section targeting People Also Ask intent around "college presentation ideas," "college presentation topics," and "best topic for a college presentation." Conversational brand voice, no em dashes. Implement with FAQPage JSON-LD (below) using the same answers verbatim.</p>
   </div>
 
-  <!-- ===== FAQ SCHEMA ===== -->
-  <div class="change-block" id="block-schema">
-    <div class="block-header"><div class="block-label"><span class="pill-new">New</span> FAQPage schema (JSON-LD)</div><button class="comment-btn" onclick="toggleComment('block-schema')">+</button></div>
-    <div class="new-block">
-      <div class="ba-label">Add to &lt;head&gt; or end of &lt;body&gt;</div>
-<pre style="white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;color:#1f4d33;margin-top:8px;">{
+  <!-- ===== CTA blocks (branded, unchanged) ===== -->
+  <div class="change-block" id="block-cta">
+    <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> CTA blocks (branded)</div><button class="comment-btn" onclick="toggleComment('block-cta')">+</button></div>
+    <div class="unch-block">
+      <div class="ba-label">Unchanged</div>
+      <h3>Turn your best ideas into beautiful, AI-powered presentations</h3>
+      <p>Schedule a demo</p>
+      <h3>Create presentations 10X faster.</h3>
+      <p>Get started</p>
+      <p style="font-size:12px;">Author bio (Jordan Turner) and the Recommended Articles module are also preserved as-is. These are branded and boilerplate blocks; only visual assets would be placeholders, never the copy.</p>
+    </div>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">CTA blocks are branded and locked. No keyword edits.</p>
+  </div>
+
+  <!-- ===== SCHEMA ===== -->
+  <div class="section-label">Structured Data</div>
+  <div class="schema-wrap">
+    <div class="schema-header"><span>FAQPage JSON-LD &middot; ADD (mirrors visible FAQ)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-display"><pre id="schema-json-store">{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -256,24 +269,9 @@
       }
     }
   ]
-}</pre>
-    </div>
-    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">Keep existing Article / BlogPosting schema (author Jordan Turner). Add this FAQPage block. No Product schema needed for an informational blog post.</p>
+}</pre></div>
   </div>
-
-  <!-- ===== CTA blocks (branded, unchanged) ===== -->
-  <div class="change-block" id="block-cta">
-    <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> CTA blocks (branded)</div><button class="comment-btn" onclick="toggleComment('block-cta')">+</button></div>
-    <div class="unch-block">
-      <div class="ba-label">Unchanged</div>
-      <h3>Turn your best ideas into beautiful, AI-powered presentations</h3>
-      <p>Schedule a demo</p>
-      <h3>Create presentations 10X faster.</h3>
-      <p>Get started</p>
-      <p style="font-size:12px;">Author bio (Jordan Turner) and the Recommended Articles module are also preserved as-is. These are branded and boilerplate blocks; only visual assets would be placeholders, never the copy.</p>
-    </div>
-    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">CTA blocks are branded and locked. No keyword edits.</p>
-  </div>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;">Keep the existing Article / BlogPosting schema (author Jordan Turner). Add this FAQPage block, mirroring the visible FAQ verbatim. No Product schema needed for an informational blog post.</p>
 
 </div>
 <!-- TAB1_END -->
