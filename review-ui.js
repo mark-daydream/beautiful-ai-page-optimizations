@@ -439,19 +439,42 @@
   global.toggleComment = global.toggleComment || function () {};
 
   /* ---- guided tour (approve / reject model) ------------------------------ */
-  var WT_KEY = 'review_tour_' + PAGE_ID + '_v1';
+  var WT_KEY = 'review_tour_' + PAGE_ID + '_v2';
+  function goTab(id) {
+    var links = document.querySelectorAll('.tab-link');
+    var idx = id === 'tab2' ? 1 : (id === 'tab3' ? 2 : 0);
+    if (typeof global.switchTab === 'function' && links[idx]) global.switchTab(id, links[idx]);
+  }
+  function scrollTo(sel) {
+    var n = typeof sel === 'string' ? document.querySelector(sel) : sel;
+    if (n) n.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
   var TOUR = [
-    { step: 'Welcome', title: 'Review this optimization draft',
-      body: 'This page proposes on-page SEO changes, section by section. Your job is to <b>Approve</b> the ones you like and <b>Reject</b> the ones you don\'t. Here is how it works.' },
-    { step: 'Step 1 of 4', title: 'Approve or reject each section',
-      body: 'At the bottom of every section there is an <b>Approve</b> and a <b>Reject</b> button. Click whichever fits. Approved turns the section green, rejected turns it red.',
-      on: function () { var f = bars[order[0]]; if (f) f.wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }); } },
-    { step: 'Step 2 of 4', title: 'Rejecting? Tell us why',
-      body: 'When you click <b>Reject</b>, a box appears asking for a quick reason. That is how we know what to change, so a reason is required before a rejection saves.' },
-    { step: 'Step 3 of 4', title: 'Changed your mind? Clear it',
+    { step: 'Welcome', title: 'How to review this draft',
+      body: 'This is an on-page SEO <b>optimization draft</b> for one page. It has three tabs: the draft itself, a full-page mockup, and a research appendix. This quick tour shows you how to read it and give feedback.',
+      on: function () { goTab('tab1'); } },
+    { step: '1 of 8', title: 'The colored tags',
+      body: 'Every section is labeled by the kind of change: <b style="color:#7c3aed">Optimized</b> (reworded copy), <b style="color:#1a7a45">New</b> (a brand-new section), <b style="color:#1a6a8c">Unchanged</b> (kept as-is), and <b style="color:#a06a00">Revised FAQ</b>. The legend at the top is your key.',
+      on: function () { goTab('tab1'); scrollTo('.legend'); } },
+    { step: '2 of 8', title: 'Before, After, and why',
+      body: 'Each section shows the <b>current</b> copy on the left and our <b>proposed</b> copy on the right, exactly as it would appear on the page. Underneath, a short line explains <b>why</b> we recommend the change.',
+      on: function () { goTab('tab1'); var f = bars[order[0]]; if (f) scrollTo(f.wrap); } },
+    { step: '3 of 8', title: 'Approve or reject each section',
+      body: 'At the bottom of every section, use the <b>Approve</b> or <b>Reject</b> button. Approved turns the section green, rejected turns it red.',
+      on: function () { goTab('tab1'); var f = bars[order[0]]; if (f) scrollTo(f.wrap); } },
+    { step: '4 of 8', title: 'Rejecting? Tell us why',
+      body: 'When you click <b>Reject</b>, a box appears asking for a quick reason. A reason is required before the rejection saves, so we know exactly what to change.' },
+    { step: '5 of 8', title: 'Changed your mind? Clear it',
       body: 'Once a section is decided, a small <b>Clear</b> link appears in its bar. Click it to reset that section back to undecided, no rejection needed.' },
-    { step: 'Step 4 of 4', title: 'Everything saves automatically',
-      body: 'No files to download or send back. Decisions save to the cloud instantly and sync to everyone viewing the page. The <b>Rejected</b> button in the bottom-right lists every section you rejected and why, click any one to jump straight to it.' }
+    { step: '6 of 8', title: 'The Mockup tab',
+      body: 'The <b>Mockup</b> tab shows the whole page as it would actually look once the approved changes are applied, top to bottom, in plain layout.',
+      on: function () { goTab('tab2'); } },
+    { step: '7 of 8', title: 'The Appendix tab',
+      body: 'The <b>Appendix</b> tab is the research behind the recommendations: who currently ranks, the gaps we are closing, the keyword plan, and the structured-data plan.',
+      on: function () { goTab('tab3'); } },
+    { step: '8 of 8', title: 'Everything saves automatically',
+      body: 'No files to download or send back. Decisions save to the cloud instantly and sync to everyone. The <b>Rejected</b> button in the bottom-right lists every section you rejected and why, click any one to jump straight to it.',
+      on: function () { goTab('tab1'); } }
   ];
   var tourIdx = 0, tourOverlay = null, tourCard = null;
   function buildTour() {
@@ -482,7 +505,7 @@
     if (s.on) s.on();
   }
   function openTour() { tourIdx = 0; tourOverlay.classList.add('open'); renderTour(); }
-  function closeTour() { tourOverlay.classList.remove('open'); try { localStorage.setItem(WT_KEY, '1'); } catch (e) {} }
+  function closeTour() { tourOverlay.classList.remove('open'); goTab('tab1'); try { localStorage.setItem(WT_KEY, '1'); } catch (e) {} }
   function buildTourButton() {
     var b = el('button', 'rv-tour-btn', 'Take a tour');
     b.addEventListener('click', openTour);

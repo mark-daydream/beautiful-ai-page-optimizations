@@ -15,6 +15,15 @@ For full passage-level AI detector audit (perplexity, burstiness, n-gram repetit
 | Keyword stuffing | No exact phrase in adjacent sentences |
 | Voice drift | Must match `brand-voice-profile.md` |
 
+## Copy fidelity (fail = move notes to the Why)
+
+| Check | Rule |
+|-------|------|
+| Notes in copy | No meta-commentary inside Before/After columns, `.unch-block`, `.new-block`, or any mockup section (e.g. "all X preserved", "now grouped into N themes", "refreshed to 2026", "em dashes cleaned", "sample of the original", "renders in full in the mockup", `.callout` notes). After column reads exactly as it would publish. |
+| Full lists | Restructured lists show the full real Before list AND full real After list, not a summary of the change. |
+| Why note present | Every change-block has exactly one Why note beneath it, opening with `<strong>Why:</strong>`. It is the only place notes live. |
+| Mockup labels | Mockup contains only real copy; the sole meta labels allowed are `.section-tag` chips and `.opt-pill` badges. |
+
 ## Branded content
 
 - Locked terms verbatim (spelling, capitalization)

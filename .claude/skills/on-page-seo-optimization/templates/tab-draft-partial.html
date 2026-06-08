@@ -30,6 +30,22 @@
        covering the WHOLE page — changed and unchanged alike — each with FULL body copy.
        Use the patterns below. Never summarize body text as "[... unchanged]".
 
+       COPY-FIDELITY RULE (REQUIRED — applies to Tab 1 columns AND the Tab 2 mockup):
+       The Before column, the After column, the .unch-block, the .new-block, and every
+       mockup section contain ONLY the literal copy as it would appear on the live page.
+       NO meta-commentary inside them — never "all X preserved", "now grouped into N
+       themes", "refreshed to 2026", "em dashes cleaned", "sample of the original",
+       "renders in full in the mockup", or any description of what changed. The After
+       column must read exactly as you would expect to see it published. ALL such
+       explanation goes ONLY in the Why line beneath the grid (see WHY NOTE below).
+       This includes long lists: show the real Before list AND the real After list in
+       full, not a summary of the restructure.
+
+       WHY NOTE (REQUIRED on every change-block, immediately after the grid/block,
+       before the change-block closes):
+         <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> {one brief reason}</p>
+       It always opens with a bold "Why:" and is the ONLY place notes may live.
+
        STATE COLOR MATCH (pill = box class = label/heading color):
          Unchanged → pill-unch (blue)  + box .unch-block (blue fill, blue label)
          Optimized → pill-opt  (purple)+ box .ba-after   (purple fill, purple label)  via .ba-grid
@@ -44,6 +60,7 @@
       <div class="ba-before"><div class="ba-label">Before</div><p>AI Sales Proposal Generator, Fast, Branded Templates</p></div>
       <div class="ba-after"><div class="ba-label">After</div><p><strong>AI Proposal Generator</strong> for Sales Teams | {BRAND}</p></div>
     </div>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> {one brief reason for the change — the ONLY place notes go}</p>
   </div>
 
   <!-- PATTERN B — Unchanged section (BLUE): full-width .unch-block with the section's ENTIRE body copy verbatim.
@@ -58,6 +75,7 @@
       <ul><li>{Each bullet, verbatim}</li></ul>
       <!-- include EVERY paragraph / list / nested subsection of this section -->
     </div>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> {why this section is kept as-is — e.g. branded/locked}</p>
   </div>
 
   <!-- PATTERN C — New section (GREEN): full-width .new-block with the net-new copy (e.g. FAQ). -->
@@ -67,6 +85,7 @@
       <div class="ba-label">New</div>
       <p>{Full net-new copy, e.g. each FAQ question and answer.}</p>
     </div>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> {why this new section is being added}</p>
   </div>
 
   <!-- INJECT: remaining sections (all of them), then keyword tables, comments fab -->
