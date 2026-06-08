@@ -32,6 +32,8 @@
 
   var bars = {};   // blockId -> { wrap, chip, reasonView, approveBtn, rejectBtn }
   var order = [];  // blockId order for the panel
+  var state = {};  // blockId -> { status, reason, label } — source of truth for render
+  var statusEl = null; // status line in the panel (shows backend + any error)
 
   /* ---- small helpers ----------------------------------------------------- */
   function el(tag, cls, html) {
@@ -142,7 +144,9 @@
             m[x.blockId] = { status: x.status, reason: x.reason, label: x.label };
           });
           cb(m);
-        }, function (err) { console.warn('[review-ui] Firestore error', err); });
+        }, function (err) {
+          showStatus('Not connected: ' + friendlyErr(err));
+        });
       }
     };
   }
@@ -209,7 +213,7 @@
 
     approve.addEventListener('click', function () {
       reason.classList.remove('open');
-      store.save(t.blockId, { status: 'approved', reason: '', label: t.label });
+      applyDecision(t.blockId, { status: 'approved', reason: '', label: t.label });
     });
     reject.addEventListener('click', function () {
       reason.classList.add('open');
@@ -220,7 +224,7 @@
       if (!v) { err.classList.add('show'); return; }
       err.classList.remove('show');
       reason.classList.remove('open');
-      store.save(t.blockId, { status: 'rejected', reason: v, label: t.label });
+      applyDecision(t.blockId, { status: 'rejected', reason: v, label: t.label });
     });
 
     wrap.appendChild(chip);
@@ -257,8 +261,8 @@
     var close = el('button', 'rv-panel-close', '&times;');
     head.appendChild(titleWrap); head.appendChild(close);
     panelBody = el('div', 'rv-panel-body');
-    var mode = el('div', 'rv-mode', 'Saved to: ' + (global.__reviewStore.mode || ''));
-    panel.appendChild(head); panel.appendChild(panelBody); panel.appendChild(mode);
+    statusEl = el('div', 'rv-mode', 'Saving to: ' + (global.__reviewStore.mode || ''));
+    panel.appendChild(head); panel.appendChild(panelBody); panel.appendChild(statusEl);
 
     fab.addEventListener('click', function () { panel.classList.toggle('open'); });
     close.addEventListener('click', function () { panel.classList.remove('open'); });
@@ -267,8 +271,39 @@
     document.body.appendChild(panel);
   }
 
+  /* ---- decisions + status ------------------------------------------------- */
+  function applyDecision(blockId, rec) {
+    // optimistic: reflect the choice immediately, then persist
+    state[blockId] = { status: rec.status, reason: rec.reason || '', label: rec.label || '' };
+    render();
+    var p = global.__reviewStore.save(blockId, rec);
+    if (p && p.catch) {
+      p.catch(function (e) { showStatus('Not saved: ' + friendlyErr(e)); });
+    }
+  }
+  function mergeRemote(remote) {
+    Object.keys(remote || {}).forEach(function (k) { state[k] = remote[k]; });
+    if (statusEl) { statusEl.style.color = ''; statusEl.textContent = 'Saving to: ' + (global.__reviewStore.mode || ''); }
+  }
+  function showStatus(msg) {
+    console.warn('[review-ui] ' + msg);
+    if (statusEl) { statusEl.style.color = '#a52727'; statusEl.textContent = msg; }
+  }
+  function friendlyErr(e) {
+    var code = e && e.code ? e.code : '';
+    var msg = e && e.message ? e.message : String(e);
+    if (/permission-denied|insufficient permissions/i.test(code + ' ' + msg)) {
+      return 'Firestore rules are blocking writes. Publish rules allowing the "reviews" collection.';
+    }
+    if (/not-found|database.*does not exist|NOT_FOUND/i.test(code + ' ' + msg)) {
+      return 'No Firestore database found. Create one in Build > Firestore Database.';
+    }
+    return msg;
+  }
+
   /* ---- render from state -------------------------------------------------- */
-  function render(map) {
+  function render() {
+    var map = state;
     var approved = 0, rejected = 0, pending = 0;
     order.forEach(function (id) {
       var b = bars[id], st = map[id];
@@ -353,7 +388,8 @@
         ? firebaseStore() : localStore();
       collectTargets().forEach(buildBar);
       buildFab();
-      global.__reviewStore.subscribe(render);
+      render();
+      global.__reviewStore.subscribe(function (remote) { mergeRemote(remote); render(); });
     };
     if (FB) {
       loadScript(FB_SDK + 'firebase-app-compat.js', function () {
