@@ -18,6 +18,7 @@ Open **`index.html`** — the directory page that lists every draft and links to
 | 02 | The 10/20/30 Rule for Presentations | 10/20/30 rule for presentations | `10-20-30-rule-for-presentations/` (clean URL `/10-20-30-rule-for-presentations`) |
 | 03 | Team SWOT Analysis | team swot analysis | `team-swot-analysis/` (clean URL `/team-swot-analysis`) |
 | 04 | Creative Presentation Ideas for College | creative presentation ideas for college | `creative-presentation-ideas-college/` (clean URL `/creative-presentation-ideas-college`) |
+| 05 | VC Pitch Deck Template (Uber / First Round Capital) | vc pitch deck template | `uber-vc-pitch-deck-presentation-template/` (clean URL `/uber-vc-pitch-deck-presentation-template`) |
 
 ## Reviewing a draft (Approve / Reject)
 
