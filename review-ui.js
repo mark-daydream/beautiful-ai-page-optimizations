@@ -114,7 +114,35 @@
     '.rv-item:hover{background:#fdeeee;border-color:#f3c9c9;}',
     '.rv-item-label{font-size:12.5px;font-weight:700;color:#a52727;margin-bottom:4px;}',
     '.rv-item-reason{font-size:12.5px;color:#444;line-height:1.5;}',
-    '.rv-mode{font-size:10px;color:#aaa;text-align:center;padding:6px 0 10px;font-weight:600;letter-spacing:.03em;}'
+    '.rv-mode{font-size:10px;color:#aaa;text-align:center;padding:6px 0 10px;font-weight:600;letter-spacing:.03em;}',
+    '.rv-clear{background:none;border:none;color:#888;font-size:11px;font-weight:700;cursor:pointer;',
+    "  text-decoration:underline;padding:4px 6px;font-family:'Raleway',sans-serif;}",
+    '.rv-clear:hover{color:#333;}',
+    /* guided tour */
+    '.rv-tour-btn{position:fixed;left:22px;bottom:22px;z-index:9000;cursor:pointer;',
+    "  font-family:'Raleway',sans-serif;font-size:12.5px;font-weight:700;padding:10px 16px;",
+    '  border-radius:999px;border:1px solid #e0dceb;background:#fff;color:#5b3aa6;',
+    '  box-shadow:0 6px 20px rgba(40,30,60,.12);}',
+    '.rv-tour-btn:hover{background:#f6f2ff;}',
+    '.rv-tour-overlay{position:fixed;inset:0;background:rgba(20,16,30,.55);z-index:9500;',
+    '  display:none;align-items:center;justify-content:center;padding:20px;}',
+    '.rv-tour-overlay.open{display:flex;}',
+    ".rv-tour-card{background:#fff;border-radius:18px;max-width:450px;width:100%;padding:28px 28px 22px;",
+    "  box-shadow:0 24px 70px rgba(0,0,0,.3);font-family:'Raleway',sans-serif;}",
+    '.rv-tour-step{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#7c3aed;margin-bottom:10px;}',
+    '.rv-tour-card h3{font-size:21px;margin:0 0 11px;letter-spacing:-.01em;color:#1a1a1a;}',
+    '.rv-tour-card p{font-size:14px;line-height:1.62;color:#444;margin:0 0 20px;}',
+    '.rv-tour-card p b{color:#1a1a1a;}',
+    '.rv-tour-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;}',
+    '.rv-tour-dots{display:flex;gap:6px;}',
+    '.rv-tour-dots i{width:7px;height:7px;border-radius:999px;background:#ddd;display:block;}',
+    '.rv-tour-dots i.on{background:#7c3aed;}',
+    '.rv-tour-right{display:flex;align-items:center;gap:14px;}',
+    '.rv-tour-skip{background:none;border:none;color:#999;font-size:12.5px;font-weight:600;cursor:pointer;}',
+    '.rv-tour-skip:hover{color:#555;}',
+    ".rv-tour-next{background:#1a1a1a;color:#fff;border:none;border-radius:9px;padding:9px 20px;",
+    "  font-size:13px;font-weight:700;cursor:pointer;font-family:'Raleway',sans-serif;}",
+    '.rv-tour-next:hover{background:#000;}'
   ].join('');
 
   function injectStyle() {
@@ -135,6 +163,9 @@
           status: rec.status, reason: rec.reason || '', label: rec.label || '',
           updatedAt: global.firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
+      },
+      remove: function (blockId) {
+        return col.doc(PAGE_ID + '__' + blockId).delete();
       },
       subscribe: function (cb) {
         col.where('page', '==', PAGE_ID).onSnapshot(function (snap) {
@@ -159,6 +190,11 @@
       save: function (blockId, rec) {
         var m = read();
         m[blockId] = { status: rec.status, reason: rec.reason || '', label: rec.label || '' };
+        localStorage.setItem(KEY, JSON.stringify(m)); emit();
+        return Promise.resolve();
+      },
+      remove: function (blockId) {
+        var m = read(); delete m[blockId];
         localStorage.setItem(KEY, JSON.stringify(m)); emit();
         return Promise.resolve();
       },
@@ -196,6 +232,8 @@
 
     var chip = el('span', 'rv-status', 'Pending');
     var spacer = el('div', 'rv-spacer');
+    var clear = el('button', 'rv-clear', 'Clear');
+    clear.style.display = 'none';
     var approve = el('button', 'rv-btn rv-approve', 'Approve');
     var reject = el('button', 'rv-btn rv-reject', 'Reject');
 
@@ -226,9 +264,15 @@
       reason.classList.remove('open');
       applyDecision(t.blockId, { status: 'rejected', reason: v, label: t.label });
     });
+    clear.addEventListener('click', function () {
+      reason.classList.remove('open');
+      err.classList.remove('show');
+      clearDecision(t.blockId);
+    });
 
     wrap.appendChild(chip);
     wrap.appendChild(spacer);
+    wrap.appendChild(clear);
     wrap.appendChild(approve);
     wrap.appendChild(reject);
     wrap.appendChild(reason);
@@ -238,7 +282,7 @@
     else t.host.insertAdjacentElement('afterend', wrap);
 
     bars[t.blockId] = {
-      wrap: wrap, chip: chip, approve: approve, reject: reject,
+      wrap: wrap, chip: chip, approve: approve, reject: reject, clear: clear,
       ta: ta, reasonShown: reasonShown, label: t.label
     };
     order.push(t.blockId);
@@ -281,7 +325,18 @@
       p.catch(function (e) { showStatus('Not saved: ' + friendlyErr(e)); });
     }
   }
+  function clearDecision(blockId) {
+    delete state[blockId];
+    var b = bars[blockId];
+    if (b) { b.ta.value = ''; }
+    render();
+    var p = global.__reviewStore.remove(blockId);
+    if (p && p.catch) { p.catch(function (e) { showStatus('Not cleared: ' + friendlyErr(e)); }); }
+  }
   function mergeRemote(remote) {
+    // snapshot is authoritative for this page, so replace state wholesale
+    // (this is what lets a cleared/deleted decision disappear everywhere)
+    state = {};
     Object.keys(remote || {}).forEach(function (k) { state[k] = remote[k]; });
     if (statusEl) { statusEl.style.color = ''; statusEl.textContent = 'Saving to: ' + (global.__reviewStore.mode || ''); }
   }
@@ -317,6 +372,7 @@
         b.chip.textContent = 'Approved';
         b.approve.classList.add('active');
         b.reasonShown.style.display = 'none';
+        b.clear.style.display = '';
         b.ta.value = '';
       } else if (status === 'rejected') {
         rejected++;
@@ -325,11 +381,13 @@
         b.reject.classList.add('active');
         b.reasonShown.style.display = 'block';
         b.reasonShown.innerHTML = '<b>Reason:</b> ' + escapeHtml(st.reason || '');
+        b.clear.style.display = '';
         b.ta.value = st.reason || '';
       } else {
         pending++;
         b.chip.textContent = 'Pending';
         b.reasonShown.style.display = 'none';
+        b.clear.style.display = 'none';
       }
     });
 
@@ -380,6 +438,61 @@
   /* neutralize legacy comment hook if any markup still calls it */
   global.toggleComment = global.toggleComment || function () {};
 
+  /* ---- guided tour (approve / reject model) ------------------------------ */
+  var WT_KEY = 'review_tour_' + PAGE_ID + '_v1';
+  var TOUR = [
+    { step: 'Welcome', title: 'Review this optimization draft',
+      body: 'This page proposes on-page SEO changes, section by section. Your job is to <b>Approve</b> the ones you like and <b>Reject</b> the ones you don\'t. Here is how it works.' },
+    { step: 'Step 1 of 4', title: 'Approve or reject each section',
+      body: 'At the bottom of every section there is an <b>Approve</b> and a <b>Reject</b> button. Click whichever fits. Approved turns the section green, rejected turns it red.',
+      on: function () { var f = bars[order[0]]; if (f) f.wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }); } },
+    { step: 'Step 2 of 4', title: 'Rejecting? Tell us why',
+      body: 'When you click <b>Reject</b>, a box appears asking for a quick reason. That is how we know what to change, so a reason is required before a rejection saves.' },
+    { step: 'Step 3 of 4', title: 'Changed your mind? Clear it',
+      body: 'Once a section is decided, a small <b>Clear</b> link appears in its bar. Click it to reset that section back to undecided, no rejection needed.' },
+    { step: 'Step 4 of 4', title: 'Everything saves automatically',
+      body: 'No files to download or send back. Decisions save to the cloud instantly and sync to everyone viewing the page. The <b>Rejected</b> button in the bottom-right lists every section you rejected and why, click any one to jump straight to it.' }
+  ];
+  var tourIdx = 0, tourOverlay = null, tourCard = null;
+  function buildTour() {
+    tourOverlay = el('div', 'rv-tour-overlay');
+    tourCard = el('div', 'rv-tour-card');
+    tourOverlay.appendChild(tourCard);
+    tourOverlay.addEventListener('click', function (e) { if (e.target === tourOverlay) closeTour(); });
+    document.body.appendChild(tourOverlay);
+  }
+  function renderTour() {
+    var s = TOUR[tourIdx], last = tourIdx === TOUR.length - 1;
+    var dots = TOUR.map(function (_, i) { return '<i class="' + (i === tourIdx ? 'on' : '') + '"></i>'; }).join('');
+    tourCard.innerHTML =
+      '<div class="rv-tour-step">' + s.step + '</div>' +
+      '<h3>' + s.title + '</h3>' +
+      '<p>' + s.body + '</p>' +
+      '<div class="rv-tour-actions"><div class="rv-tour-dots">' + dots + '</div>' +
+      '<div class="rv-tour-right">' +
+        (last ? '' : '<button class="rv-tour-skip" data-act="skip">Skip</button>') +
+        '<button class="rv-tour-next" data-act="next">' + (last ? 'Got it' : 'Next') + '</button>' +
+      '</div></div>';
+    tourCard.querySelectorAll('[data-act]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.getAttribute('data-act') === 'skip' || last) { closeTour(); return; }
+        tourIdx++; renderTour();
+      });
+    });
+    if (s.on) s.on();
+  }
+  function openTour() { tourIdx = 0; tourOverlay.classList.add('open'); renderTour(); }
+  function closeTour() { tourOverlay.classList.remove('open'); try { localStorage.setItem(WT_KEY, '1'); } catch (e) {} }
+  function buildTourButton() {
+    var b = el('button', 'rv-tour-btn', 'Take a tour');
+    b.addEventListener('click', openTour);
+    document.body.appendChild(b);
+  }
+  function maybeAutoTour() {
+    var seen = false; try { seen = localStorage.getItem(WT_KEY) === '1'; } catch (e) {}
+    if (!seen) setTimeout(openTour, 650);
+  }
+
   /* ---- boot -------------------------------------------------------------- */
   onReady(function () {
     injectStyle();
@@ -388,8 +501,11 @@
         ? firebaseStore() : localStore();
       collectTargets().forEach(buildBar);
       buildFab();
+      buildTour();
+      buildTourButton();
       render();
       global.__reviewStore.subscribe(function (remote) { mergeRemote(remote); render(); });
+      maybeAutoTour();
     };
     if (FB) {
       loadScript(FB_SDK + 'firebase-app-compat.js', function () {
