@@ -19,6 +19,9 @@ Open **`index.html`** — the directory page that lists every draft and links to
 | 03 | Team SWOT Analysis | team swot analysis | `team-swot-analysis/` (clean URL `/team-swot-analysis`) |
 | 04 | Creative Presentation Ideas for College | creative presentation ideas for college | `creative-presentation-ideas-college/` (clean URL `/creative-presentation-ideas-college`) |
 | 05 | VC Pitch Deck Template (Uber / First Round Capital) | vc pitch deck template | `uber-vc-pitch-deck-presentation-template/` (clean URL `/uber-vc-pitch-deck-presentation-template`) |
+| 06 | Rebrand Presentation Examples | rebrand presentation examples | `rebrand-presentation-examples/` (clean URL `/rebrand-presentation-examples`) |
+| 07 | Automate Presentation Design with AI | how to automate presentation design | `how-to-automate-presentation-design/` (clean URL `/how-to-automate-presentation-design`) |
+| 08 | Team Presentation Icebreakers | team presentation icebreakers | `team-presentation-icebreakers/` (clean URL `/team-presentation-icebreakers`) |
 
 ## Reviewing a draft (Approve / Reject)
 
