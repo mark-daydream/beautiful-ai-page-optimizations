@@ -29,7 +29,19 @@
   .dir-meta-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
   .dir-meta-row .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); }
   .dir-count { font-size: 12px; color: var(--text-subtle); }
-  .dir-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .dir-list { list-style: none; display: flex; flex-direction: column; gap: 14px; padding-top: 14px; }
+
+  /* collapsible month groups */
+  .dir-month { margin-bottom: 22px; }
+  .dir-month summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 12px 4px; user-select: none; }
+  .dir-month summary::-webkit-details-marker { display: none; }
+  .dir-month summary:hover .month-name { color: var(--near-black); }
+  .month-chev { width: 26px; height: 26px; border: 1px solid var(--border); border-radius: 8px; background: var(--off-white); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-subtle); transition: transform 0.18s, color 0.15s, border-color 0.15s; flex-shrink: 0; }
+  .dir-month[open] .month-chev { transform: rotate(90deg); }
+  .dir-month summary:hover .month-chev { border-color: var(--peach-warm); color: var(--near-black); }
+  .month-name { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); transition: color 0.15s; }
+  .month-count { font-size: 11px; font-weight: 700; color: var(--text-subtle); background: var(--off-white); border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  .month-rule { flex: 1; height: 1px; background: var(--border); }
 
   .dir-card { display: flex; align-items: center; justify-content: space-between; gap: 20px; background: var(--off-white); border: 1px solid var(--border); border-radius: 16px; padding: 22px 26px; text-decoration: none; color: inherit; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s; }
   .dir-card:hover { border-color: var(--peach-warm); box-shadow: 0 8px 28px rgba(40,30,60,0.10); transform: translateY(-2px); }
@@ -73,187 +85,208 @@
     <span class="dir-count" id="dir-count">9 documents</span>
   </div>
 
-  <ul class="dir-list" id="dir-list">
+  <!-- Drafts are grouped by delivery month, newest month first. The current month's
+       group stays open (keep the `open` attribute on it); older months start collapsed.
+       TO ADD A NEW DRAFT: paste a <li> card at the TOP of the current month's list
+       (create a new <details class="dir-month" open> group when a new month starts,
+       and remove `open` from the previous month). Update: href, dir-num, <h2> title,
+       primary keyword, <code> path, dir-pill, dir-date, the group's month-count,
+       and bump #dir-count. -->
 
-    <!-- Newest first (descending). Add each new draft at the TOP of this list. -->
+  <details class="dir-month" open>
+    <summary>
+      <span class="month-chev">&#9656;</span>
+      <span class="month-name">July 2026</span>
+      <span class="month-count">1 draft</span>
+      <span class="month-rule"></span>
+    </summary>
+    <ul class="dir-list">
 
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="presentation-software/">
-        <div class="dir-card-main">
-          <span class="dir-num">09</span>
-          <div>
-            <h2>Presentation Software (How It Works page)</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>presentation software</strong> &middot; <code>/presentation-software</code></p>
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="presentation-software/">
+          <div class="dir-card-main">
+            <span class="dir-num">09</span>
+            <div>
+              <h2>Presentation Software (How It Works page)</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>presentation software</strong> &middot; <code>/presentation-software</code></p>
+            </div>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">July 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
-
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="team-presentation-icebreakers/">
-        <div class="dir-card-main">
-          <span class="dir-num">08</span>
-          <div>
-            <h2>Team Presentation Icebreakers</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>team presentation icebreakers</strong> &middot; <code>/blog/10-icebreaker-ideas-for-your-next-team-presentation</code></p>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">July 2026</span>
+            <span class="dir-arrow">&rarr;</span>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="how-to-automate-presentation-design/">
-        <div class="dir-card-main">
-          <span class="dir-num">07</span>
-          <div>
-            <h2>Automate Presentation Design with AI</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>how to automate presentation design</strong> &middot; <code>/blog/automating-presentation-design-with-ai-a-beginners-guide</code></p>
+    </ul>
+  </details>
+
+  <details class="dir-month">
+    <summary>
+      <span class="month-chev">&#9656;</span>
+      <span class="month-name">June 2026</span>
+      <span class="month-count">8 drafts</span>
+      <span class="month-rule"></span>
+    </summary>
+    <ul class="dir-list">
+
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="team-presentation-icebreakers/">
+          <div class="dir-card-main">
+            <span class="dir-num">08</span>
+            <div>
+              <h2>Team Presentation Icebreakers</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>team presentation icebreakers</strong> &middot; <code>/blog/10-icebreaker-ideas-for-your-next-team-presentation</code></p>
+            </div>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
-
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="rebrand-presentation-examples/">
-        <div class="dir-card-main">
-          <span class="dir-num">06</span>
-          <div>
-            <h2>Rebrand Presentation Examples</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>rebrand presentation examples</strong> &middot; <code>/blog/a-round-up-of-the-top-3-rebrand-presentations-to-help-inspire-your-own</code></p>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="uber-vc-pitch-deck-presentation-template/">
-        <div class="dir-card-main">
-          <span class="dir-num">05</span>
-          <div>
-            <h2>VC Pitch Deck Template</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>vc pitch deck template</strong> &middot; <code>/blog/uber-vc-pitch-deck-presentation-template</code></p>
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="how-to-automate-presentation-design/">
+          <div class="dir-card-main">
+            <span class="dir-num">07</span>
+            <div>
+              <h2>Automate Presentation Design with AI</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>how to automate presentation design</strong> &middot; <code>/blog/automating-presentation-design-with-ai-a-beginners-guide</code></p>
+            </div>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
-
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="creative-presentation-ideas-college/">
-        <div class="dir-card-main">
-          <span class="dir-num">04</span>
-          <div>
-            <h2>College Presentation Ideas</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>college presentation ideas</strong> &middot; <code>/blog/creative-presentation-ideas-college</code></p>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="team-swot-analysis/">
-        <div class="dir-card-main">
-          <span class="dir-num">03</span>
-          <div>
-            <h2>Team SWOT Analysis</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>team swot analysis</strong> &middot; <code>/blog/how-do-i-create-a-swot-analysis-for-my-team</code></p>
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="rebrand-presentation-examples/">
+          <div class="dir-card-main">
+            <span class="dir-num">06</span>
+            <div>
+              <h2>Rebrand Presentation Examples</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>rebrand presentation examples</strong> &middot; <code>/blog/a-round-up-of-the-top-3-rebrand-presentations-to-help-inspire-your-own</code></p>
+            </div>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
-
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="10-20-30-rule-for-presentations/">
-        <div class="dir-card-main">
-          <span class="dir-num">02</span>
-          <div>
-            <h2>The 10/20/30 Rule for Presentations</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>10/20/30 rule for presentations</strong> &middot; <code>/blog/what-is-the-10-20-30-rule-for-presentations...</code></p>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-    <!-- ============ DRAFT ENTRY ============ -->
-    <li>
-      <a class="dir-card" href="what-is-presentation-software/">
-        <div class="dir-card-main">
-          <span class="dir-num">01</span>
-          <div>
-            <h2>What Is Presentation Software</h2>
-            <p class="dir-card-meta">Primary keyword: <strong>what is presentation software</strong> &middot; <code>/blog/what-is-presentation-software</code></p>
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="uber-vc-pitch-deck-presentation-template/">
+          <div class="dir-card-main">
+            <span class="dir-num">05</span>
+            <div>
+              <h2>VC Pitch Deck Template</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>vc pitch deck template</strong> &middot; <code>/blog/uber-vc-pitch-deck-presentation-template</code></p>
+            </div>
           </div>
-        </div>
-        <div class="dir-card-side">
-          <span class="dir-pill">Delivered</span>
-          <span class="dir-date">June 2026</span>
-          <span class="dir-arrow">&rarr;</span>
-        </div>
-      </a>
-    </li>
-    <!-- ====================================== -->
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-    <!-- TO ADD A NEW DRAFT: copy one <li>…</li> block and paste it at the TOP of the
-         list (newest first), then update: href (the bundle folder), dir-num (03, 04, …),
-         <h2> title, primary keyword, <code> page path, dir-pill status, and dir-date.
-         Also bump #dir-count text. -->
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="creative-presentation-ideas-college/">
+          <div class="dir-card-main">
+            <span class="dir-num">04</span>
+            <div>
+              <h2>College Presentation Ideas</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>college presentation ideas</strong> &middot; <code>/blog/creative-presentation-ideas-college</code></p>
+            </div>
+          </div>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+      <!-- ====================================== -->
 
-  </ul>
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="team-swot-analysis/">
+          <div class="dir-card-main">
+            <span class="dir-num">03</span>
+            <div>
+              <h2>Team SWOT Analysis</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>team swot analysis</strong> &middot; <code>/blog/how-do-i-create-a-swot-analysis-for-my-team</code></p>
+            </div>
+          </div>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+      <!-- ====================================== -->
+
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="10-20-30-rule-for-presentations/">
+          <div class="dir-card-main">
+            <span class="dir-num">02</span>
+            <div>
+              <h2>The 10/20/30 Rule for Presentations</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>10/20/30 rule for presentations</strong> &middot; <code>/blog/what-is-the-10-20-30-rule-for-presentations...</code></p>
+            </div>
+          </div>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+      <!-- ====================================== -->
+
+      <!-- ============ DRAFT ENTRY ============ -->
+      <li>
+        <a class="dir-card" href="what-is-presentation-software/">
+          <div class="dir-card-main">
+            <span class="dir-num">01</span>
+            <div>
+              <h2>What Is Presentation Software</h2>
+              <p class="dir-card-meta">Primary keyword: <strong>what is presentation software</strong> &middot; <code>/blog/what-is-presentation-software</code></p>
+            </div>
+          </div>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">June 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+      <!-- ====================================== -->
+
+    </ul>
+  </details>
 
   <p class="dir-foot">Add new optimization drafts to this index as they are completed.</p>
 </main>
