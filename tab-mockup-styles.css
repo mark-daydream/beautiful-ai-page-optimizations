@@ -30,7 +30,7 @@
 #tab2 .placeholder { background: #f5f5f5; border: 1.5px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999; font-style: italic; text-align: center; padding: 16px; }
 #tab2 .placeholder-video { aspect-ratio: 16/10; }
 #tab2 .placeholder-img { aspect-ratio: 4/3; }
-#tab2 .placeholder-logo { height: 28px; width: 80px; border-radius: 4px; }
+#tab2 .placeholder-logo { height: auto; min-height: 28px; width: auto; min-width: 80px; max-width: 180px; border-radius: 4px; padding: 5px 10px; font-size: 10px; line-height: 1.25; }
 #tab2 .card { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 24px; }
 #tab2 .card h3 { font-size: 16px; }
 #tab2 .card p { font-size: 14px; color: #444; }
