@@ -46,6 +46,7 @@
     <tr><td>Page-type variants</td><td>Variant A: chart &amp; tool pages, where the head term is "[x] maker" or "[x] generator" (all of Batch 1) &middot; Variant B: presentation template pages, where the head term is "[x] template"</td></tr>
     <tr><td>Two tracks</td><td><strong>Track 1 (daydream, no engineering):</strong> metadata, hero copy, how-to section, FAQ, schema, internal links — ships in the weekly batches. <strong>Track 2 (Beautiful.ai web team):</strong> the above-the-fold AI action layer — specced in Module 3, applies to every page once built.</td></tr>
     <tr><td>How each module reads</td><td>Every module below is a rule with fill-in slots, shown filled in for <code>/templates/pie-chart</code> (Batch 1, page 1). Tab 2 shows the full assembled page. Tab 3 holds the analysis behind each decision.</td></tr>
+    <tr><td>Grammar gate</td><td>Every filled slot must read as natural English, and grammar wins over exact-match phrasing. Pluralize where the sentence calls for it ("AI capabilities for pie charts," never "for pie chart"), keep articles ("a pie chart," "an org chart"), and use proper casing in copy (SWOT analysis, Venn diagram, Gantt chart) even where the keyword is lowercase. Google matches the natural variant; a broken sentence costs trust on the page and in AI answers. The gate also applies to headings inherited from the live page.</td></tr>
     <tr><td>Summary</td><td>The template pages lose because they present as static galleries on SERPs won by interactive tools, while their titles chase "[x] template" phrasing that is a fraction of the demand. Search Console shows Google already places these pages in the top 10 for AI-modified queries the pages never target. The template repositions every chart page around the AI maker intent Google already credits, rebuilds the metadata and snippet layer, adds how-to and FAQ sections with schema, and replaces video-only related carousels with crawlable internal links.</td></tr>
   </table>
 
@@ -120,6 +121,7 @@
     <div class="unch-block">
       <div class="ba-label">Kept</div>
       <p>The existing "Pro Tips" tab content (chart-specific design guidance) and the "Discover AI capabilities" tab content (generate with a prompt, add context with AI, refine copy, create a supporting image) are kept in full.</p>
+      <p>One copy edit ships with the batch: kept headings pass through the grammar gate, so "Discover AI capabilities for pie chart" becomes "Discover AI capabilities for pie charts."</p>
     </div>
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why: </strong>This is genuinely differentiated content that most chart-widget competitors lack. One structural change ships with the batch: both blocks currently render inside a tab component, and tabbed content that requires a click is easy for crawlers to miss. The mockup lays them out as stacked sections.</p>
   </div>
@@ -186,7 +188,7 @@
     <div class="block-header"><div class="block-label"><span class="pill-new">New</span> Module 13 &middot; What a weekly batch of 10 looks like</div><button class="comment-btn" onclick="toggleComment('block-workflow')">+</button></div>
     <div class="new-block">
       <div class="ba-label">Process</div>
-      <p><strong>Monday:</strong> daydream fills the template for that week's 10 pages (title, meta description, hero copy, prompt examples, how-to, FAQ answers, internal-link set, schema JSON per page) and publishes the batch to this review hub with approve/reject on every module.</p>
+      <p><strong>Monday:</strong> daydream fills the template for that week's 10 pages (title, meta description, hero copy, prompt examples, how-to, FAQ answers, internal-link set, schema JSON per page), runs the grammar gate over every filled slot and kept heading, and publishes the batch to this review hub with approve/reject on every module.</p>
       <p><strong>By Wednesday:</strong> Beautiful.ai reviews. Approvals need no action; rejections carry a reason and daydream revises in the same cycle.</p>
       <p><strong>Thursday/Friday:</strong> approved copy goes into Webflow (daydream can enter it directly if given editor access, or deliver a paste-ready sheet per page).</p>
       <p><strong>Measurement:</strong> the Search Console baseline for all 236 pages was captured this week; each batch's pages get a position and click check at 4 and 8 weeks in the monthly report.</p>
@@ -313,7 +315,7 @@
 
   <section>
     <div class="section-tag tag-same">Kept (untabbed)</div>
-    <h2>Discover AI capabilities for pie chart</h2>
+    <h2>Discover AI capabilities for pie charts <span class="opt-pill opt">grammar fix</span></h2>
     <p><strong>Generate an AI pie chart with a prompt.</strong> Simply prompt the AI assistant with the type of pie chart you're looking to create and watch it come together automatically.</p>
     <p><strong>Add context with AI.</strong> Add additional context to your prompt by uploading documents, or data, and the AI will use that to generate a pie chart that fits your story.</p>
     <p><strong>Refine copy on a pie chart slide.</strong> Leverage AI to edit text within a pie chart slide. We can help create new text with a prompt, re-write existing text, and expand or shorten text length.</p>
