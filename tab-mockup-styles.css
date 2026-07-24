@@ -2,54 +2,54 @@
    selectors (body, nav, section, h1-h4, p) never leak into the nav or the other tabs.
    Bare `body{background:#fff}` and `nav{max-width:1100px;margin:0 auto}` previously
    centered the global top nav and whitened the page background. */
-#tab2 { font-family: 'Inter', sans-serif; background: #fff; color: #111; font-size: 15px; line-height: 1.6; }
-#tab2 .page { max-width: 1100px; margin: 0 auto; }
-#tab2 section { padding: 72px 80px; border-bottom: 1px solid #e5e5e5; }
-#tab2 nav { border-bottom: 1px solid #e5e5e5; padding: 16px 80px; display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; }
-#tab2 .nav-logo { font-size: 17px; font-weight: 700; }
-#tab2 .nav-links { display: flex; gap: 28px; font-size: 13px; color: #555; }
-#tab2 .nav-ctas { display: flex; gap: 10px; }
-#tab2 .btn { font-family: inherit; font-size: 13px; font-weight: 600; padding: 7px 18px; border-radius: 6px; border: 1.5px solid #ccc; background: transparent; cursor: pointer; }
-#tab2 .btn-dark { background: #111; color: #fff; border-color: #111; }
-#tab2 .section-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-bottom: 14px; }
-#tab2 .tag-opt  { background: #f0e6ff; color: #6a0dad; border: 1px solid #d4b0ff; }
-#tab2 .tag-new  { background: #e6f9ee; color: #1a7a3a; border: 1px solid #90dba8; }
-#tab2 .tag-same { background: #f0f0f0; color: #666;    border: 1px solid #ddd; }
-#tab2 h1 { font-size: 44px; font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 20px; }
-#tab2 h2 { font-size: 32px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px; }
-#tab2 h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; margin-top: 18px; }
-#tab2 h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; color: #555; }
-#tab2 p { color: #333; margin-bottom: 12px; }
-#tab2 p:last-child { margin-bottom: 0; }
-#tab2 ul { color: #333; margin: 6px 0 12px; padding-left: 20px; }
-#tab2 .subhead { font-size: 17px; color: #444; max-width: 600px; line-height: 1.65; margin-bottom: 32px; }
-#tab2 .overline { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 12px; }
-#tab2 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-#tab2 .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
-#tab2 .two-col-wide { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-#tab2 .placeholder { background: #f5f5f5; border: 1.5px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999; font-style: italic; text-align: center; padding: 16px; }
-#tab2 .placeholder-video { aspect-ratio: 16/10; }
-#tab2 .placeholder-img { aspect-ratio: 4/3; }
-#tab2 .placeholder-logo { height: auto; min-height: 28px; width: auto; min-width: 80px; max-width: 180px; border-radius: 4px; padding: 5px 10px; font-size: 10px; line-height: 1.25; }
-#tab2 .card { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 24px; }
-#tab2 .card h3 { font-size: 16px; }
-#tab2 .card p { font-size: 14px; color: #444; }
-#tab2 .btn-lg { font-family: inherit; font-size: 15px; font-weight: 600; padding: 12px 28px; border-radius: 7px; border: 1.5px solid #111; background: #111; color: #fff; cursor: pointer; margin-right: 12px; }
-#tab2 .btn-lg-ghost { font-family: inherit; font-size: 15px; font-weight: 600; padding: 12px 28px; border-radius: 7px; border: 1.5px solid #ccc; background: transparent; color: #111; cursor: pointer; }
-#tab2 .logo-strip { display: flex; gap: 32px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
-#tab2 .tab-nav { display: flex; gap: 0; border-bottom: 1.5px solid #e5e5e5; margin-bottom: 32px; }
-#tab2 .tab-item { font-size: 14px; font-weight: 600; padding: 10px 20px; border-bottom: 2px solid transparent; cursor: pointer; color: #555; margin-bottom: -1.5px; }
-#tab2 .tab-item.active { border-bottom-color: #111; color: #111; }
-#tab2 .testimonial { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 22px; font-size: 14px; }
-#tab2 .testimonial p { font-style: italic; color: #333; margin-bottom: 10px; }
-#tab2 .testimonial-meta { font-size: 12px; font-weight: 600; color: #888; }
-#tab2 .faq-item { border-bottom: 1px solid #e5e5e5; padding: 20px 0; }
-#tab2 .faq-item:first-child { border-top: 1px solid #e5e5e5; }
-#tab2 .faq-q { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-#tab2 .faq-a { font-size: 14px; color: #444; line-height: 1.7; }
-#tab2 .step-card { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 24px; }
-#tab2 .step-num { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
-#tab2 .opt-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; vertical-align: middle; margin-left: 6px; position: relative; top: -1px; }
-#tab2 .opt-pill.opt { background: #f0e6ff; color: #6a0dad; border: 1px solid #d4b0ff; }
-#tab2 .opt-pill.new { background: #e6f9ee; color: #1a7a3a; border: 1px solid #90dba8; }
-#tab2 .callout { border: 1.5px solid #ffc107; background: #fffbea; border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #5a4400; line-height: 1.6; }
+#tab2, .mockup-tab { font-family: 'Inter', sans-serif; background: #fff; color: #111; font-size: 15px; line-height: 1.6; }
+#tab2 .page, .mockup-tab .page { max-width: 1100px; margin: 0 auto; }
+#tab2 section, .mockup-tab section { padding: 72px 80px; border-bottom: 1px solid #e5e5e5; }
+#tab2 nav, .mockup-tab nav { border-bottom: 1px solid #e5e5e5; padding: 16px 80px; display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; }
+#tab2 .nav-logo, .mockup-tab .nav-logo { font-size: 17px; font-weight: 700; }
+#tab2 .nav-links, .mockup-tab .nav-links { display: flex; gap: 28px; font-size: 13px; color: #555; }
+#tab2 .nav-ctas, .mockup-tab .nav-ctas { display: flex; gap: 10px; }
+#tab2 .btn, .mockup-tab .btn { font-family: inherit; font-size: 13px; font-weight: 600; padding: 7px 18px; border-radius: 6px; border: 1.5px solid #ccc; background: transparent; cursor: pointer; }
+#tab2 .btn-dark, .mockup-tab .btn-dark { background: #111; color: #fff; border-color: #111; }
+#tab2 .section-tag, .mockup-tab .section-tag { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; margin-bottom: 14px; }
+#tab2 .tag-opt, .mockup-tab .tag-opt { background: #f0e6ff; color: #6a0dad; border: 1px solid #d4b0ff; }
+#tab2 .tag-new, .mockup-tab .tag-new { background: #e6f9ee; color: #1a7a3a; border: 1px solid #90dba8; }
+#tab2 .tag-same, .mockup-tab .tag-same { background: #f0f0f0; color: #666;    border: 1px solid #ddd; }
+#tab2 h1, .mockup-tab h1 { font-size: 44px; font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 20px; }
+#tab2 h2, .mockup-tab h2 { font-size: 32px; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 16px; }
+#tab2 h3, .mockup-tab h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; margin-top: 18px; }
+#tab2 h4, .mockup-tab h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; color: #555; }
+#tab2 p, .mockup-tab p { color: #333; margin-bottom: 12px; }
+#tab2 p:last-child, .mockup-tab p:last-child { margin-bottom: 0; }
+#tab2 ul, .mockup-tab ul { color: #333; margin: 6px 0 12px; padding-left: 20px; }
+#tab2 .subhead, .mockup-tab .subhead { font-size: 17px; color: #444; max-width: 600px; line-height: 1.65; margin-bottom: 32px; }
+#tab2 .overline, .mockup-tab .overline { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #888; margin-bottom: 12px; }
+#tab2 .two-col, .mockup-tab .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+#tab2 .three-col, .mockup-tab .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+#tab2 .two-col-wide, .mockup-tab .two-col-wide { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+#tab2 .placeholder, .mockup-tab .placeholder { background: #f5f5f5; border: 1.5px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #999; font-style: italic; text-align: center; padding: 16px; }
+#tab2 .placeholder-video, .mockup-tab .placeholder-video { aspect-ratio: 16/10; }
+#tab2 .placeholder-img, .mockup-tab .placeholder-img { aspect-ratio: 4/3; }
+#tab2 .placeholder-logo, .mockup-tab .placeholder-logo { height: auto; min-height: 28px; width: auto; min-width: 80px; max-width: 180px; border-radius: 4px; padding: 5px 10px; font-size: 10px; line-height: 1.25; }
+#tab2 .card, .mockup-tab .card { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 24px; }
+#tab2 .card h3, .mockup-tab .card h3 { font-size: 16px; }
+#tab2 .card p, .mockup-tab .card p { font-size: 14px; color: #444; }
+#tab2 .btn-lg, .mockup-tab .btn-lg { font-family: inherit; font-size: 15px; font-weight: 600; padding: 12px 28px; border-radius: 7px; border: 1.5px solid #111; background: #111; color: #fff; cursor: pointer; margin-right: 12px; }
+#tab2 .btn-lg-ghost, .mockup-tab .btn-lg-ghost { font-family: inherit; font-size: 15px; font-weight: 600; padding: 12px 28px; border-radius: 7px; border: 1.5px solid #ccc; background: transparent; color: #111; cursor: pointer; }
+#tab2 .logo-strip, .mockup-tab .logo-strip { display: flex; gap: 32px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+#tab2 .tab-nav, .mockup-tab .tab-nav { display: flex; gap: 0; border-bottom: 1.5px solid #e5e5e5; margin-bottom: 32px; }
+#tab2 .tab-item, .mockup-tab .tab-item { font-size: 14px; font-weight: 600; padding: 10px 20px; border-bottom: 2px solid transparent; cursor: pointer; color: #555; margin-bottom: -1.5px; }
+#tab2 .tab-item.active, .mockup-tab .tab-item.active { border-bottom-color: #111; color: #111; }
+#tab2 .testimonial, .mockup-tab .testimonial { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 22px; font-size: 14px; }
+#tab2 .testimonial p, .mockup-tab .testimonial p { font-style: italic; color: #333; margin-bottom: 10px; }
+#tab2 .testimonial-meta, .mockup-tab .testimonial-meta { font-size: 12px; font-weight: 600; color: #888; }
+#tab2 .faq-item, .mockup-tab .faq-item { border-bottom: 1px solid #e5e5e5; padding: 20px 0; }
+#tab2 .faq-item:first-child, .mockup-tab .faq-item:first-child { border-top: 1px solid #e5e5e5; }
+#tab2 .faq-q, .mockup-tab .faq-q { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+#tab2 .faq-a, .mockup-tab .faq-a { font-size: 14px; color: #444; line-height: 1.7; }
+#tab2 .step-card, .mockup-tab .step-card { border: 1.5px solid #e5e5e5; border-radius: 10px; padding: 24px; }
+#tab2 .step-num, .mockup-tab .step-num { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+#tab2 .opt-pill, .mockup-tab .opt-pill { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; vertical-align: middle; margin-left: 6px; position: relative; top: -1px; }
+#tab2 .opt-pill.opt, .mockup-tab .opt-pill.opt { background: #f0e6ff; color: #6a0dad; border: 1px solid #d4b0ff; }
+#tab2 .opt-pill.new, .mockup-tab .opt-pill.new { background: #e6f9ee; color: #1a7a3a; border: 1px solid #90dba8; }
+#tab2 .callout, .mockup-tab .callout { border: 1.5px solid #ffc107; background: #fffbea; border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #5a4400; line-height: 1.6; }
