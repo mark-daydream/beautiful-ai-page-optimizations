@@ -19,7 +19,8 @@
   <div class="nav-divider"></div>
   <a href="#" class="tab-link active" onclick="switchTab('tab1',this);return false;"><span class="tab-num">1</span> The Optimization Template</a>
   <a href="#" class="tab-link" onclick="switchTab('tab2',this);return false;"><span class="tab-num">2</span> Applied: Pie Chart</a>
-  <a href="#" class="tab-link" onclick="switchTab('tab3',this);return false;"><span class="tab-num">3</span> The Analysis</a>
+  <a href="#" class="tab-link" onclick="switchTab('tab4',this);return false;"><span class="tab-num">3</span> Applied: SWOT Analysis</a>
+  <a href="#" class="tab-link" onclick="switchTab('tab3',this);return false;"><span class="tab-num">4</span> The Analysis</a>
 </nav>
 
 <div id="tab1" class="tab-panel active">
@@ -45,8 +46,9 @@
     <tr><td>First batch</td><td>Batch 1 &middot; 10 chart pages &middot; 82,330 searches/mo across "[x] template" head terms &middot; build week of Jul 27&ndash;31 (absorbs 8 template items already on the Q3 roadmap)</td></tr>
     <tr><td>Head term rule</td><td>The head term for every page is "[page name] template" &mdash; chart &amp; slide pages fill the chart noun ("pie chart template"), presentation pages fill "[name] presentation template." Supporting terms must pass the intent gate: at least 30% SERP overlap with the head term. "Maker" and "generator" terms fail that gate (their SERPs are won by in-page tools) and are excluded, whatever their volume.</td></tr>
     <tr><td>Two tracks</td><td><strong>Track 1 (daydream, no engineering):</strong> metadata, hero copy, how-to section, FAQ, schema, internal links — ships in the weekly batches. <strong>Track 2 (Beautiful.ai web team):</strong> the above-the-fold AI action layer — specced in Module 3, applies to every page once built.</td></tr>
-    <tr><td>How each module reads</td><td>Every module below is a rule with fill-in slots, shown filled in for <code>/templates/pie-chart</code> (Batch 1, page 1). Tab 2 shows the full assembled page. Tab 3 holds the analysis behind each decision.</td></tr>
+    <tr><td>How each module reads</td><td>Every module below is a rule with fill-in slots, shown filled in for <code>/templates/pie-chart</code> (Batch 1, page 1). Tabs 2 and 3 show the same template applied to two different Batch 1 pages &mdash; <code>/templates/pie-chart</code> and <code>/templates/swot-analysis</code> &mdash; so you can see one rule set produce two unique pages. Tab 4 holds the analysis behind each decision.</td></tr>
     <tr><td>Grammar gate</td><td>Every filled slot must read as natural English, and grammar wins over exact-match phrasing. Pluralize where the sentence calls for it ("AI capabilities for pie charts," never "for pie chart"), keep articles ("a pie chart," "an org chart"), and use proper casing in copy (SWOT analysis, Venn diagram, Gantt chart) even where the keyword is lowercase. Google matches the natural variant; a broken sentence costs trust on the page and in AI answers. The gate also applies to headings inherited from the live page.</td></tr>
+    <tr><td>Unique content floor</td><td>The template bakes unique per-page content in by rule, with a named source for every slot &mdash; it is a content brief, not a mad-lib. <strong>Fixed by design</strong> (identical on every page, because they are product facts): export paths, Smart Slides behavior, the trial-not-free answer. <strong>Unique by rule, with sources:</strong> the hero subhead and how-to step 2 describe what this template actually holds, in its own nouns (quadrants for a SWOT analysis, slices and values for a pie chart); the "when should you use" FAQ answer derives from the page's kept overview copy, so it is unique by construction; the preview gallery uses the page's own assets; and the kept content itself (overview, pro tips, AI blocks where they exist) differs per page and reshapes each fill. No module ships as a pure slot-swap: before a batch publishes, the 10 fills are diffed against each other, and any sentence repeated across pages must be a fixed product fact. Tabs 2 and 3 are the proof: same rules, two pages that share only the product facts.</td></tr>
     <tr><td>Summary</td><td>These are template pages, and they compete on template SERPs &mdash; won by rich galleries of editable templates (Canva, Adobe Express, Template.net, Venngage, Slidesgo), several of them pure content sites, so authority is not the barrier. Beautiful.ai's pages show a single template behind a video embed, with a doubled title suffix, boilerplate metadata, no how-to or FAQ, and video-only internal links. Search Console says the intent-matched demand is already knocking: "pie chart template" is the pie chart page's top query by impressions and sits at #22.7. The template makes each page fully serve template intent &mdash; richer previews, a how-to, an FAQ, schema, and crawlable links &mdash; with AI-assisted fill as the differentiator, not the headline claim.</td></tr>
   </table>
 
@@ -67,7 +69,7 @@
       <div class="ba-before"><div class="ba-label">Before (live pattern)</div><p>Use our [Name] Template for your presentation. Beautiful.ai helps you to create presentations online in minutes! No designers or long hours required.</p></div>
       <div class="ba-after"><div class="ba-label">After (formula)</div><p>Start from a designer-made [chart] template, add your data by hand or let AI fill it in, then take the finished slide to PowerPoint or Google Slides.<br><br><em>Pie chart example:</em> Start from a designer-made pie chart template, add your data by hand or let AI fill it in, then take the finished slide to PowerPoint or Google Slides. (148 chars)</p></div>
     </div>
-    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why: </strong>The live description is identical boilerplate on every template page. The formula leads with the template (the thing searched for), then the two things template searchers check before clicking: can I put my own data in, and can I take it to PowerPoint or Google Slides. Snippet relevance is a measured problem: these pages average around a 1% click-through rate at top-10 positions, a fifth of what matched snippets earn (Tab 3, slide 5).</p>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why: </strong>The live description is identical boilerplate on every template page. The formula leads with the template (the thing searched for), then the two things template searchers check before clicking: can I put my own data in, and can I take it to PowerPoint or Google Slides. Snippet relevance is a measured problem: these pages average around a 1% click-through rate at top-10 positions, a fifth of what matched snippets earn (Tab 4, slide 5).</p>
   </div>
 
   <!-- ===== MODULE 3: HERO ===== -->
@@ -141,7 +143,7 @@
       <div class="ba-label">New (formula — 5 questions per page from this bank, answered with real product facts)</div>
       <p><strong>H2:</strong> [Chart] template FAQ</p>
       <p><strong>Q: Is the [chart] template editable?</strong> &middot; <strong>Q: How do I add my own data to the [chart] template?</strong> &middot; <strong>Q: Can AI fill in the [chart] template for me?</strong> &middot; <strong>Q: Can I export the [chart] template to PowerPoint or Google Slides?</strong> &middot; <strong>Q: When should I use a [chart]?</strong></p>
-      <p><em>Pie chart example answers are written out in full in Tab 2.</em></p>
+      <p><em>Example answers are written out in full in Tabs 2 and 3.</em></p>
       <p><strong>Answer rules:</strong> two to three sentences, product facts only (editable Smart Slides, data or document upload, AI fill, export to PowerPoint / Google Slides / PDF), the "when should you use" answer drawn from the page's existing overview copy. Pricing questions answer honestly: Beautiful.ai starts with a free 14-day trial. No answer claims the product or the template is free.</p>
     </div>
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why: </strong>FAQ blocks answer the long-tail question queries these pages already surface for in Search Console ("editable pie chart template," "pie chart template for presentation") and power FAQPage schema. The honesty rule matters: nearly every competitor on this SERP leads with "free," and Beautiful.ai's trial-based model should compete on design quality and AI fill instead of borrowing a claim the product can't keep.</p>
@@ -187,7 +189,7 @@
     <div class="block-header"><div class="block-label"><span class="pill-new">New</span> Module 13 &middot; What a weekly batch of 10 looks like</div><button class="comment-btn" onclick="toggleComment('block-workflow')">+</button></div>
     <div class="new-block">
       <div class="ba-label">Process</div>
-      <p><strong>Monday:</strong> daydream fills the template for that week's 10 pages (title, meta description, hero copy, prompt examples, how-to, FAQ answers, internal-link set, schema JSON per page), runs the grammar gate over every filled slot and kept heading, and publishes the batch to this review hub with approve/reject on every module.</p>
+      <p><strong>Monday:</strong> daydream scrapes each live page, fills the template for that week's 10 pages (title, meta description, hero copy, preview gallery, how-to, FAQ answers, internal-link set, schema JSON per page), runs the grammar gate over every filled slot and kept heading, diffs the 10 fills against each other for the unique-content floor (repeated sentences must be fixed product facts), and publishes the batch to this review hub with approve/reject on every module.</p>
       <p><strong>By Wednesday:</strong> Beautiful.ai reviews. Approvals need no action; rejections carry a reason and daydream revises in the same cycle.</p>
       <p><strong>Thursday/Friday:</strong> approved copy goes into Webflow (daydream can enter it directly if given editor access, or deliver a paste-ready sheet per page).</p>
       <p><strong>Measurement:</strong> the Search Console baseline for all 236 pages was captured this week; each batch's pages get a position and click check at 4 and 8 weeks in the monthly report.</p>
@@ -359,6 +361,107 @@
 </div>
 </div>
 <!-- TAB2_END -->
+</div>
+
+<div id="tab4" class="tab-panel">
+<!-- TAB4_START -->
+<div id="mockup-content-swot">
+<div class="page">
+
+  <section>
+    <div class="section-tag tag-opt">Same template, different fill</div>
+    <p style="font-size:13px;color:#666;">Every module below comes from the same rule set as the pie chart page. Where this fill diverges: the live title here carries extra words ("and Best Practices") on top of the doubled suffix; the category is Comparison, not Data &amp; Chart, so breadcrumbs and sibling links change; this page has no "Discover AI capabilities" tab to keep; the live carousel holds only three siblings, one of them a link to this very page (dropped); and the live hero claims the template is <em>free</em>, which the honesty rule removes. Grammar gate in action: "SWOT" keeps its casing in copy, and slots fill with "analysis," not "data." Compare this tab against Tab 2 sentence by sentence: only the fixed product facts repeat &mdash; that's the unique-content floor.</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-opt">Optimized</div>
+    <p style="font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#666;margin:0 0 6px;">Slide templates &rsaquo; Comparison &rsaquo; SWOT Analysis</p>
+    <div class="two-col">
+      <div>
+        <h1>SWOT Analysis Template <span class="opt-pill opt">H1: exact head term</span></h1>
+        <p class="subhead">A designer-made SWOT analysis template that's fully editable. Add your analysis by hand or let AI fill it in, and Smart Slides keep the four quadrants aligned as you edit. <span class="opt-pill opt">removes live "free" claim</span></p>
+        <p><strong>[Use this template]</strong> &nbsp; [Fill it in with AI]</p>
+      </div>
+      <div class="placeholder placeholder-img">[SWOT analysis template preview — existing asset]</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag tag-new">New</div>
+    <p><strong>SWOT analysis template styles:</strong> <span class="opt-pill new">preview gallery</span></p>
+    <p>[Template in slide theme 1] &nbsp;&middot;&nbsp; [Template in slide theme 2] &nbsp;&middot;&nbsp; [Template in slide theme 3] &nbsp;&middot;&nbsp; [Existing walkthrough video]</p>
+    <p style="font-size:12px;color:#888;">[Static previews of the template in multiple styles; each opens the editor. Video stays available on click, never the only surface]</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-new">New</div>
+    <h2>How to use the SWOT analysis template <span class="opt-pill new">+HowTo schema</span></h2>
+    <h3>1. Open the template</h3>
+    <p>Click "Use this template" and the SWOT analysis template opens in the Beautiful.ai editor, ready to edit.</p>
+    <h3>2. Add your analysis</h3>
+    <p>Type your strengths, weaknesses, opportunities, and threats into the four quadrants, upload a document for context, or describe the decision you're weighing and let AI fill the template for you.</p>
+    <h3>3. Make it yours</h3>
+    <p>Adjust colors, fonts, and quadrant titles. Smart Slides keep the layout aligned as you edit, so the design holds up without manual formatting.</p>
+    <h3>4. Present or export</h3>
+    <p>Share a live link, present in Beautiful.ai, or export to PowerPoint, Google Slides, or PDF.</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-opt">Optimized</div>
+    <h2>What is a SWOT analysis, and when should you use one? <span class="opt-pill opt">kept copy, new H2</span></h2>
+    <p>SWOT analysis is an evaluation model used to help identify strengths, weaknesses, opportunities, and threats to a business, project, or opportunity. SWOT itself is an acronym standing for Strengths, Weaknesses, Opportunities, and threats. A typical SWOT diagram includes both potential internal and external factors and formats them into a single four-quadrant model. An effective SWOT analysis organizes data into four basic categories.</p>
+    <p><strong>Strengths</strong> &mdash; Gives insights as to what a company, product, or project does best. &nbsp;<strong>Weaknesses</strong> &mdash; Describes potential roadblocks or hurdles that will need to be overcome within an organization or project. &nbsp;<strong>Opportunities</strong> &mdash; Highlights external circumstances or situations for a company or organization to put their strengths to good use. &nbsp;<strong>Threats</strong> &mdash; Explains external forces, factors or situations that could be problematic or make it harder to reach a goal.</p>
+    <p>A SWOT analysis template simplifies the process of designing your own SWOT matrix for a presentation.</p>
+    <p style="font-size:12px;color:#888;">[No appended supporting-term sentence: the kept copy already names the head term naturally. Quadrant sub-heads normalized per the grammar gate — the live page mixes "Opportunities: Project advantages" and "Disadvantages or Threats to the Project"]</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-same">Kept (untabbed)</div>
+    <h2>Pro tips for SWOT analysis slides</h2>
+    <p><strong>Establish an overarching business objective.</strong> While the purpose of a SWOT analysis on its surface is to help your team decide on a specific action or project, the guiding principle should be the business goal underpinning that project. If the goal of the project in question is to increase customer satisfaction scores, make sure your SWOT items correspond to that goal and only that goal.</p>
+    <p><strong>Order of slides.</strong> The order of your slide drastically affects the impact of your presentation. To keep your audience engaged and understanding the premise of your project, supplying positive information first (strengths) conveys a more constructive message.</p>
+    <p><strong>Color and font selection.</strong> Keep color and font easy to read. A SWOT analysis slide template using pale colors or decorative font might get lost. Remember that there are four categories to display so font size isn't as large as single category slides.</p>
+    <p><strong>Capitalization and titles.</strong> To keep your audience on track with where you are in the presentation titles are important in each of your four sections. Capitalization also points attention to important pieces of information.</p>
+    <p style="font-size:12px;color:#888;">[Module 7 note: this page has no "Discover AI capabilities" tab to keep &mdash; the how-to and FAQ carry the AI capability copy instead]</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-opt">Optimized</div>
+    <h2>SWOT analysis templates and related comparison slides <span class="opt-pill opt">carousel &rarr; crawlable gallery</span></h2>
+    <p style="font-size:12px;color:#888;">[Static image cards replace autoplaying video embeds; the live carousel's self-link to this page is dropped]</p>
+    <p>[Venn Diagram] &nbsp; [XY Plot] &nbsp; [Comparison slide siblings per the Module 8 rule]</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-new">New</div>
+    <h2>SWOT analysis template FAQ <span class="opt-pill new">+FAQ schema</span></h2>
+    <p><strong>Is the SWOT analysis template editable?</strong></p>
+    <p>Yes. The template is a fully editable Smart Slide: rewrite any quadrant, recolor the matrix, change the titles, and the layout adapts automatically as you work.</p>
+    <p><strong>How do I add my own analysis to the SWOT template?</strong></p>
+    <p>Open the template and type into each quadrant, or upload a document for context and Beautiful.ai places your strengths, weaknesses, opportunities, and threats on the slide.</p>
+    <p><strong>Can AI fill in the SWOT analysis template for me?</strong></p>
+    <p>Yes. Describe the business, project, or decision you're evaluating and the AI assistant fills all four quadrants. You can keep editing everything afterward.</p>
+    <p><strong>Can I export the SWOT analysis template to PowerPoint or Google Slides?</strong></p>
+    <p>Yes. Slides export to PowerPoint, Google Slides, or PDF, and you can also present or share a live link directly from Beautiful.ai.</p>
+    <p><strong>When should I use a SWOT analysis?</strong></p>
+    <p>Use a SWOT analysis when you're weighing a business, project, or opportunity. It organizes internal strengths and weaknesses alongside external opportunities and threats in one four-quadrant view, which makes it a natural fit for planning and decision-making presentations.</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-new">New</div>
+    <h2>More comparison slide templates <span class="opt-pill new">programmatic links</span></h2>
+    <p>Venn diagram template &middot; XY plot template &middot; Comparison slide siblings per the Module 10 rule &middot; All comparison slide templates &middot; Smart Slides in Beautiful.ai</p>
+  </section>
+
+  <section>
+    <div class="section-tag tag-same">Unchanged</div>
+    <h2>Try it free for 14 days</h2>
+    <p>Start building Beautiful presentations. [Try it free]</p>
+  </section>
+
+</div>
+</div>
+<!-- TAB4_END -->
 </div>
 
 <div id="tab3" class="tab-panel">
