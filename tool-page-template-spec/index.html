@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<title>Beautiful.ai Tool-Page Template Spec</title>
+<style>
+  :root {
+    --ground: #FFF9F4;
+    --panel: #FFFFFB;
+    --ink: #232323;
+    --subtle: #6B6B6B;
+    --border: #E8E2DC;
+    --wire: #F1EAE2;
+    --wire-line: #D9D0C6;
+    --mint: #C3F2D0;
+    --mint-ink: #1E5A34;
+    --sky: #B7EBFF;
+    --sky-ink: #14506B;
+    --flag-bg: #FFF6EE;
+    --flag-border: #E8A94A;
+    --flag-ink: #B4690E;
+    --grad-h: linear-gradient(90deg, #C3F2D0 0%, #B3EAFF 53%, #FEE3CC 100%);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #1C1B19;
+      --panel: #242320;
+      --ink: #F2EEE8;
+      --subtle: #A9A29A;
+      --border: #3A3733;
+      --wire: #2C2A27;
+      --wire-line: #48443F;
+      --mint: #274A34;
+      --mint-ink: #A8E5BD;
+      --sky: #1E4356;
+      --sky-ink: #A5DFF8;
+      --flag-bg: #33270F;
+      --flag-border: #9A7130;
+      --flag-ink: #E8B96A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #1C1B19;
+    --panel: #242320;
+    --ink: #F2EEE8;
+    --subtle: #A9A29A;
+    --border: #3A3733;
+    --wire: #2C2A27;
+    --wire-line: #48443F;
+    --mint: #274A34;
+    --mint-ink: #A8E5BD;
+    --sky: #1E4356;
+    --sky-ink: #A5DFF8;
+    --flag-bg: #33270F;
+    --flag-border: #9A7130;
+    --flag-ink: #E8B96A;
+  }
+  :root[data-theme="light"] {
+    --ground: #FFF9F4;
+    --panel: #FFFFFB;
+    --ink: #232323;
+    --subtle: #6B6B6B;
+    --border: #E8E2DC;
+    --wire: #F1EAE2;
+    --wire-line: #D9D0C6;
+    --mint: #C3F2D0;
+    --mint-ink: #1E5A34;
+    --sky: #B7EBFF;
+    --sky-ink: #14506B;
+    --flag-bg: #FFF6EE;
+    --flag-border: #E8A94A;
+    --flag-ink: #B4690E;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: 'Raleway', "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  .sheet { max-width: 1060px; margin: 0 auto; padding: 48px 28px 72px; }
+
+  .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.86em;
+  }
+
+  /* ---------- header ---------- */
+  header .kicker {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--subtle); margin: 0 0 10px;
+  }
+  header h1 {
+    font-size: clamp(26px, 4vw, 38px); font-weight: 700;
+    letter-spacing: -0.015em; line-height: 1.12; margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  header .intro { max-width: 68ch; color: var(--ink); margin: 0 0 6px; }
+  header .provenance { font-size: 13px; color: var(--subtle); max-width: 72ch; margin: 0; }
+  .grad-rule { height: 4px; border-radius: 2px; background: var(--grad-h); margin: 22px 0 0; }
+
+  /* ---------- order strip ---------- */
+  .order-strip {
+    display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px;
+    margin: 30px 0 8px;
+  }
+  .order-chip {
+    flex: 1 1 150px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px;
+  }
+  .order-chip .n { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--subtle); }
+  .order-chip .t { font-weight: 700; font-size: 14px; }
+  .order-chip .d { font-size: 12px; color: var(--subtle); }
+  .order-note { font-size: 13px; color: var(--subtle); max-width: 76ch; margin: 10px 0 0; }
+  .order-note strong { color: var(--ink); }
+
+  /* ---------- legend ---------- */
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 26px 0 0; font-size: 13px; color: var(--subtle); }
+  .pill {
+    display: inline-block; padding: 2px 9px; border-radius: 99px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .pill-fixed { background: var(--mint); color: var(--mint-ink); }
+  .pill-var { background: var(--sky); color: var(--sky-ink); }
+  .pill-flag { background: var(--flag-bg); color: var(--flag-ink); border: 1px dashed var(--flag-border); }
+
+  /* ---------- section blocks ---------- */
+  .spec-section {
+    margin-top: 44px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .spec-head {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px;
+    padding: 16px 22px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-head .num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px; font-weight: 700; color: var(--subtle);
+  }
+  .spec-head h2 { font-size: 19px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .spec-head .job { font-size: 13px; color: var(--subtle); flex: 1 1 100%; }
+  .spec-body {
+    display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr);
+    gap: 0;
+  }
+  @media (max-width: 760px) { .spec-body { grid-template-columns: 1fr; } }
+
+  /* wireframe pane */
+  .wire-pane { padding: 22px; border-right: 1px solid var(--border); }
+  @media (max-width: 760px) { .wire-pane { border-right: none; border-bottom: 1px solid var(--border); } }
+  .wire {
+    background: var(--wire); border: 1px solid var(--wire-line);
+    border-radius: 10px; padding: 18px;
+    font-size: 11px; color: var(--subtle);
+  }
+  .wire .w-label {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .w-h1 { height: 14px; border-radius: 4px; background: var(--wire-line); margin: 6px 0; }
+  .w-h1.short { width: 62%; }
+  .w-line { height: 7px; border-radius: 4px; background: var(--wire-line); opacity: 0.65; margin: 5px 0; }
+  .w-line.short { width: 70%; }
+  .w-btn {
+    display: inline-block; padding: 4px 12px; border-radius: 6px;
+    font-size: 10px; font-weight: 700; margin: 8px 8px 0 0;
+  }
+  .w-btn.primary { background: var(--ink); color: var(--ground); }
+  .w-btn.ghost { border: 1px solid var(--wire-line); color: var(--subtle); }
+  .w-media {
+    border: 1.5px dashed var(--wire-line); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    padding: 8px; min-height: 64px; color: var(--subtle);
+    font-size: 10px;
+  }
+  .w-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center; }
+  .w-grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .w-card { background: var(--panel); border: 1px solid var(--wire-line); border-radius: 8px; padding: 10px; }
+  .w-center { text-align: center; }
+  .w-center .w-h1, .w-center .w-line { margin-left: auto; margin-right: auto; }
+  .w-num { font-size: 14px; font-weight: 800; color: var(--ink); }
+  .w-faq-q { height: 9px; width: 55%; border-radius: 4px; background: var(--wire-line); margin: 12px 0 5px; }
+  .w-flag {
+    border: 1px dashed var(--flag-border); background: var(--flag-bg);
+    color: var(--flag-ink); border-radius: 6px; padding: 5px 8px;
+    font-size: 10px; font-weight: 600; margin-top: 10px;
+  }
+
+  /* annotation pane */
+  .anno-pane { padding: 20px 22px 24px; }
+  .anno-pane h3 {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--subtle); margin: 18px 0 8px;
+  }
+  .anno-pane h3:first-child { margin-top: 0; }
+  .anno-pane ul { margin: 0; padding-left: 18px; }
+  .anno-pane li { margin: 5px 0; }
+  .anno-pane li::marker { color: var(--wire-line); }
+  .formula {
+    background: var(--wire); border: 1px solid var(--wire-line);
+    border-radius: 8px; padding: 9px 12px; margin: 0 0 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px; overflow-x: auto; white-space: nowrap;
+  }
+  .instances { font-size: 13px; color: var(--subtle); margin: 8px 0 0; }
+  .instances b { color: var(--ink); font-weight: 600; }
+  .instances .src {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+  }
+
+  /* ---------- footer panels ---------- */
+  .foot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 44px; }
+  @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr; } }
+  .foot-card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+  }
+  .foot-card h2 { font-size: 16px; font-weight: 700; margin: 0 0 10px; }
+  .foot-card ul { margin: 0; padding-left: 18px; }
+  .foot-card li { margin: 6px 0; }
+  .foot-card li::marker { color: var(--wire-line); }
+  .foot-card p { margin: 8px 0 0; }
+  .foot-card.flag-card { border: 1px dashed var(--flag-border); background: var(--flag-bg); }
+  .foot-card.flag-card h2 { color: var(--flag-ink); }
+  .foot-card.flag-card p { color: var(--ink); }
+
+  .colophon { margin-top: 40px; font-size: 12.5px; color: var(--subtle); max-width: 80ch; }
+  .colophon .mono { font-size: 11.5px; }
+  .back-link { display:inline-flex; align-items:center; gap:8px; font-size:13px; color: var(--subtle); text-decoration:none; margin-bottom: 18px; }
+  .back-link:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <a class="back-link" href="../">&larr; All optimization drafts</a>
+
+  <header>
+    <p class="kicker">Daydream &times; Beautiful.ai &middot; Page Template Spec &middot; July 2026</p>
+    <h1>Net-New Tool Page: the template for every "[x] maker / converter" page</h1>
+    <p class="intro">Five sections, fixed order, fixed anatomy. Two pages already run on this contract (<span class="mono">/pdf-to-ppt</span> and <span class="mono">/flowchart-maker</span>), and every future tool-keyword page ships on the same skeleton. This sheet is the source of truth for the Figma build: what is locked on every page, and what flexes per keyword.</p>
+    <p class="provenance">Derived from the live feature-landing family (modeled on <span class="mono">beautiful.ai/integrations/powerpoint</span>, re-verified 2026-07-17) and the two shipped net-new drafts. Each section below shows the layout, the copy formula, and both real instantiations.</p>
+    <div class="grad-rule"></div>
+  </header>
+
+  <div class="order-strip">
+    <div class="order-chip"><div class="n">1</div><div class="t">Hero</div><div class="d">Keyword claim + trial CTAs</div></div>
+    <div class="order-chip"><div class="n">2</div><div class="t">Features</div><div class="d">3 positioning cards</div></div>
+    <div class="order-chip"><div class="n">3</div><div class="t">How-to</div><div class="d">3 numbered steps</div></div>
+    <div class="order-chip"><div class="n">4</div><div class="t">FAQ</div><div class="d">5–10 Qs + JSON-LD</div></div>
+    <div class="order-chip"><div class="n">5</div><div class="t">CTA banner</div><div class="d">Imperative close</div></div>
+  </div>
+  <p class="order-note"><strong>The canonical order is features before how-to.</strong> The two drafts differed here (pdf-to-ppt ran steps-first per its converter SERP). We standardize on the live sibling <span class="mono">/integrations/powerpoint</span> as re-verified in-browser 7/17 (hero &rarr; features &rarr; how-to &rarr; FAQ &rarr; banner). One order, one Figma file.</p>
+
+  <div class="legend">
+    <span><span class="pill pill-fixed">Fixed</span> identical on every page</span>
+    <span><span class="pill pill-var">Variable</span> flexes per keyword / SERP</span>
+    <span><span class="pill pill-flag">Needs customer input</span> media &amp; unverified-claim convention</span>
+  </div>
+
+  <!-- ================ 1 · HERO ================ -->
+  <section class="spec-section">
+    <div class="spec-head">
+      <span class="num">1</span>
+      <h2>Hero</h2>
+      <span class="job">Job: claim the keyword in the H1, name the category's weakness, convert to trial. Two-column: copy left, product media right.</span>
+    </div>
+    <div class="spec-body">
+      <div class="wire-pane">
+        <div class="wire">
+          <div class="w-cols">
+            <div>
+              <span class="w-label">H1 &middot; keyword first</span>
+              <div class="w-h1"></div>
+              <div class="w-h1 short"></div>
+              <div class="w-line"></div>
+              <div class="w-line"></div>
+              <div class="w-line short"></div>
+              <span class="w-btn primary">Try for free</span><span class="w-btn ghost">Get started</span>
+            </div>
+            <div class="w-media" style="min-height:120px;">Hero product media<br>(swappable slot; see widget note below)</div>
+          </div>
+        </div>
+      </div>
+      <div class="anno-pane">
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Anatomy</h3>
+        <div class="formula">H1 = [primary keyword] + "for" + [benefit clause]</div>
+        <ul>
+          <li>Intro: 3–4 sentences. Sentence 1 names the category's weakness, then the Beautiful.ai alternative in real product verbs. No invented behavior.</li>
+          <li>Buttons, verbatim: <b>Try for free</b> (primary) + <b>Get started</b> (secondary). No other labels.</li>
+          <li>Media right: real product visual of the flow (screenshot or short loop), briefed as <span class="pill pill-flag">Needs customer input</span> until supplied.</li>
+        </ul>
+        <h3><span class="pill pill-var">Variable</span>&ensp;Per page</h3>
+        <ul><li>Keyword, benefit clause, and which weakness the intro names.</li></ul>
+        <h3>Both instantiations</h3>
+        <p class="instances"><span class="src">/pdf-to-ppt</span>: <b>"PDF to PPT Converter for Fully Editable Presentations"</b><br>
+        <span class="src">/flowchart-maker</span>: <b>"Flowchart Maker for Slides That Design Themselves"</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ 2 · FEATURES ================ -->
+  <section class="spec-section">
+    <div class="spec-head">
+      <span class="num">2</span>
+      <h2>Feature block</h2>
+      <span class="job">Job: carry the whole positioning in exactly three cards. Centered H2; cards alternate copy + media.</span>
+    </div>
+    <div class="spec-body">
+      <div class="wire-pane">
+        <div class="wire w-center">
+          <span class="w-label">H2 · positioning statement</span>
+          <div class="w-h1 short"></div>
+          <div class="w-line short"></div>
+          <div style="text-align:left;">
+            <div class="w-card" style="margin-top:10px;"><div class="w-cols"><div><div class="w-h1 short" style="height:10px;"></div><div class="w-line"></div><div class="w-line short"></div></div><div class="w-media">Media</div></div></div>
+            <div class="w-card" style="margin-top:8px;"><div class="w-cols"><div><div class="w-h1 short" style="height:10px;"></div><div class="w-line"></div><div class="w-line short"></div></div><div class="w-media">Media</div></div></div>
+            <div class="w-card" style="margin-top:8px;"><div class="w-cols"><div><div class="w-h1 short" style="height:10px;"></div><div class="w-line"></div><div class="w-line short"></div></div><div class="w-media">Media</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="anno-pane">
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Anatomy</h3>
+        <ul>
+          <li>H2 states the positioning; optional one-sentence lead-in below it.</li>
+          <li><b>Exactly 3 cards</b>: H3 + ~60-word paragraph + media slot each.</li>
+          <li>Each card carries 1–2 internal links (<span class="mono">/presentation-maker</span>, <span class="mono">/smart-slides</span>, relevant <span class="mono">/templates/…</span> page).</li>
+          <li>Product properties use the product's own naming, verbatim from support docs; every claim is register-verified.</li>
+        </ul>
+        <h3><span class="pill pill-var">Variable</span>&ensp;Per page</h3>
+        <ul><li>The three angles (chosen to carry that keyword's wedge) and which links each card gets.</li></ul>
+        <h3>Both instantiations</h3>
+        <p class="instances"><span class="src">/pdf-to-ppt</span>: <b>"Why convert your PDF with AI instead of a file converter"</b> &middot; rebuild vs trace / editability / outline control<br>
+        <span class="src">/flowchart-maker</span>: <b>"A flowchart maker built for presentations"</b> &middot; slide-native chart / on-brand design / AI + 300 layouts</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ 3 · HOW-TO ================ -->
+  <section class="spec-section">
+    <div class="spec-head">
+      <span class="num">3</span>
+      <h2>How-to in three steps</h2>
+      <span class="job">Job: the numbered how-to every SERP rewards, in the product's real click-path. H2 carries a supporting keyword.</span>
+    </div>
+    <div class="spec-body">
+      <div class="wire-pane">
+        <div class="wire w-center">
+          <span class="w-label">H2 · supporting keyword</span>
+          <div class="w-h1 short"></div>
+          <div class="w-line short"></div>
+          <span class="w-btn primary">Try for free</span>
+          <div class="w-grid3" style="text-align:left;">
+            <div class="w-card"><div class="w-num">1</div><div class="w-h1 short" style="height:9px;"></div><div class="w-line"></div><div class="w-media">Screenshot</div></div>
+            <div class="w-card"><div class="w-num">2</div><div class="w-h1 short" style="height:9px;"></div><div class="w-line"></div><div class="w-media">Screenshot</div></div>
+            <div class="w-card"><div class="w-num">3</div><div class="w-h1 short" style="height:9px;"></div><div class="w-line"></div><div class="w-media">Screenshot</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="anno-pane">
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Anatomy</h3>
+        <ul>
+          <li><b>Exactly 3 steps</b>, matching the family's own how-to on the live siblings. Always three.</li>
+          <li>Lead-in sentence + a <b>mid-page "Try for free" CTA</b> in the section header (standard slot; flowchart-maker shipped it, pdf-to-ppt adopts it).</li>
+          <li>Step card = number + H3 + paragraph + per-step screenshot <span class="pill pill-flag">Needs customer input</span> until marketing-grade assets exist.</li>
+          <li>Every step is a documented product behavior; no invented click-paths.</li>
+        </ul>
+        <h3><span class="pill pill-var">Variable</span>&ensp;Per page</h3>
+        <ul><li>H2 phrasing (built from a supporting keyword) and the three steps themselves.</li></ul>
+        <h3>Both instantiations</h3>
+        <p class="instances"><span class="src">/pdf-to-ppt</span>: <b>"Convert a PDF to PPT in three steps"</b> &middot; upload &rarr; shape the outline &rarr; export<br>
+        <span class="src">/flowchart-maker</span>: <b>"How to make a flowchart in Beautiful.ai"</b> &middot; template &rarr; map steps &rarr; style &amp; export</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ 4 · FAQ ================ -->
+  <section class="spec-section">
+    <div class="spec-head">
+      <span class="num">4</span>
+      <h2>FAQ</h2>
+      <span class="job">Job: the page's depth layer. SERP consensus questions, honest answers, FAQPage schema. Single column, max-width ~820px.</span>
+    </div>
+    <div class="spec-body">
+      <div class="wire-pane">
+        <div class="wire">
+          <span class="w-label">H2 · Frequently asked questions</span>
+          <div class="w-h1 short" style="width:45%;"></div>
+          <div class="w-faq-q"></div><div class="w-line"></div><div class="w-line short"></div>
+          <div class="w-faq-q"></div><div class="w-line"></div><div class="w-line short"></div>
+          <div class="w-faq-q"></div><div class="w-line"></div>
+          <div class="w-flag">NEEDS CUSTOMER INPUT: unverified Q rendered as a flag, excluded from schema</div>
+        </div>
+      </div>
+      <div class="anno-pane">
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Required questions, every page</h3>
+        <ul>
+          <li><b>How-to recap</b> ("How do I [task] with Beautiful.ai?")</li>
+          <li><b>"Is it free?"</b> answered with the honest 14-day trial framing.</li>
+          <li><b>Export / editability</b> ("Can I use it in PowerPoint / edit the result?")</li>
+          <li><b>One honest concession</b> question that names the job a competitor tool does better, then reframes to the presenting use case.</li>
+        </ul>
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Rules</h3>
+        <ul>
+          <li>Link-dense answers (pricing, templates, comparison pages).</li>
+          <li>FAQPage JSON-LD mirrors <b>only answerable questions</b>; NEEDS-INPUT questions render as amber flag blocks and stay out of schema until answered.</li>
+        </ul>
+        <h3><span class="pill pill-var">Variable</span>&ensp;Per page</h3>
+        <ul><li>Count: 5–10 within the band. Education questions (what-is / symbols / types) only when the SERP demands them.</li></ul>
+        <h3>Both instantiations</h3>
+        <p class="instances"><span class="src">/pdf-to-ppt</span>: 7 Qs (2 flagged: OCR, upload security)<br>
+        <span class="src">/flowchart-maker</span>: 8 Qs + education layer (2 flagged: AI structure gen, Visio import)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ 5 · CTA BANNER ================ -->
+  <section class="spec-section">
+    <div class="spec-head">
+      <span class="num">5</span>
+      <h2>Closing CTA banner</h2>
+      <span class="job">Job: the family's imperative close. Centered, short, single action.</span>
+    </div>
+    <div class="spec-body">
+      <div class="wire-pane">
+        <div class="wire w-center">
+          <span class="w-label">H2 · imperative</span>
+          <div class="w-h1 short" style="width:55%;"></div>
+          <div class="w-line short" style="width:45%;"></div>
+          <span class="w-btn primary">Get started</span>
+        </div>
+      </div>
+      <div class="anno-pane">
+        <h3><span class="pill pill-fixed">Fixed</span>&ensp;Anatomy</h3>
+        <div class="formula">H2 = "Turn your next [x] into a presentation"</div>
+        <ul>
+          <li>One-line subhead ending <b>"Try Beautiful.ai free for 14 days."</b></li>
+          <li>Single button: <b>Get started</b>. Nothing else in the section.</li>
+        </ul>
+        <h3>Both instantiations</h3>
+        <p class="instances"><span class="src">/pdf-to-ppt</span>: <b>"Turn your next PDF into a presentation"</b><br>
+        <span class="src">/flowchart-maker</span>: <b>"Turn your next process into a presentation."</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================ footer panels ================ -->
+  <div class="foot-grid">
+    <div class="foot-card">
+      <h2>What flexes per page</h2>
+      <ul>
+        <li>Body word count, matched to the keyword's competitive SERP band (pdf-to-ppt ~950 in an 800–1,200 band; flowchart-maker ~1,300 in 1,200–1,600).</li>
+        <li>FAQ count: 5–10; education questions are SERP-dependent.</li>
+        <li>Internal links: which sibling pages each feature card and answer points to.</li>
+        <li>All copy. Every customer claim must trace to a customer-owned source (site, support center, blog, pricing) in the page's claims register. Competitor pages inform structure only; zero facts cross over.</li>
+        <li>Keyword scope (fixed rule): a maker page targets tool intent only ("[x] maker / creator / generator", "free [x] maker"). Template-intent keywords ("[x] template") stay with the <span class="mono">/templates/</span> spoke the page links down to. The maker page helps you make the [x]; the template page holds the ready-made template. Two intents, two pages, kept separate.</li>
+      </ul>
+    </div>
+    <div class="foot-card flag-card">
+      <h2>One structural gap to design for</h2>
+      <p>Nearly every ranking competitor opens with an in-page tool entry: an upload widget (7/8 converter SERPs) or an open-the-editor button (6/6 flowchart SERPs). Beautiful.ai has no embedded tool on its marketing pages, so this template substitutes the trial CTA. Design the hero's media slot so a live tool entry point can swap in later without re-laying-out the section. It's the one product build that would close the gap, and it's flagged to the Beautiful.ai team as an open option.</p>
+    </div>
+  </div>
+
+  <p class="colophon">Sources: net-new drafts #13 (<span class="mono">/pdf-to-ppt</span>, July 2026) and #14 (<span class="mono">/flowchart-maker</span>, July 2026) in the Beautiful.ai on-page optimizations workspace; template family evidence from <span class="mono">beautiful.ai/integrations/powerpoint</span> and <span class="mono">/presentation-maker</span>, re-verified live 2026-07-17. Full drafts, claims registers, and SERP appendices live on the optimization drafts site. Prepared by Daydream for the Beautiful.ai Figma template build.</p>
+
+</div>
+
+</body>
+</html>
