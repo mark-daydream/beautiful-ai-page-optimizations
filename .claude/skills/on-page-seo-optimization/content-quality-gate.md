@@ -30,6 +30,10 @@ For full passage-level AI detector audit (perplexity, burstiness, n-gram repetit
 - No renaming products/features for SEO
 - Keywords only in `generic` sections; change-notes cite eligibility
 
+## No internal context on client-facing surfaces
+
+The whole bundle is client-facing — meta-table annotations, Why lines, appendix slides, cover credits. FAIL if any surface references internal process or conversation context: crawl artifacts ("the 469-URL site map"), instruction shorthand ("on explicit instruction (7/31)", "commissioned"), skill/tool names ("net-new-content skill run"), or internal doc names. State conclusions in client terms ("no existing URL at this path"). Check: `grep -niE 'site map|skill run|this run|commissioned|explicit instruction|opportunities doc|[0-9]+-URL' <bundle>.html` must return nothing.
+
 ## Review log
 
 ```markdown
