@@ -101,13 +101,14 @@
   </div>
 
   <div class="change-block" id="block-faq">
-    <div class="block-header"><div class="block-label"><span class="pill-new">New</span> FAQ &middot; 8 questions (1 more pending customer input)</div><button class="comment-btn" onclick="toggleComment('block-faq')">+</button></div>
+    <div class="block-header"><div class="block-label"><span class="pill-new">New</span> FAQ &middot; 9 questions (1 more pending customer input)</div><button class="comment-btn" onclick="toggleComment('block-faq')">+</button></div>
     <div class="new-block">
       <div class="ba-label">New</div>
       <h3>Frequently asked questions</h3>
       <p><strong>What is a Gantt chart?</strong><br>A Gantt chart is a visual view of tasks scheduled over time. Invented by Henry Gantt, an American mechanical engineer, it is a type of bar chart that displays a project across two axes: the horizontal axis carries the schedule, the vertical axis lists the tasks, and each task appears as a colored bar positioned where it needs to happen.</p>
       <p><strong>What does a Gantt chart show?</strong><br>A well-built Gantt chart shows the project's start and finish dates, every task involved, who is assigned to each task, when each task should start and finish, how long each one should take, and how tasks depend on one another. That single view helps project managers set more accurate deadlines, because the schedule and its interdependencies are visible in one place.</p>
       <p><strong>When should I use a Gantt chart?</strong><br>Reach for one when the project has a hard deadline, multiple people or teams to coordinate, tasks that must happen in a specific order, or stakeholders who need to see a visual timeline. Gantt charts show up everywhere from construction and manufacturing to marketing, design, software development, and event planning.</p>
+      <p><strong>How do I make a Gantt chart in Beautiful.ai?</strong><br>Open the <a href="https://www.beautiful.ai/templates/gantt-chart">Gantt Chart Slide template</a>, or describe your project to Create with AI, which can draft the chart from an uploaded project document. Give each task its dates as a duration or a start and end date, set the axis to Calendar or Project Time, then export the finished deck to PowerPoint, Google Slides, or PDF.</p>
       <p><strong>Is the Gantt chart maker free?</strong><br>Beautiful.ai is free to try: every account starts with a 14-day <a href="https://www.beautiful.ai/pricing">free trial</a> of the Pro or Team plan. After the trial, paid plans are available for individuals, teams, and enterprise organizations, so you always know exactly what you are getting and when.</p>
       <p><strong>Can I use my Gantt chart in PowerPoint or Google Slides?</strong><br>Yes. Export your deck as a PowerPoint file and every element stays editable, including your presentation notes. Google Slides and PDF downloads are available too, so the chart arrives as a working slide rather than a pasted screenshot.</p>
       <p><strong>Should I use a Gantt chart or a kanban board?</strong><br>A Gantt chart maps a schedule; a kanban board manages flow, focusing on efficiency rather than dates. If the conversation is about when things happen, use the Gantt chart. If it is about what is in progress right now, the <a href="https://www.beautiful.ai/templates/kanban-template">Kanban board template</a> is the better fit. The Beautiful.ai blog breaks down the <a href="https://www.beautiful.ai/blog/battle-of-the-charts-gantt-vs-kanban">full comparison</a>.</p>
@@ -115,7 +116,7 @@
       <p><strong>When is dedicated project management software a better fit?</strong><br>If you need dependency links that reschedule tasks automatically, critical-path calculations, or resource workload management, a dedicated project management tool is the right home for the plan's day-to-day. Beautiful.ai's Gantt chart maker is built for the moment the plan needs an audience. The chart lives on a slide, matches your deck, and presents beautifully.</p>
       <p style="background:#FFF6EE;border:1px dashed #E8A94A;border-radius:8px;padding:10px 12px;font-size:12.5px;"><strong>Can I import my schedule from Excel or another tool?</strong><br><strong>[NEEDS CUSTOMER INPUT]</strong> The data visualization page documents CSV, Excel, and Sheets linking for chart and data slides; whether the Gantt Chart Smart Slide specifically supports linked data is undocumented. Two ranking competitors answer import on-page. Answer honestly or omit.</p>
     </div>
-    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The 8 questions map the SERP's consensus set: what-is (&times;5, the SERP's defining education question), what-it-shows and when-to-use (dependencies are the dominant topic, handled with customer-published education, never product claims), free (&times;5, honestly answered), PowerPoint/export (&times;5), kanban-vs-gantt (customer's own blog owns this comparison), AI (&times;3), plus the deliberate concession that routes dependency automation to PM tools. <strong>Sources:</strong> C1&ndash;C6, C17&ndash;C24</p>
+    <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The 9 questions map the SERP's consensus set: how-to recap (the template's required FAQ, recapping the 3 steps in one answer), what-is (&times;5, the SERP's defining education question), what-it-shows and when-to-use (dependencies are the dominant topic, handled with customer-published education, never product claims), free (&times;5, honestly answered), PowerPoint/export (&times;5), kanban-vs-gantt (customer's own blog owns this comparison), AI (&times;3), plus the deliberate concession that routes dependency automation to PM tools. <strong>Sources:</strong> C1&ndash;C6, C17&ndash;C24</p>
   </div>
 
   <div class="change-block" id="block-banner">
@@ -131,7 +132,7 @@
 
   <div class="section-label">Structured Data</div>
   <div class="schema-wrap">
-    <div class="schema-header"><span>FAQPage JSON-LD &middot; ADD (the 8 answerable Q&amp;As &mdash; the import question is excluded until answered)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-header"><span>FAQPage JSON-LD &middot; ADD (the 9 answerable Q&amp;As &mdash; the import question is excluded until answered)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
     <div class="schema-display"><pre id="schema-json-store">{
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -150,6 +151,11 @@
       "@type": "Question",
       "name": "When should I use a Gantt chart?",
       "acceptedAnswer": { "@type": "Answer", "text": "Reach for one when the project has a hard deadline, multiple people or teams to coordinate, tasks that must happen in a specific order, or stakeholders who need to see a visual timeline. Gantt charts show up everywhere from construction and manufacturing to marketing, design, software development, and event planning." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I make a Gantt chart in Beautiful.ai?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Open the Gantt Chart Slide template, or describe your project to Create with AI, which can draft the chart from an uploaded project document. Give each task its dates as a duration or a start and end date, set the axis to Calendar or Project Time, then export the finished deck to PowerPoint, Google Slides, or PDF." }
     },
     {
       "@type": "Question",
@@ -314,6 +320,8 @@
       <p>A well-built Gantt chart shows the project's start and finish dates, every task involved, who is assigned to each task, when each task should start and finish, how long each one should take, and how tasks depend on one another. That single view helps project managers set more accurate deadlines, because the schedule and its interdependencies are visible in one place.</p>
       <h3>When should I use a Gantt chart?</h3>
       <p>Reach for one when the project has a hard deadline, multiple people or teams to coordinate, tasks that must happen in a specific order, or stakeholders who need to see a visual timeline. Gantt charts show up everywhere from construction and manufacturing to marketing, design, software development, and event planning.</p>
+      <h3>How do I make a Gantt chart in Beautiful.ai?</h3>
+      <p>Open the <u>Gantt Chart Slide template</u>, or describe your project to Create with AI, which can draft the chart from an uploaded project document. Give each task its dates as a duration or a start and end date, set the axis to Calendar or Project Time, then export the finished deck to PowerPoint, Google Slides, or PDF.</p>
       <h3>Is the Gantt chart maker free?</h3>
       <p>Beautiful.ai is free to try: every account starts with a 14-day <u>free trial</u> of the Pro or Team plan. After the trial, paid plans are available for individuals, teams, and enterprise organizations, so you always know exactly what you are getting and when.</p>
       <h3>Can I use my Gantt chart in PowerPoint or Google Slides?</h3>
@@ -437,7 +445,7 @@
           <tr><td>What is a Gantt chart?</td><td>5/10</td><td>FAQ 1 (customer-published definition + Henry Gantt)</td></tr>
           <tr><td>Dependencies / what it shows</td><td>6/10 topic-wide</td><td>FAQ 2&ndash;3 education only + concession FAQ 8; zero product claims</td></tr>
           <tr><td>Is it free?</td><td>5/10</td><td>Trial-framed FAQ 4, no false free claim</td></tr>
-          <tr><td>How to make a Gantt chart</td><td>3/10</td><td>3-step how-to (TeamGantt pattern, real product steps)</td></tr>
+          <tr><td>How to make a Gantt chart</td><td>3/10</td><td>3-step how-to + FAQ recap (TeamGantt pattern, real product steps)</td></tr>
           <tr><td>Use in PowerPoint / Slides</td><td>5/10</td><td>FAQ 5 &mdash; editable-slide export beats static embeds</td></tr>
           <tr><td>Excel / import</td><td>3/10</td><td>Platform-level data card + NEEDS CUSTOMER INPUT flag</td></tr>
           <tr><td>Gantt vs kanban / timeline</td><td>1/10</td><td>FAQ 6 &mdash; customer's own blog owns the comparison</td></tr>
