@@ -62,15 +62,23 @@ After **branded terminology checkpoint**:
 - [ ] Phase 6: onpage-strategy-{slug}.md
 - [ ] Phase 6b: content-quality-review.md PASS
 - [ ] Phase 6c (GATING): AI detection audit + auto-apply loop on Tab 1 After copy → risk must be Low before Phase 7
+- [ ] Phase 6d (GATING): Claims grounding gate — every factual claim in After copy judged against the client's own docs; no BLOCKED claims before Phase 7
 - [ ] Phase 7–9: HTML bundle + copy CSS alongside
+- [ ] Phase 10 (GATING): Definition of Done — render-verify all 3 tabs before declaring complete
 ```
 
 ## Phase 1 — Target page
 
 ```bash
 mkdir -p .firecrawl
-firecrawl scrape "<url>" --only-main-content -o .firecrawl/onpage-target.md
+# Capture the FULL rendered page. Do NOT use --only-main-content / onlyMainContent:true —
+# it silently drops the hero/H1, announcement banners, and other template chrome on
+# Webflow/SPA sites, which is the #1 cause of a FABRICATED hero. Capture everything, then
+# classify per section below (chrome gets tagged `excluded`, not dropped-then-imagined).
+firecrawl scrape "<url>" -o .firecrawl/onpage-target.md
 ```
+
+**Verify the real elements (REQUIRED).** If the hero H1, a CTA label, the hero media type, or any FAQ answer is missing or ambiguous after scraping (JS-rendered, lazy-loaded video, collapsed accordion), **open the page in Chrome (claude-in-chrome) and read the live DOM** — the rendered H1 text, the exact CTA label(s), whether the hero media is an image or an embedded video, and the accordion answers (they are in the DOM even when visually collapsed). **Never reconstruct a hero or any section from the `<title>`/meta or from assumption — if you cannot capture it, flag it; do not invent.** See [Accuracy & scope](#accuracy--scope-required) below.
 
 Tag each section **`optimization_eligibility`:**
 
@@ -79,8 +87,28 @@ Tag each section **`optimization_eligibility`:**
 | `generic` | Rewrite for keywords (intros, H2s, SEO FAQs) |
 | `branded` | Feature cards, workflows, testimonials — preserve terms |
 | `locked` | Confirmed lexicon — no copy changes |
+| `excluded` | **Site chrome — NOT on-page content.** Promo/announcement banners, cookie/consent bars, global nav, footer, login bars. Do **not** render these as optimization blocks or mockup sections in either tab. |
 
 See [extraction-checklist.md](extraction-checklist.md).
+
+## Accuracy & scope (REQUIRED)
+
+The Before column, every `unch-block`, and **every mockup section** must reproduce the **real live page** — never an approximation. Build failures the team has hit, now banned:
+
+- **Real H1, not the title tag.** The `<h1>` shown in the draft Before and the mockup is the page's actual rendered H1 — verify it in Chrome. The `<title>` (e.g. "X Software | Brand") is metadata, not the H1.
+- **Preserve existing interactive elements exactly.** CTA/button labels are reproduced verbatim (don't rename "Request a demo" → "Book a demo"; don't invent a "Compare plans" button). Media is shown with its real type — `[Embedded video — …]` vs `[Hero image — …]`. Links point where the real ones do.
+- **FAQ "Before" shows questions AND answers**, verbatim from the live accordion.
+- **Mockup layout fidelity.** The mockup must mirror the page's real layout — column structure, element order, and alignment. Do **not** default every hero to a two-column "text left / media right" block. If the real hero is a centered single column with the video below, render it that way. Verify the structure in Chrome when unsure.
+- **`excluded` chrome never appears** as an on-page block (see the tag above).
+
+## Draft structure contract (REQUIRED — identical on every page)
+
+So a multi-page set is uniform, every draft uses this exact opening and conventions:
+
+1. **Summary `meta-table`** with rows: Page URL · Primary Keyword · Supporting Keywords · **Proposed Title Tag** (char count) · **Proposed Meta Description** (char count) · Summary. The **title tag and meta description live ONLY here** — they are `<head>` metadata, not on-page content, so they are **not** also rendered as Before/After change-blocks.
+2. **H1 block** — the page H1 rendered as an `<h3>` Before/After (Optimized) or a single `<h3>` in an `.unch-block` (Unchanged if the H1 is not changing). Always `<h3>`, so the H1 reads as a bold heading on every page.
+3. **Content sections** in live order (each its own change-block, full copy).
+4. **FAQ** block, then the canonical **Structured Data** `.schema-wrap` as the last block.
 
 ## Phase 1b — Brand voice
 
@@ -144,6 +172,10 @@ Runs **before** Phase 7. The bundle is **not** assembled until the optimized cop
 
 Log each pass's score to `.firecrawl/ai-detection-audit.md` (append, don't overwrite) so the loop is auditable.
 
+## Phase 6d — Claims grounding gate (GATING)
+
+[claims-grounding-gate.md](claims-grounding-gate.md) — ported from `chbg/docs-grounding-agent`. Runs **after** 6c (6c mutates copy; facts are checked last). Extract every atomic factual claim from Tab 1 **After** copy, build a corpus from the client's **own docs** (`.firecrawl/grounding-corpus/`), and judge each claim `supported` / `contradicted` / `undocumented` with a **character-for-character quote** verified by `grep -F` against the corpus. Blocking policy per claim type is in the gate file (product blocks on contradicted + undocumented; competitor-subject claims are unjudgeable noise, never "fixed"). Log `.firecrawl/claims-grounding-review.md`. Fixes rewrite to what the docs say (or drop the claim); re-run the 6c script on any span changed here; present grounding fixes with the 6c diff at the pre-build checkpoint. **Do not ship on BLOCKED.**
+
 ## Phase 7–9 — HTML bundle
 
 **Output:** `.firecrawl/{brand}-{slug}-optimization.html`
@@ -197,6 +229,13 @@ Inter, `#111` on white, `.section-tag`, live section order. No Daydream colors.
 
 **Full body text required:** Every section renders its **complete body copy as real text** (headings, paragraphs, bullet lists, FAQ Q&As), in live order, including unchanged/branded sections. Dashed `.placeholder` boxes are reserved for **non-text assets only** (hero image, video, logo strip). Never replace section prose with a `[… unchanged]` summary box.
 
+**Layout fidelity (REQUIRED):** the wireframe mirrors the page's **real layout** — verify it against the live DOM in Chrome, don't assume. Method: for each section read the rendered positions and replicate them.
+- **Hero:** centered single-column vs two-column; where the media sits. `getComputedStyle(h1).textAlign` and the H1/CTA/media rects tell you. Don't reflexively use the `.two-col` hero — if the live hero is centered with the media below, build it that way (and center the `.subhead`: it has `max-width` with no auto-margin, so add `margin-left/right:auto` or it sits left of the H1/CTA).
+- **Two-column body sections:** match each section's **real** image-vs-text side. Pages alternate, so don't just flip every section — compare `image.left < heading.left` per section against the live page (`img.left < h.left` → image-left). Getting the alternation phase wrong puts every section on the wrong side.
+- **Blog / article templates — match the target site, never assume a default.** Blog layouts vary widely: single-column; left sidebar; right sidebar; and the sidebar may hold a table of contents, share buttons, author card, related posts, a newsletter box, or some combination. Read the live page and build what is actually there. Method: compare the body `h2` left/right position against the H1 and the footer CTAs — if the body is inset on one side, there is a sidebar on the other (e.g. H1 at x≈560 but body H2s at x≈1173 ⇒ **left** rail; the reverse ⇒ right rail). Then inspect what that rail contains and reproduce it. If the body spans the full width, it is **single-column — do not add a sidebar.**
+  - The `.blog-cols` / `.blog-toc` classes in `tab-mockup-styles.css` are a **Pave-shaped example** (left 230px rail, TOC + share). They are a starting point, not a default: change `grid-template-columns` for the real side/width (`230px 1fr` left vs `1fr 230px` right, body-first), and replace the sidebar markup with whatever the real rail holds. For a single-column blog, do not use `.blog-cols` at all.
+- Real CTA labels and real media type only (see [Accuracy & scope](#accuracy--scope-required)).
+
 ### Tab 3 — Appendix (Daydream deck)
 
 7 slides (pass) or 3 (fail). Classes: `.slide`, `.slide.cover`, `.slide.close-slide`, `.card`, `.data-table`, `.dots`.
@@ -218,9 +257,26 @@ Inter, `#111` on white, `.section-tag`, live section order. No Daydream colors.
 
 See [templates/appendix-slides.md](templates/appendix-slides.md).
 
+## Phase 10 — Definition of Done (GATING — do not skip)
+
+A bundle is **not** finished until it passes these checks. **Do not trust counts or your own self-report — open and look.** (Bundles have shipped with two of three tabs missing while reported "complete," and with imagined heroes.)
+
+**Structural (per file):**
+- Exactly **3** `class="tab-panel"` divs with ids `tab1`, `tab2`, `tab3`; one `id="mockup-content"`; the correct slide count in Tab 3 (7 pass / 3 fail) wired to `#deck3`/`#dots3`; `switchTab` defined.
+- `<div>`/`</div>` and `<section>`/`</section>` counts are **balanced**.
+- No `excluded` chrome (promo banner, cookie bar, nav) rendered as a block in either tab.
+- The H1 is present as an `<h3>` block; title/meta appear **only** in the summary table.
+
+**Render-verify (REQUIRED):** open the bundle in Chrome (or `firecrawl_scrape` the deployed URL) and **switch into each tab** — confirm Tab 2 shows populated mockup sections and Tab 3 shows the slides. A grep that finds `id="tab2"` is **not** proof the panel renders.
+
+**Accuracy spot-check:** the draft Before H1 matches the live H1 (not the title); hero CTA + media match the live page; FAQ Before has answers; the mockup layout matches the real page.
+
+For a **multi-page run**, run this gate on **every** page and report a per-page pass/fail table.
+
 ## Related skills
 
 - `ai-content-detection` — Phase 6c GATING AI detector audit + auto-apply loop (bundled at `.claude/skills/ai-content-detection/`; must clear Low risk before bundle build)
+- `chbg/docs-grounding-agent` (GitHub, private) — source of the Phase 6d claims-grounding methodology; the runnable Mastra gate there (`npm run gate`) is the strict batch version if a full-page 500-claim audit is ever needed
 - `firecrawl-seo-audit` — whole-site audits  
 - `firecrawl-competitive-intel` — ongoing monitoring  
 
