@@ -85,6 +85,34 @@ Case-insensitive substring matches used by `scripts/analyze_text.py` and qualita
 - The takeaway is
 - Simply put
 
+## Meta-discourse / editorializing (narrating instead of stating)
+
+- We want to be straight about
+- To be straight with you
+- the honest read is
+- To be clear
+- Let's be honest
+- Let's be real
+- Worth noting
+- worth naming
+- worth your attention
+- worth the reader's attention
+- The short version:
+- Here's the thing
+- The real payoff
+- The story here
+- That's the logic behind
+- Call it the
+- Fair critique
+- Fair question
+- exactly the kind of
+- The honest takeaway
+- The honest answer
+- The real story
+- The fine print matters
+- That pattern is the story
+- The difference that matters
+
 ## Over-polished closers
 
 - In summary

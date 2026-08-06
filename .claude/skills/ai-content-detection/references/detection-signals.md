@@ -67,7 +67,7 @@ For each signal: **Detect** → **Why detectors care** → **Severity** → **Fi
 
 ## 4. Stylometric uniformity
 
-**Detect:** Flat vocabulary richness. Function words (the, a, of, to) in identical proportions across paragraphs. Every paragraph same structure: topic sentence → support → wrap.
+**Detect:** Flat vocabulary richness. Function words (the, a, of, to) in identical proportions across paragraphs. Every paragraph same structure: topic sentence → support → wrap. Script anchors this: `paragraph_structure` reports runs of 3+ consecutive paragraphs with near-identical shape (sentence count ±1, mean length ±4 words) and paragraph openers repeated 3+ times.
 
 **Why detectors care:** Stylometric models compare word-frequency fingerprints to human baselines.
 
@@ -135,6 +135,95 @@ For each signal: **Detect** → **Why detectors care** → **Severity** → **Fi
 | AI-like | More human |
 |---------|------------|
 | Effective presentation software improves team productivity and collaboration. | We cut our deck prep from two days to an afternoon once we stopped rebuilding slides from scratch. |
+
+---
+
+## 8. Rhetorical headers / editorial scaffolding
+
+**Detect:** Section headers that editorialize instead of label: a plain topic plus a rhetorical suffix after a colon or dash ("The competitive set: corrected", "Backlinks: the engine is already running", "The roadmap: from defense to offense"). Every header in the doc following the same title-plus-payoff pattern.
+
+**Why detectors care:** Humans title business sections with plain nouns ("Competitive set", "Backlinks"). The suffixed-payoff header is an LLM signature, and human readers now recognize it on sight — it gets a doc discounted as AI even when the content is sound.
+
+**Severity:**
+- Low: one clever header in an otherwise plain set
+- Medium: 2+ suffixed headers
+- High: every header follows the pattern
+
+**Fix:** Strip headers to the plain topic noun. Put the payoff in the first sentence of the section if it's a fact; delete it if it's framing.
+
+---
+
+## 9. Decorative bold
+
+**Detect:** Bold applied to mid-prose phrases for emphasis rather than structure — bolded metric claims, bolded ledes opening every list item, bold scattered through paragraphs. Structural bold (table headers, defined terms) is fine.
+
+**Why detectors care:** LLMs bold what they consider important at a much higher rate than human writers of business prose. Readers experience it as "random bold" and read it as AI formatting.
+
+**Severity:**
+- Low: 1–2 emphatic bolds in a long doc
+- Medium: bolded lede on every bullet, or 5+ mid-prose bolds
+- High: bold density high enough that emphasis stops meaning anything
+
+**Fix:** Remove bold from prose entirely; let the numbers carry the emphasis. Keep bold only for structure the reader navigates by.
+
+---
+
+## 10. Editorialization vs. meat
+
+**Detect:** Sentences that narrate the document instead of stating facts: framing preambles ("We want to be straight about X", "the honest read is", "worth noting"), self-aware transitions ("Fair critique.", "That's the logic behind…"), interpretation restating what a table already shows, and closers that summarize the section the reader just read. See the "Meta-discourse" section of phrase-patterns.md. Rough test: if a sentence contains no number, name, date, or commitment, it's a candidate.
+
+**Why detectors care:** Beyond detector scores, this is the tell human readers punish most in business writing — the doc reads as an essay about its facts rather than the facts. AI-assisted docs routinely run 2–3× longer than the same content written by a busy human.
+
+**Severity:**
+- Low: a few framing sentences in a doc that is mostly facts
+- Medium: each section opens and closes with narration; interpretive sentences ≈ factual ones
+- High: editorial sentences outnumber factual ones; the facts would fit in half the length
+
+**Fix:** Cut to the meat. Keep facts, numbers, commitments, and at most one line of interpretation per section. Deliver short; expand later in response to actual questions rather than pre-answering imagined ones. For client-facing docs, target the length the busiest reader would write themselves.
+
+---
+
+## 11. "X, not Y" contrast frames
+
+**Detect:** The comma-not construction ("structured data, not web pages"), "isn't X, it's Y", "not X, but Y", stacked "rather than". Script reports counts, per-1,000-word density, and instances under `contrast_frames`.
+
+**Why detectors care:** The contrast frame is a stock LLM rhetorical move — models reach for it to sound decisive. One is a stylistic choice; three or more in a piece is a fingerprint, and trained classifiers weight it heavily. Human readers who review AI drafts now recognize it on sight.
+
+**Severity:**
+- Low: 1–2 in a long piece
+- Medium: 3–5, or density ≥ 2 per 1,000 words
+- High: 6+, or the frame appears in most sections
+
+**Fix:** Keep the positive claim, drop the negation ("returns structured data" — the reader infers what it isn't). Where the contrast genuinely matters, state it as two plain sentences instead of one balanced clause.
+
+**Examples:**
+
+| AI-like | More human |
+|---------|------------|
+| It returns structured data, not web pages that mention those keywords. | It returns structured data. You won't have to parse pages that merely mention the keywords. |
+| This is a difference in philosophy, not features. | The philosophies differ more than the feature lists do. |
+
+---
+
+## 12. Colon pivots (the em-dash successor)
+
+**Detect:** Payoff colons in body prose: a short setup clause (≤6 words), a colon, then a prose payoff — "That pattern is the story: the harder the query, the wider the gap." Includes sentence-fragment openers ("The honest takeaway: run your own eval."). Script reports count, fragment-opener count, and per-1,000-word density under `colon_pivots`. List-introducing colons, URLs, times, tables, and code are excluded. Colon-suffixed headers stay under signal 8.
+
+**Why detectors care:** The em dash became the most recognized AI tell, so newer model output (and lightly edited AI drafts) routes the same setup-pivot-payoff cadence through a colon instead. The rhetorical move is the fingerprint, not the punctuation mark — swap the colon for an em dash and the "ChatGPT sentence" reappears.
+
+**Severity:**
+- Low: 1–2 payoff colons in a long piece
+- Medium: 3–5, or density ≥ 2.5 per 1,000 words
+- High: 6+, or a fragment-opener colon in most sections
+
+**Fix:** Make the payoff its own sentence. "That pattern is the story: the harder the query, the wider the gap" → "The harder the query, the wider the gap." The setup clause usually adds nothing once the payoff stands alone.
+
+**Examples:**
+
+| AI-like | More human |
+|---------|------------|
+| The honest takeaway: run your own eval before trusting any vendor's chart. | Run your own eval before trusting any vendor's chart. |
+| Parallel's model is declarative: you state an objective and it decides how to retrieve. | Parallel's model is declarative. You state an objective and it decides how to retrieve. |
 
 ---
 

@@ -46,7 +46,7 @@ python3 scripts/analyze_text.py --input "<file>" --json
 echo "text" | python3 scripts/analyze_text.py --json
 ```
 
-Script returns: burstiness stats, repeated n-grams, Unicode/hidden-char hits, em-dash count, phrase-pattern matches. Use these to anchor qualitative flags — do not rely on script output alone.
+Script returns: burstiness stats, paragraph-structure uniformity (runs of same-shaped paragraphs + repeated openers), repeated n-grams, Unicode/hidden-char hits, em-dash count, phrase-pattern matches, contrast-frame ("X, not Y") hits, and colon-pivot density (the em-dash successor). Use these to anchor qualitative flags — do not rely on script output alone.
 
 ## Step 3 — Qualitative audit
 
@@ -76,12 +76,18 @@ For each flag:
 | Signal | Risk | Flags | Notes |
 |--------|------|-------|-------|
 | Burstiness (sentence variation) | … | … | … |
+| Paragraph-structure uniformity | … | … | … |
 | Predictable phrasing | … | … | … |
 | N-gram repetition | … | … | … |
 | AI transition phrases | … | … | … |
 | Over-polished grammar | … | … | … |
 | Unicode / formatting artifacts | … | … | … |
 | Generic tone (no voice) | … | … | … |
+| Rhetorical headers / scaffolding | … | … | … |
+| Decorative bold | … | … | … |
+| Editorialization vs. meat | … | … | … |
+| "X, not Y" contrast frames | … | … | … |
+| Colon pivots (em-dash successor) | … | … | … |
 
 ## Flagged passages
 ### Flag {n} — {signal} — {Low|Medium|High}
@@ -106,19 +112,15 @@ For each flag:
 | **Medium** | 1–2 high-severity flags, OR 4+ medium-severity flags |
 | **Low** | Mostly stylistic nits; no structural AI tells |
 
-## SEO integration (Phase 6c — GATING)
+## SEO integration (Phase 6c)
 
-When invoked from `on-page-seo-optimization`, this phase is **gating**, runs **before** bundle assembly, and **applies** its findings (not report-only):
-
-1. Extract **Tab 1 After** copy from the optimization draft (changed sections only, or full page if user requests).
-2. Run this skill's workflow; save to `.firecrawl/ai-detection-audit.md` (append each pass).
-3. **Gate:** overall risk must be **Low**. Medium/High blocks the build.
-4. **Apply loop (exception to the no-rewrite default):** when risk is Medium/High, revise the flagged spans, then re-audit. Cap at 3 passes. Guardrails: revise **only** `generic` copy — never `locked` terms, `branded` sections, CTA blocks, or anything that drifts from `brand-voice-profile.md`. A flag inside a branded/locked span is reported, not rewritten.
-5. If still not Low after 3 passes, stop and ask the user. Surface a before/after diff of all applied changes for approval before the bundle is built.
-
-> The standalone behavior (outside SEO) stays **report-only** — do not rewrite source text unless the user asks. The apply loop above is specific to the SEO Phase 6c path.
+When invoked from `on-page-seo-optimization`:
+1. Extract **Tab 1 After** copy from the optimization draft (changed sections only, or full page if user requests)
+2. Run this skill's workflow
+3. Save to `.firecrawl/ai-detection-audit.md`
+4. Do **not** block bundle ship unless user asks — this phase is optional
 
 ## Related skills
 
 - `on-page-seo-optimization` — Phase 6b content-quality gate (hard fails only)
-- `on-page-seo-optimization` — Phase 6c gating hook to this skill (audit + auto-apply loop, must clear Low risk)
+- `on-page-seo-optimization` — Phase 6c optional hook to this skill
