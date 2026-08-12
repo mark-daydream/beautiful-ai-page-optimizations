@@ -53,3 +53,17 @@
 #tab2 .opt-pill.opt { background: #f0e6ff; color: #6a0dad; border: 1px solid #d4b0ff; }
 #tab2 .opt-pill.new { background: #e6f9ee; color: #1a7a3a; border: 1px solid #90dba8; }
 #tab2 .callout { border: 1.5px solid #ffc107; background: #fffbea; border-radius: 8px; padding: 14px 18px; font-size: 13px; color: #5a4400; line-height: 1.6; }
+/* EXAMPLE blog/article two-column layout, shaped for Pave (left 230px rail = TOC + share).
+   NOT a default. Per target site: set grid-template-columns to the real side/width
+   (230px 1fr = left rail; 1fr 230px + body-first = right rail), and replace the
+   .blog-toc contents with the real sidebar (TOC / author card / related / newsletter).
+   Single-column blog => don't use .blog-cols at all. See SKILL.md 'Layout fidelity'. */
+#tab2 .blog-cols { display:grid; grid-template-columns:230px 1fr; gap:48px; align-items:start; padding:48px 80px; border-bottom:1px solid #e5e5e5; }
+#tab2 .blog-cols > .blog-body > section { padding:0 0 30px; border-bottom:none; }
+#tab2 .blog-toc { position:sticky; top:18px; font-size:13px; color:#555; }
+#tab2 .blog-toc .toc-head, #tab2 .blog-toc .toc-share { font-weight:700; color:#888; text-transform:uppercase; font-size:11px; letter-spacing:.05em; }
+#tab2 .blog-toc .toc-head { margin-bottom:12px; }
+#tab2 .blog-toc .toc-share { margin:26px 0 10px; }
+#tab2 .blog-toc .toc-list { display:flex; flex-direction:column; gap:9px; line-height:1.4; }
+#tab2 .blog-toc .toc-icons { display:flex; gap:8px; }
+#tab2 .blog-toc .toc-icons .placeholder { width:30px; height:30px; padding:0; aspect-ratio:auto; display:inline-flex; align-items:center; justify-content:center; font-size:12px; }

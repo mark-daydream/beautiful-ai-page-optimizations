@@ -120,4 +120,10 @@
 .wt-btn-ghost{background:rgba(255,255,255,0.08);color:#ccc;}
 .wt-btn-ghost:hover{background:rgba(255,255,255,0.14);}
 .wt-btn-primary{background:var(--mint);color:#1a5c2a;}
-.wt-btn-primary:hover{background:#a8e8b8;}
+.wt-btn-primary:hover{background:#a8e8b8;}/* lists inside Before/After + New blocks — match the .unch-block ul indent so bullets sit inside the box, not hanging off the left edge */
+.ba-before ul,.ba-before ol,.ba-after ul,.ba-after ol,.new-block ul,.new-block ol{padding-left:20px;margin:6px 0;font-size:13px;line-height:1.6;}
+.ba-before li,.ba-after li,.new-block li{margin:3px 0;}
+.ba-before ul,.ba-before ol{color:#aaa;}
+.ba-after ul,.ba-after ol{color:var(--near-black);}
+.ba-after ul strong,.ba-after ol strong,.ba-after li strong{color:#7c3aed;font-weight:700;}
+.new-block ul,.new-block ol{color:#1f4d33;}
