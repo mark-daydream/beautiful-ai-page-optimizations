@@ -121,3 +121,8 @@
 .wt-btn-ghost:hover{background:rgba(255,255,255,0.14);}
 .wt-btn-primary{background:var(--mint);color:#1a5c2a;}
 .wt-btn-primary:hover{background:#a8e8b8;}
+/* lists inside state boxes match their paragraph typography (fix 2026-08-14) */
+.ba-before ol,.ba-before ul{font-size:13px;line-height:1.6;color:#aaa;padding-left:20px;margin:6px 0;}
+.ba-after ol,.ba-after ul{font-size:13px;line-height:1.6;color:var(--near-black);font-weight:500;padding-left:20px;margin:6px 0;}
+.unch-block ol{font-size:13px;line-height:1.6;color:#27505f;padding-left:20px;margin:6px 0;}
+.new-block ol,.new-block ul{font-size:13px;line-height:1.6;color:#1f4d33;padding-left:20px;margin:6px 0;}
