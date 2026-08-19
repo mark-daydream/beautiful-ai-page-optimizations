@@ -1,5 +1,6 @@
 ---
 name: net-new-content
+version: 1.1.0
 description: |
   Net-new SEO content for a customer: draft a page that does not exist yet, targeting a
   primary keyword + supporting keywords. Runs the same SERP/intent/competitive pipeline as
@@ -80,6 +81,7 @@ Draft **one new page** (does not exist yet) for a primary keyword + supporting k
 - [ ] Phase 6b (GATING): Content quality gate PASS
 - [ ] Phase 6c (GATING): AI detection audit + auto-apply loop → risk Low
 - [ ] Phase 7–9: HTML bundle + copy CSS alongside
+- [ ] Phase 9b (GATING): Bundle-wide editorial re-scan — appendix, Why lines, meta Summary, Tab 2 labels each scanned separately → risk Low on EVERY surface
 - [ ] Phase 10 (GATING): Definition of Done — render-verify all 3 tabs + claims spot-check
 ```
 
@@ -224,6 +226,8 @@ Shared gate, verbatim: `../on-page-seo-optimization/content-quality-gate.md`. Lo
 
 Identical to on-page Phase 6c (run the `ai-content-detection` skill; overall risk must be **Low**; auto-apply loop capped at 3 passes; append to `.firecrawl/ai-detection-audit.md`), with one scope change: the audited copy is the **entire draft** (it is all new). Guardrails: never rewrite locked terms or template-verbatim blocks; revisions must not break a claims-register citation — if a revision changes a claim's wording, re-verify that row.
 
+This pass clears the **page body only**. The rest of the bundle does not exist yet — it is written in Phase 7–9 and gated separately in **Phase 9b**, which is not optional.
+
 ## Phase 7–9 — HTML bundle
 
 **Output:** `.firecrawl/{brand}-{slug}-new-page.html`
@@ -266,9 +270,68 @@ Inter, `#111` on white, `.section-tag`, **template-contract order and layout**. 
 - Replace the "current page" slide with a **Template evidence** slide: sibling URLs, the structural contract, why this family fits the SERP-required type.
 - Add a **Grounding & accuracy** slide: fact-base source count, claims VERIFIED / NEEDS-INPUT counts, the customer-owned-sources-only rule stated for the client.
 
+## Phase 9b — Bundle-wide editorial re-scan (GATING)
+
+**Runs after the bundle is assembled, before Phase 10.** Phase 6c cleared the page body. It did not clear the bundle: the Tab 3 appendix, every block's `Why:` line, the meta-table **Summary** row and the Tab 2 section labels are written *here*, in Phase 7–9, and have never been scanned. They are every bit as client-facing as the page copy.
+
+Mark, 2026-08-17: the gates run on the **whole bundle**, not just the draft copy. On draft #27 the page copy was clean and the appendix still failed — 8 em dashes, "X, not Y" frames, a phrase-list hit, editorialized headlines, and agency-frame language ("flagged to the client"). Donor appendices from the timeline / gantt drafts predate the 2026-08-13 editorial house rules and carry the same patterns, so **re-scan them too when reusing one as a donor** — never assume an inherited appendix is clean.
+
+**Extract each surface as its own plain-text file.** One concatenated blob dilutes per-passage scoring and lets a bad appendix hide behind good page copy.
+
+| Surface | Extract to |
+|---|---|
+| Tab 3 appendix — all slide text | `.firecrawl/scan/appendix.md` |
+| Every `Why:` line in Tab 1 | `.firecrawl/scan/why-lines.md` |
+| The meta-table **Summary** row value | `.firecrawl/scan/meta-summary.md` |
+| Tab 2 section labels + any authored connective copy | `.firecrawl/scan/mockup-labels.md` |
+
+**Extract to markdown, not flat text.** Scanner verdicts move with input fidelity: flattened text turns every `<h3>` slide heading into a prose line, and `analyze_colon_pivots` then counts "Template evidence: why this family fits" as a payoff colon. That inflated all five Mastra Week-6 drafts to Medium on 2026-08-17. Emit headings as `#` and list items as `-` so the structure survives.
+
+```bash
+python3 - <<'EXTRACT'
+import re, pathlib, html as H
+src  = pathlib.Path(".firecrawl/{brand}-{slug}-new-page.html").read_text()
+out  = pathlib.Path(".firecrawl/scan"); out.mkdir(parents=True, exist_ok=True)
+
+def md(frag):                                  # keep heading + list structure
+    frag = re.sub(r'<h([1-6])[^>]*>(.*?)</h\1>',
+                  lambda m: "\n" + "#" * int(m.group(1)) + " " + m.group(2) + "\n", frag, flags=re.S)
+    frag = re.sub(r'<li[^>]*>(.*?)</li>', r"\n- \1", frag, flags=re.S)
+    frag = re.sub(r'</(p|div|section|tr)>', "\n", frag)
+    frag = H.unescape(re.sub(r"<[^>]+>", " ", frag))   # space, not "" — else tags glue words together
+    frag = "\n".join(re.sub(r"[ \t]{2,}", " ", l).strip() for l in frag.splitlines())
+    return re.sub(r"\n{3,}", "\n\n", frag).strip()
+
+tab3 = re.search(r'<div[^>]*id="tab3".*?(?=<div class="tab-panel"|\Z)', src, re.S)
+(out/"appendix.md").write_text(md(tab3.group(0)) if tab3 else "")
+(out/"why-lines.md").write_text("\n\n".join(md(m) for m in re.findall(r'<strong>Why:</strong>(.*?)</p>', src, re.S)))
+print("wrote", *(p.name for p in sorted(out.iterdir())))
+EXTRACT
+```
+
+Pull the meta-table Summary row and the Tab 2 labels the same way.
+
+This is the shared recipe from `../on-page-seo-optimization/SKILL.md` (Phase 9b) with this skill's output filename; keep the two in step.
+
+Eyeball each file before scanning — if headings came through as bare prose lines, fix the extraction rather than accepting the inflated score.
+
+**Gate — all four surfaces must pass, independently:**
+
+1. Run the `ai-content-detection` skill on each file (sibling at `../ai-content-detection/`; if it isn't installed locally, use its SKILL.md remote path — `gh api` the script and `phrase-patterns.md`, then run locally). **The deterministic scanner must actually execute**: a verdict without real scanner JSON is "Audit incomplete", not a pass — v1.1.1 gates on this because a phrase-list-only check silently passed a batch the scanner flagged. **Overall risk Low on every file**, not on the average.
+2. The `../on-page-seo-optimization/content-quality-gate.md` *No internal context on client-facing surfaces* grep, run over the assembled HTML.
+3. House rules from the 2026-08-13 editorial pass, which the scanner does not catch on its own: **no em dashes**, no balanced negation pairs ("nothing missing, nothing extra"), no `X, not Y` framing, no anthropomorphism, no editorialized headlines, and no agency-frame language — the client is the audience, not an onlooker to our process. "Flagged to the client", "we recommend that the team", "as noted in our analysis" are all failures.
+
+**Sanctioned exemptions — do not "fix" these:**
+- Bracketed media placeholders in Tab 2 (`[Hero image — …]`) keep their em dashes; that is the asset-slot format.
+- `.unch-block` "Template (verbatim)" copy is the customer's own writing. Never rewrite it; exclude it from the scan.
+- `[NEEDS CUSTOMER INPUT: …]` callouts and `Sources:` claim-ID lists are structured fields, not prose.
+- Locked lexicon terms stay verbatim even when flagged.
+
+**Re-scan rule:** any edit to any scanned surface **invalidates the pass**. Fix, then re-run the affected file — including micro-edits made during Phase 10. The delivery-gate hook expects a Low result on the copy as it actually ships, not on an earlier revision. Append every pass to `.firecrawl/ai-detection-audit.md`. **Do not ship on FAIL.**
+
 ## SERP fail UI
 
-Identical to on-page: Tab 1 placeholder ("Draft stopped — no SERP page-type consensus"), Tab 2 `#mockup-placeholder`, Tab 3 = 3-slide deck (Cover · SERP breakdown · Next steps), `switchTab('tab3')` on load.
+Identical to on-page: Tab 1 placeholder ("Draft stopped — no SERP page-type consensus"), Tab 2 `#mockup-placeholder`, Tab 3 = 3-slide deck (Cover · SERP breakdown · Next steps), `switchTab('tab3')` on load. The fail deck is authored copy and is **not** exempt from Phase 9b — scan its three slides.
 
 ## Phase 10 — Definition of Done (GATING — do not skip)
 
@@ -278,11 +341,12 @@ All structural + render-verify checks from on-page Phase 10 apply verbatim (3 ta
 - **Claims audit:** pick 3 register rows at random, open each source URL, confirm the quote is really there and supports the drafted sentence. Register block present in Tab 1; every `NEEDS CUSTOMER INPUT` item appears both in-block and in the register.
 - **No orphan facts:** grep the draft for numbers/percentages/integration names — each must trace to a register row or be cut.
 - **No cannibalization drift:** the proposed slug/title doesn't collide with an existing customer URL from `site-map.json`.
+- **Phase 9b still valid:** every surface scanned in 9b is byte-identical to what ships. Any micro-edit made during this gate invalidates the pass — re-run the affected file before calling it done.
 
 For a multi-page run, run this gate on **every** page and report a per-page pass/fail table.
 
 ## Related skills
 
 - `on-page-seo-optimization` — sibling; use when the page already exists (Phase 0 routes there)
-- `ai-content-detection` — Phase 6c gate
+- `ai-content-detection` — Phase 6c gate (page body) **and** Phase 9b gate (assembled bundle: appendix, Why lines, meta Summary, Tab 2 labels)
 - `keyword-research` (vendored sibling at `../keyword-research/`, or the `growth:keyword-research` plugin — same script) — theme engine: invoked in-flow by Phase 0k when only one keyword is provided; also usable standalone upstream to pick the primary before invoking this skill

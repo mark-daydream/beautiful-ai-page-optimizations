@@ -1,5 +1,6 @@
 ---
 name: on-page-seo-optimization
+version: 1.1.0
 description: |
   On-page SEO optimization for a single URL using primary and supporting keywords.
   Validates SERP page-type and search intent match, compares top-10 ranking pages,
@@ -64,6 +65,7 @@ After **branded terminology checkpoint**:
 - [ ] Phase 6c (GATING): AI detection audit + auto-apply loop on Tab 1 After copy → risk must be Low before Phase 7
 - [ ] Phase 6d (GATING): Claims grounding gate — every factual claim in After copy judged against the client's own docs; no BLOCKED claims before Phase 7
 - [ ] Phase 7–9: HTML bundle + copy CSS alongside
+- [ ] Phase 9b (GATING): Bundle-wide editorial re-scan — appendix, Why lines, meta Summary, Tab 2 labels each scanned separately → risk Low on EVERY surface
 - [ ] Phase 10 (GATING): Definition of Done — render-verify all 3 tabs before declaring complete
 ```
 
@@ -172,6 +174,8 @@ Runs **before** Phase 7. The bundle is **not** assembled until the optimized cop
 
 Log each pass's score to `.firecrawl/ai-detection-audit.md` (append, don't overwrite) so the loop is auditable.
 
+This pass clears the **Tab 1 After copy only**. The appendix, the `Why:` lines, the meta-table Summary and the Tab 2 labels are written later, in Phase 7–9, and are gated separately in **Phase 9b** — which is not optional.
+
 ## Phase 6d — Claims grounding gate (GATING)
 
 [claims-grounding-gate.md](claims-grounding-gate.md) — ported from `chbg/docs-grounding-agent`. Runs **after** 6c (6c mutates copy; facts are checked last). Extract every atomic factual claim from Tab 1 **After** copy, build a corpus from the client's **own docs** (`.firecrawl/grounding-corpus/`), and judge each claim `supported` / `contradicted` / `undocumented` with a **character-for-character quote** verified by `grep -F` against the corpus. Blocking policy per claim type is in the gate file (product blocks on contradicted + undocumented; competitor-subject claims are unjudgeable noise, never "fixed"). Log `.firecrawl/claims-grounding-review.md`. Fixes rewrite to what the docs say (or drop the claim); re-run the 6c script on any span changed here; present grounding fixes with the 6c diff at the pre-build checkpoint. **Do not ship on BLOCKED.**
@@ -240,6 +244,61 @@ Inter, `#111` on white, `.section-tag`, live section order. No Daydream colors.
 
 7 slides (pass) or 3 (fail). Classes: `.slide`, `.slide.cover`, `.slide.close-slide`, `.card`, `.data-table`, `.dots`.
 
+## Phase 9b — Bundle-wide editorial re-scan (GATING)
+
+**Runs after the bundle is assembled, before Phase 10.** Phase 6c cleared the After copy. It did not clear the bundle: the Tab 3 appendix, every block's `Why:` line, the meta-table **Summary** row and the Tab 2 section labels are written *here*, in Phase 7–9, and have never been scanned. They are every bit as client-facing as the page copy.
+
+Mark, 2026-08-17: the gates run on the **whole bundle**, not just the draft copy. On the net-new draft #27 the page copy was clean and the appendix still failed — 8 em dashes, "X, not Y" frames, a phrase-list hit, editorialized headlines, and agency-frame language ("flagged to the client"). Houston's 2026-08-13 verdict is the same rule from the other direction: the detection gate must run **after the final edit**, not just on the first draft.
+
+**Extract each surface as its own file.** One concatenated blob dilutes per-passage scoring and lets a bad appendix hide behind good page copy.
+
+| Surface | Extract to |
+|---|---|
+| Tab 3 appendix — all slide text | `.firecrawl/scan/appendix.md` |
+| Every `Why:` line in Tab 1 | `.firecrawl/scan/why-lines.md` |
+| The meta-table **Summary** row value | `.firecrawl/scan/meta-summary.md` |
+| Tab 2 section labels + any authored connective copy | `.firecrawl/scan/mockup-labels.md` |
+
+**Extract to markdown, not flat text.** Scanner verdicts move with input fidelity: flattened text turns every `<h3>` slide heading into a prose line, and `analyze_colon_pivots` then counts "Patterns & gaps: what the top 10 share" as a payoff colon. That inflated all five Mastra Week-6 drafts to Medium on 2026-08-17. Emit headings as `#` and list items as `-` so the structure survives.
+
+```bash
+python3 - <<'EXTRACT'
+import re, pathlib, html as H
+src  = pathlib.Path(".firecrawl/{brand}-{slug}-optimization.html").read_text()
+out  = pathlib.Path(".firecrawl/scan"); out.mkdir(parents=True, exist_ok=True)
+
+def md(frag):                                  # keep heading + list structure
+    frag = re.sub(r'<h([1-6])[^>]*>(.*?)</h\1>',
+                  lambda m: "\n" + "#" * int(m.group(1)) + " " + m.group(2) + "\n", frag, flags=re.S)
+    frag = re.sub(r'<li[^>]*>(.*?)</li>', r"\n- \1", frag, flags=re.S)
+    frag = re.sub(r'</(p|div|section|tr)>', "\n", frag)
+    frag = H.unescape(re.sub(r"<[^>]+>", " ", frag))   # space, not "" — else tags glue words together
+    frag = "\n".join(re.sub(r"[ \t]{2,}", " ", l).strip() for l in frag.splitlines())
+    return re.sub(r"\n{3,}", "\n\n", frag).strip()
+
+tab3 = re.search(r'<div[^>]*id="tab3".*?(?=<div class="tab-panel"|\Z)', src, re.S)
+(out/"appendix.md").write_text(md(tab3.group(0)) if tab3 else "")
+(out/"why-lines.md").write_text("\n\n".join(md(m) for m in re.findall(r'<strong>Why:</strong>(.*?)</p>', src, re.S)))
+print("wrote", *(p.name for p in sorted(out.iterdir())))
+EXTRACT
+```
+
+Pull the meta-table Summary row and the Tab 2 labels the same way. Eyeball each file before scanning — if headings came through as bare prose lines, fix the extraction rather than accepting the inflated score.
+
+**Gate — all four surfaces must pass, independently:**
+
+1. Run the `ai-content-detection` skill on each file (bundled at `.claude/skills/ai-content-detection/`; on the remote path, `gh api` the script and `phrase-patterns.md` and run locally). **The deterministic scanner must actually execute**: a verdict without real scanner JSON is "Audit incomplete", not a pass — v1.1.1 gates on this because a phrase-list-only check silently passed a batch the scanner flagged. **Overall risk Low on every file**, not on the average.
+2. The [content-quality-gate.md](content-quality-gate.md) *No internal context on client-facing surfaces* grep, run over the assembled HTML.
+3. House rules from the 2026-08-13 editorial pass, which the scanner does not catch on its own: **no em dashes**, no balanced negation pairs ("nothing missing, nothing extra"), no `X, not Y` framing, no anthropomorphism ("the sitemap is nominating"), no editorialized headlines, and no agency-frame language — the client is the audience, not an onlooker to our process. "Flagged to the client", "we recommend that the team", "as noted in our analysis" are all failures.
+
+**Sanctioned exemptions — do not "fix" these:**
+- Bracketed media placeholders in Tab 2 (`[Hero image — …]`) keep their em dashes; that is the asset-slot format.
+- **Before** copy is the client's existing live page. Never rewrite it; exclude it from the scan.
+- `unchanged`, `branded` and `locked` blocks are the client's own writing — excluded for the same reason.
+- Schema JSON in the `.schema-wrap` block is data, not prose.
+
+**Re-scan rule:** any edit to any scanned surface **invalidates the pass**. Fix, then re-run the affected file — including micro-edits made during Phase 10. The delivery-gate hook expects a Low result on the copy as it actually ships, not on an earlier revision. Append every pass to `.firecrawl/ai-detection-audit.md`. **Do not ship on FAIL.**
+
 ## SERP fail UI
 
 - Tab 1: placeholder “Optimization stopped — SERP page-type mismatch”
@@ -269,13 +328,15 @@ A bundle is **not** finished until it passes these checks. **Do not trust counts
 
 **Render-verify (REQUIRED):** open the bundle in Chrome (or `firecrawl_scrape` the deployed URL) and **switch into each tab** — confirm Tab 2 shows populated mockup sections and Tab 3 shows the slides. A grep that finds `id="tab2"` is **not** proof the panel renders.
 
+**Phase 9b still valid:** every surface scanned in 9b is byte-identical to what ships. Any micro-edit made during this gate invalidates the pass — re-run the affected file before calling it done.
+
 **Accuracy spot-check:** the draft Before H1 matches the live H1 (not the title); hero CTA + media match the live page; FAQ Before has answers; the mockup layout matches the real page.
 
 For a **multi-page run**, run this gate on **every** page and report a per-page pass/fail table.
 
 ## Related skills
 
-- `ai-content-detection` — Phase 6c GATING AI detector audit + auto-apply loop (bundled at `.claude/skills/ai-content-detection/`; must clear Low risk before bundle build)
+- `ai-content-detection` — Phase 6c GATING audit + auto-apply loop on the After copy, **and** the Phase 9b gate on the assembled bundle (appendix, Why lines, meta Summary, Tab 2 labels). Bundled at `.claude/skills/ai-content-detection/`; must clear Low risk both before bundle build and after it.
 - `chbg/docs-grounding-agent` (GitHub, private) — source of the Phase 6d claims-grounding methodology; the runnable Mastra gate there (`npm run gate`) is the strict batch version if a full-page 500-claim audit is ever needed
 - `firecrawl-seo-audit` — whole-site audits  
 - `firecrawl-competitive-intel` — ongoing monitoring  
