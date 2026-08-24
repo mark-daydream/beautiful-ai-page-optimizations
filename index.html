@@ -57,6 +57,19 @@
   .dir-arrow { font-size: 20px; color: var(--text-subtle); transition: transform 0.15s, color 0.15s; }
   .dir-card:hover .dir-arrow { color: var(--near-black); transform: translateX(3px); }
 
+  /* top-level tabs */
+  .dir-tabs { display: flex; gap: 26px; margin-bottom: 30px; border-bottom: 1px solid var(--border); }
+  .dir-tab { font-family: 'Raleway', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-subtle); background: none; border: none; border-bottom: 3px solid transparent; padding: 10px 2px 13px; margin-bottom: -1px; cursor: pointer; transition: color 0.15s, border-color 0.15s; }
+  .dir-tab:hover { color: var(--near-black); }
+  .dir-tab.is-active { color: var(--near-black); border-bottom-color: var(--peach-warm); }
+  .tab-pane { display: none; }
+  .tab-pane.is-active { display: block; }
+
+  /* pSEO batch rows */
+  .dir-num--batch { background: var(--off-white); color: var(--text-subtle); border: 1px solid var(--border); }
+  .dir-card--queued { pointer-events: none; }
+  .dir-card--queued .dir-card-main, .dir-card--queued .dir-card-side { opacity: 0.55; }
+
   .dir-foot { margin-top: 40px; font-size: 11.5px; color: var(--text-subtle); }
 
   @media (max-width: 720px) {
@@ -81,18 +94,30 @@
 </header>
 
 <main class="dir-wrap">
-  <div class="dir-meta-row">
-    <span class="label">Drafts</span>
-    <span class="dir-count" id="dir-count">29 documents</span>
+
+  <!-- Two top-level tabs: "Monthly Drafts" (one-off drafts grouped by delivery month,
+       newest month first — current month's group keeps the `open` attribute) and
+       "pSEO Template Batches" (the 236-template-page program: spec + batch trackers).
+       TO ADD A NEW MONTHLY DRAFT: paste a <li> card at the TOP of the current month's
+       list in #tab-monthly (create a new <details class="dir-month" open> group when a
+       new month starts, and remove `open` from the previous month). Update: href,
+       dir-num, <h2> title, primary keyword, <code> path, dir-pill, dir-date, the
+       group's month-count, and bump #dir-count.
+       TO ADVANCE A BATCH: in #tab-pseo flip the page's queued card to a real <a> link
+       (drop dir-card--queued, pill -> Delivered, add href) and bump that batch's
+       "N of 10 drafted" counts (summary pill + meta row). -->
+
+  <div class="dir-tabs">
+    <button class="dir-tab is-active" data-tab="monthly" type="button">Monthly Drafts</button>
+    <button class="dir-tab" data-tab="pseo" type="button">pSEO Template Batches</button>
   </div>
 
-  <!-- Drafts are grouped by delivery month, newest month first. The current month's
-       group stays open (keep the `open` attribute on it); older months start collapsed.
-       TO ADD A NEW DRAFT: paste a <li> card at the TOP of the current month's list
-       (create a new <details class="dir-month" open> group when a new month starts,
-       and remove `open` from the previous month). Update: href, dir-num, <h2> title,
-       primary keyword, <code> path, dir-pill, dir-date, the group's month-count,
-       and bump #dir-count. -->
+  <section class="tab-pane is-active" id="tab-monthly">
+
+  <div class="dir-meta-row">
+    <span class="label">Drafts</span>
+    <span class="dir-count" id="dir-count">28 documents</span>
+  </div>
 
   <details class="dir-month" open>
     <summary>
@@ -283,7 +308,7 @@
     <summary>
       <span class="month-chev">&#9656;</span>
       <span class="month-name">July 2026</span>
-      <span class="month-count">11 drafts</span>
+      <span class="month-count">10 drafts</span>
       <span class="month-rule"></span>
     </summary>
     <ul class="dir-list">
@@ -334,25 +359,6 @@
             <div>
               <h2>Timeline Maker (net-new page)</h2>
               <p class="dir-card-meta">Primary keyword: <strong>timeline maker</strong> &middot; <code>/timeline-maker</code> (proposed) &middot; net-new content draft</p>
-            </div>
-          </div>
-          <div class="dir-card-side">
-            <span class="dir-pill">Delivered</span>
-            <span class="dir-date">July 2026</span>
-            <span class="dir-arrow">&rarr;</span>
-          </div>
-        </a>
-      </li>
-      <!-- ====================================== -->
-
-      <!-- ============ DRAFT ENTRY ============ -->
-      <li>
-        <a class="dir-card" href="template-pages-optimization-template/">
-          <div class="dir-card-main">
-            <span class="dir-num">16</span>
-            <div>
-              <h2>Template Pages — Optimization Spec</h2>
-              <p class="dir-card-meta">Canonical section-by-section contract for <strong>all 236 template pages</strong> &middot; <code>/templates/*</code> &middot; existing pages, videos kept intact &middot; Batch 1: 10 chart pages</p>
             </div>
           </div>
           <div class="dir-card-side">
@@ -664,8 +670,215 @@
     </ul>
   </details>
 
+  </section>
+
+  <section class="tab-pane" id="tab-pseo">
+
+    <div class="dir-meta-row">
+      <span class="label">Template Pages &mdash; pSEO Program</span>
+      <span class="dir-count">236 pages &middot; "[x] template" intent &middot; Batch 1: 2 of 10 drafted</span>
+    </div>
+
+    <ul class="dir-list">
+      <li>
+        <a class="dir-card" href="template-pages-optimization-template/">
+          <div class="dir-card-main">
+            <span class="dir-num">16</span>
+            <div>
+              <h2>Template Pages — Optimization Spec</h2>
+              <p class="dir-card-meta">Canonical section-by-section contract for <strong>all 236 template pages</strong> &middot; <code>/templates/*</code> &middot; existing pages, videos kept intact &middot; every batch fill starts from this spec + a fresh live scrape</p>
+            </div>
+          </div>
+          <div class="dir-card-side">
+            <span class="dir-pill">Delivered</span>
+            <span class="dir-date">July 2026</span>
+            <span class="dir-arrow">&rarr;</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+
+    <details class="dir-month" open>
+      <summary>
+        <span class="month-chev">&#9656;</span>
+        <span class="month-name">Batch 1 &mdash; Chart Templates</span>
+        <span class="month-count">2 of 10 drafted</span>
+        <span class="month-rule"></span>
+      </summary>
+      <ul class="dir-list">
+
+        <li>
+          <a class="dir-card" href="https://beautiful-ai-before-after.vercel.app/pie-chart-template/">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">01</span>
+              <div>
+                <h2>Pie Chart Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>pie chart template</strong> &middot; <code>/templates/pie-chart</code> &middot; applied spec fill + before/after annotated screenshots (13 markers)</p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Delivered</span>
+              <span class="dir-date">July 2026</span>
+              <span class="dir-arrow">&rarr;</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a class="dir-card" href="https://beautiful-ai-before-after.vercel.app/swot-analysis-template/">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">02</span>
+              <div>
+                <h2>SWOT Analysis Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>swot analysis template</strong> &middot; <code>/templates/swot-analysis</code> &middot; applied spec fill + before/after annotated screenshots (14 markers)</p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Delivered</span>
+              <span class="dir-date">July 2026</span>
+              <span class="dir-arrow">&rarr;</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">03</span>
+              <div>
+                <h2>Org Chart Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>org chart template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">04</span>
+              <div>
+                <h2>Word Cloud Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>word cloud template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">05</span>
+              <div>
+                <h2>Venn Diagram Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>venn diagram template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">06</span>
+              <div>
+                <h2>Bar Graph Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>bar graph template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">07</span>
+              <div>
+                <h2>Flow Chart Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>flow chart template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">08</span>
+              <div>
+                <h2>Timeline Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>timeline template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">09</span>
+              <div>
+                <h2>Infographic Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>infographic template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+        <li>
+          <div class="dir-card dir-card--queued">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">10</span>
+              <div>
+                <h2>Gantt Chart Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>gantt chart template</strong></p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Queued</span>
+            </div>
+          </div>
+        </li>
+
+      </ul>
+    </details>
+
+    <p class="dir-foot">Batches 2&ndash;12 are re-ranked by "[x] template" search volume before each build and will appear here as they are scoped.</p>
+
+  </section>
+
   <p class="dir-foot">Add new optimization drafts to this index as they are completed.</p>
 </main>
+
+<script>
+  document.querySelectorAll('.dir-tab').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.dir-tab').forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+      document.querySelectorAll('.tab-pane').forEach(function (p) { p.classList.toggle('is-active', p.id === 'tab-' + btn.dataset.tab); });
+    });
+  });
+</script>
 
 </body>
 </html>
