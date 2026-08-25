@@ -451,7 +451,7 @@
   }
   var TOUR = [
     { step: 'Welcome', title: 'How to review this draft',
-      body: 'This is an on-page SEO <b>optimization draft</b> for one page. It has three tabs: the draft itself, a full-page mockup, and a research appendix. This quick tour shows you how to read it and give feedback.',
+      body: 'This is an on-page SEO <b>optimization draft</b> for one page. Alongside the draft itself you\u2019ll find the supporting views in the top nav (mockup, appendix, or an annotated before/after, depending on the page). This quick tour shows you how to read it and give feedback.',
       on: function () { goTab('tab1'); } },
     { step: '1 of 8', title: 'The colored tags',
       body: 'Every section is labeled by the kind of change: <b style="color:#7c3aed">Optimized</b> (reworded copy), <b style="color:#1a7a45">New</b> (a brand-new section), <b style="color:#1a6a8c">Unchanged</b> (kept as-is), and <b style="color:#a06a00">Revised FAQ</b>. The legend at the top is your key.',
