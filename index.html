@@ -105,7 +105,11 @@
        group's month-count, and bump #dir-count.
        TO ADVANCE A BATCH: in #tab-pseo flip the page's queued card to a real <a> link
        (drop dir-card--queued, pill -> Delivered, add href) and bump that batch's
-       "N of 10 drafted" counts (summary pill + meta row). -->
+       "N of 10 drafted" counts (summary pill + meta row).
+       NET-NEW TEMPLATE PAGES (pages that do not exist live yet) belong in the
+       "Net-New Template Pages" group directly ABOVE the batch groups in #tab-pseo, NOT in a monthly
+       group -- they are template-family pages and carry the same 12 change-blocks
+       as the batch fills. Number them N1, N2, ... and bump that group's count. -->
 
   <div class="dir-tabs">
     <button class="dir-tab is-active" data-tab="monthly" type="button">Monthly Drafts</button>
@@ -116,7 +120,7 @@
 
   <div class="dir-meta-row">
     <span class="label">Drafts</span>
-    <span class="dir-count" id="dir-count">29 documents</span>
+    <span class="dir-count" id="dir-count">28 documents</span>
   </div>
 
   <details class="dir-month" open>
@@ -127,24 +131,6 @@
       <span class="month-rule"></span>
     </summary>
     <ul class="dir-list">
-
-      <!-- ============ DRAFT ENTRY ============ -->
-      <li>
-        <a class="dir-card" href="roadmap-template/">
-          <div class="dir-card-main">
-            <span class="dir-num">30</span>
-            <div>
-              <h2>Roadmap Template (net-new template page)</h2>
-              <p class="dir-card-meta">Primary keyword: <strong>roadmap template</strong> &middot; proposed <code>/templates/roadmap</code> (Diagrams &amp; Timeline) &middot; built on the template-page contract &middot; the company&rsquo;s own blog defines a roadmap slide as a journey map, a twist on a classic timeline, and this page gives that product truth a template-library home &middot; galleries and PM tools win the SERP, so the wedge is the roadmap as an editable slide with AI fill &middot; 20/20 claims verified &middot; BreadcrumbList + HowTo + FAQPage schema &middot; open items: copydeck target, walkthrough video, three theme renders</p>
-            </div>
-          </div>
-          <div class="dir-card-side">
-            <span class="dir-pill">Delivered</span>
-            <span class="dir-date">August 2026</span>
-            <span class="dir-arrow">&rarr;</span>
-          </div>
-        </a>
-      </li>
 
       <!-- ============ DRAFT ENTRY ============ -->
       <li>
@@ -719,6 +705,35 @@
     <details class="dir-month" open>
       <summary>
         <span class="month-chev">&#9656;</span>
+        <span class="month-name">Net-New Template Pages</span>
+        <span class="month-count">1 drafted</span>
+        <span class="month-rule"></span>
+      </summary>
+      <ul class="dir-list">
+
+        <li>
+          <a class="dir-card" href="roadmap-template/">
+            <div class="dir-card-main">
+              <span class="dir-num dir-num--batch">N1</span>
+              <div>
+                <h2>Roadmap Template</h2>
+                <p class="dir-card-meta">Primary keyword: <strong>roadmap template</strong> &middot; proposed <code>/templates/roadmap</code> (Diagrams &amp; Timeline) &middot; built on the same 12-section template-page contract as the Batch 1 fills &middot; the company&rsquo;s own blog defines a roadmap slide as a journey map, a twist on a classic timeline, and this page gives that product truth a template-library home &middot; galleries and PM tools win the SERP, so the wedge is the roadmap as an editable slide with AI fill &middot; 20/20 claims verified &middot; BreadcrumbList + HowTo + FAQPage schema &middot; open items: copydeck target, walkthrough video, three theme renders</p>
+              </div>
+            </div>
+            <div class="dir-card-side">
+              <span class="dir-pill">Delivered</span>
+              <span class="dir-date">August 2026</span>
+              <span class="dir-arrow">&rarr;</span>
+            </div>
+          </a>
+        </li>
+
+      </ul>
+    </details>
+
+    <details class="dir-month" open>
+      <summary>
+        <span class="month-chev">&#9656;</span>
         <span class="month-name">Batch 1 &mdash; Chart Templates</span>
         <span class="month-count">10 of 10 drafted</span>
         <span class="month-rule"></span>
@@ -833,7 +848,7 @@
               <span class="dir-num dir-num--batch">07</span>
               <div>
                 <h2>Flow Chart Template</h2>
-                <p class="dir-card-meta">Primary keyword: <strong>flow chart template</strong> &middot; <code>/templates/flow-chart</code> &middot; optimization draft + annotated before/after (13 markers)</p>
+                <p class="dir-card-meta">Primary keyword: <strong>flow chart template</strong> &middot; <code>/templates/flow-chart</code> &middot; optimization draft + annotated before/after (14 markers)</p>
               </div>
             </div>
             <div class="dir-card-side">
@@ -899,6 +914,9 @@
     </details>
 
     <p class="dir-foot">Batch 1 is fully drafted as of August 24, 2026. Batches 2&ndash;12 are re-ranked by "[x] template" search volume before each build and will appear here as they are scoped.</p>
+
+  
+
 
   </section>
 
