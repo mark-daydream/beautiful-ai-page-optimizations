@@ -1,6 +1,6 @@
 ---
 name: on-page-seo-optimization
-version: 1.1.0
+version: 1.3.0
 description: |
   On-page SEO optimization for a single URL using primary and supporting keywords.
   Validates SERP page-type and search intent match, compares top-10 ranking pages,
