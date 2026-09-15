@@ -210,8 +210,9 @@
 
   <div class="section-label">Structured Data</div>
   <div class="schema-wrap">
+    <div class="schema-header"><span>BlogPosting JSON-LD</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
     <p class="schema-note">The same three defects the rest of the blog carries. There is no canonical tag. The BlogPosting block reports datePublished &ldquo;Feb 23, 2026&rdquo; and dateModified &ldquo;Feb 22, 2026&rdquo;, an invalid format, modified before published, against a visible byline of 14 March 2024. A third JSON-LD block is empty. The schema url also drops the www the site serves on.</p>
-<pre id="schema-json-store">{
+    <div class="schema-display"><pre id="schema-json-store">{
   &quot;@context&quot;: &quot;https://schema.org&quot;,
   &quot;@type&quot;: &quot;BlogPosting&quot;,
   &quot;headline&quot;: &quot;5 Creative Presentation Ideas Without PowerPoint&quot;,
@@ -233,7 +234,7 @@
     &quot;name&quot;: &quot;Beautiful.ai&quot;,
     &quot;url&quot;: &quot;https://www.beautiful.ai&quot;
   }
-}</pre>
+}</pre></div>
     <p class="schema-note">Add <code>&lt;link rel="canonical" href="https://www.beautiful.ai/blog/5-creative-presentation-ideas-that-can-be-done-without-powerpoint"&gt;</code> and remove the empty JSON-LD block. The date defect is a blog template default, so fixing it once at the template level covers every post.</p>
   </div>
 

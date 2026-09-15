@@ -328,6 +328,14 @@ A bundle is **not** finished until it passes these checks. **Do not trust counts
 
 **Render-verify (REQUIRED):** open the bundle in Chrome (or `firecrawl_scrape` the deployed URL) and **switch into each tab** — confirm Tab 2 shows populated mockup sections and Tab 3 shows the slides. A grep that finds `id="tab2"` is **not** proof the panel renders.
 
+**Contrast gate (REQUIRED, added 2026-09-15):** every visible text node must be readable on the surface behind it. A Structured Data card shipped to Beautiful.ai with black JSON on the black card because the `<pre>` sat directly in `.schema-wrap` without `.schema-display`, and closing appendix slides shipped with black `<h2>`s on the black slide. The shared CSS now carries a CONTRAST GUARD block (dark surfaces own their text color), and this script proves it on the rendered page:
+
+```bash
+python3 scripts/contrast_audit.py <bundle-dir-or-html> [...]   # Playwright headless Chromium; exit 1 on any FAIL
+```
+
+It forces every tab panel open, walks each element that owns text, and reports the WCAG ratio against the first opaque background behind it. **Any FAIL under 2.0 is a shipping blocker** (that is the invisible class). Ratios between 2.0 and 3.0 are muted-by-design surfaces (Before column, placeholders, slide counters) and are reported as warnings; do not add new ones. Never fix a hit by styling the one element: if a dark container swallowed the text, fix the container's guard rule in the shared CSS so the next bundle cannot repeat it, then re-run. Run it on the whole microsite, not just the new bundle, before every deploy.
+
 **Phase 9b still valid:** every surface scanned in 9b is byte-identical to what ships. Any micro-edit made during this gate invalidates the pass — re-run the affected file before calling it done.
 
 **Accuracy spot-check:** the draft Before H1 matches the live H1 (not the title); hero CTA + media match the live page; FAQ Before has answers; the mockup layout matches the real page.

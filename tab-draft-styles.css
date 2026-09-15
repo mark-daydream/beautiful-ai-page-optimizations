@@ -126,3 +126,25 @@
 .ba-after ol,.ba-after ul{font-size:13px;line-height:1.6;color:var(--near-black);font-weight:500;padding-left:20px;margin:6px 0;}
 .unch-block ol{font-size:13px;line-height:1.6;color:#27505f;padding-left:20px;margin:6px 0;}
 .new-block ol,.new-block ul{font-size:13px;line-height:1.6;color:#1f4d33;padding-left:20px;margin:6px 0;}
+
+/* ===== CONTRAST GUARD (added 2026-09-15) — keep this block at the END of the file =====
+   Dark surfaces own their text color so nothing placed inside them can inherit body
+   near-black and vanish. Cause of the black-on-black Structured Data card: .schema-wrap is
+   #1a1a1a but only `.schema-display pre` had a light color, so a <pre>, <p> or <code> placed
+   directly inside the card was unreadable. Verified by contrast-audit.py (Phase 10). */
+.draft-header{color:var(--off-white);}
+.draft-header p,.draft-header li,.draft-header span:not([class]),.draft-header strong:not([class]),.draft-header a:not([class]),#tab1 .draft-header p,#tab2 .draft-header p,#tab3 .draft-header p{color:inherit;}
+.draft-header .sub,.draft-header p.sub,#tab1 .draft-header .sub,#tab2 .draft-header .sub,#tab3 .draft-header .sub{color:#b8b8b8;}
+.draft-header .sub strong{color:var(--off-white);}
+.draft-header .legend>span:not([class]){color:#b8b8b8;}
+.schema-wrap{color:#d0d0d0;}
+.schema-wrap p,.schema-wrap li,.schema-wrap .schema-header,.schema-wrap .schema-header span,.schema-wrap .schema-header strong{color:#d0d0d0;}
+.schema-wrap pre,.schema-wrap pre.schema-display,.schema-wrap .schema-display pre{color:#a8d8a8;}
+.schema-wrap code{color:#eef3ee;background:rgba(255,255,255,0.10);border-radius:4px;padding:1px 5px;font-size:11px;}
+.schema-wrap pre code{background:none;padding:0;color:inherit;font-size:inherit;}
+.schema-wrap a{color:#8edda0;}
+.schema-wrap .schema-note{margin:0;padding:14px 18px 0;font-size:12.5px;line-height:1.6;}
+.schema-wrap>pre,.schema-wrap>pre.schema-display{margin:0;padding:14px 18px 18px;font-family:monospace;font-size:11.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word;overflow-x:auto;}
+.schema-wrap>pre+.schema-note{padding-bottom:16px;}
+/* muted "Before" copy was #aaa on off-white (2.3:1); #8a8a8a keeps it visibly de-emphasized at 3.5:1 */
+.ba-before,.ba-before p,.ba-before li,.ba-before ol,.ba-before ul,.ba-before .ba-label,.ba-before strong,.ba-before em,.kw-table .kw-miss{color:#8a8a8a;}

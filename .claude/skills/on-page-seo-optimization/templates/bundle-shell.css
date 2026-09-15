@@ -218,3 +218,20 @@ ul.clean li strong { display: inline; font-weight: 700; } /* CRITICAL: inline, n
 }
 .dots a { width: 7px; height: 7px; border-radius: 50%; background: var(--border); border: 1px solid #d8d2cc; transition: all 0.2s; display: block; }
 .dots a.active { background: var(--near-black); transform: scale(1.3); }
+/* ===== CONTRAST GUARD (added 2026-09-15) — keep this block at the END of the file =====
+   Dark surfaces own their text color so nothing placed inside them can inherit body
+   near-black and vanish. Before this, a bundle that dropped an <h2>/<p>/<td> the shell
+   never styled into .cover or .close-slide rendered black-on-black. Light cards/tables
+   nested inside dark slides re-assert dark text. Verified by contrast-audit.py (Phase 10). */
+.cover,.close-slide{color:var(--off-white);}
+.cover h2,.cover h3,.cover h4,.cover p,.cover li,.cover td:not([class]),.cover span:not([class]),.cover strong:not([class]),.cover em:not([class]),.cover a:not([class]),
+.close-slide h2,.close-slide h3,.close-slide h4,.close-slide p,.close-slide li,.close-slide td:not([class]),.close-slide span:not([class]),.close-slide strong:not([class]),.close-slide em:not([class]),.close-slide a:not([class]){color:inherit;}
+.cover .lead,.close-slide .lead{color:#b8b8b8;}
+.cover .lead strong,.close-slide .lead strong{color:var(--off-white);}
+.cover .priority-pill:not(.priority-opp):not(.priority-pri),.close-slide .priority-pill:not(.priority-opp):not(.priority-pri){border:1px solid rgba(255,255,255,0.35);color:var(--off-white);}
+.cover .card,.close-slide .card,.cover .data-table,.close-slide .data-table,.cover .kw-table,.close-slide .kw-table{color:var(--near-black);}
+.cover .card h3,.close-slide .card h3{color:var(--near-black);}
+.cover .card p,.close-slide .card p{color:var(--text-subtle);}
+/* slide counter was var(--border) on cream (1.2:1, effectively invisible) */
+.slide-num{color:#8f8983;}
+.cover .slide-num,.close-slide .slide-num{color:rgba(255,255,255,0.55);}

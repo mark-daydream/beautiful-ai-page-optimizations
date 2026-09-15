@@ -67,3 +67,7 @@
 #tab2 .blog-toc .toc-list { display:flex; flex-direction:column; gap:9px; line-height:1.4; }
 #tab2 .blog-toc .toc-icons { display:flex; gap:8px; }
 #tab2 .blog-toc .toc-icons .placeholder { width:30px; height:30px; padding:0; aspect-ratio:auto; display:inline-flex; align-items:center; justify-content:center; font-size:12px; }
+
+/* ===== CONTRAST GUARD (added 2026-09-15) — keep at END of file =====
+   image/CTA placeholders were #999 on #f5f5f5 (2.6:1); #767676 reads at 4:1 and still looks like a placeholder */
+#tab2 .placeholder,.mockup-tab .placeholder,#tab2 .placeholder-img,#tab2 .placeholder-video,#tab2 .placeholder-logo,.placeholder,.placeholder-img,.placeholder-video,.placeholder-logo{color:#767676;}

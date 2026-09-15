@@ -138,7 +138,7 @@
     '.rv-tour-dots i{width:7px;height:7px;border-radius:999px;background:#ddd;display:block;}',
     '.rv-tour-dots i.on{background:#7c3aed;}',
     '.rv-tour-right{display:flex;align-items:center;gap:14px;}',
-    '.rv-tour-skip{background:none;border:none;color:#999;font-size:12.5px;font-weight:600;cursor:pointer;}',
+    '.rv-tour-skip{background:none;border:none;color:#767676;font-size:12.5px;font-weight:600;cursor:pointer;}',
     '.rv-tour-skip:hover{color:#555;}',
     ".rv-tour-next{background:#1a1a1a;color:#fff;border:none;border-radius:9px;padding:9px 20px;",
     "  font-size:13px;font-weight:700;cursor:pointer;font-family:'Raleway',sans-serif;}",
