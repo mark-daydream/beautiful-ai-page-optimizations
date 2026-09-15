@@ -18,6 +18,7 @@
   </a>
   <div class="nav-divider"></div>
   <a href="#" class="tab-link active" onclick="return false;"><span class="tab-num">1</span> Optimization Draft</a>
+  <a href="before-after/" class="tab-link"><span class="tab-num">2</span> Annotated Before &amp; After</a>
   <a href="../#pseo" class="tab-link" title="All pSEO template batches">pSEO Batch Tracker</a>
 </nav>
 
@@ -79,8 +80,8 @@
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> &ldquo;Use this template&rdquo; matches the intent and stays primary, opening the same copydeck it opens today. AI fill is the one thing the whiteboard templates and agenda posts on this results page cannot offer, which earns it the secondary slot. Sources: C3, C5</p>
   </div>
 
-  <div class="change-block" id="block-player">
-    <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> Hero deck preview (kept)</div><button class="comment-btn" onclick="toggleComment('block-player')">+</button></div>
+  <div class="change-block" id="block-video">
+    <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> Hero preview (kept)</div><button class="comment-btn" onclick="toggleComment('block-video')">+</button></div>
     <div class="unch-block">
       <div class="ba-label">Unchanged</div>
       <p>Interactive preview of the quarterly business review deck in the Beautiful.ai player, on the right of the hero.</p>
@@ -89,7 +90,7 @@
   </div>
 
   <div class="change-block" id="block-gallery">
-    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Slides included (moved up under the hero, retitled, untabbed)</div><button class="comment-btn" onclick="toggleComment('block-gallery')">+</button></div>
+    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Template slide gallery (moved up, retitled, untabbed)</div><button class="comment-btn" onclick="toggleComment('block-gallery')">+</button></div>
     <div class="ba-grid">
       <div class="ba-before"><div class="ba-label">Before</div>
         <p><strong>H2: Use our template to create a quarterly business review presentation</strong></p>
@@ -119,7 +120,7 @@
   </div>
 
   <div class="change-block" id="block-overview">
-    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Educational overview (retitled, moved below the template layer)</div><button class="comment-btn" onclick="toggleComment('block-overview')">+</button></div>
+    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Educational overview (retitled, moved down)</div><button class="comment-btn" onclick="toggleComment('block-overview')">+</button></div>
     <div class="ba-grid">
       <div class="ba-before"><div class="ba-label">Before</div>
         <p><strong>H2: Overview</strong></p>
@@ -168,8 +169,8 @@
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The slide template pages carry a &ldquo;Discover AI capabilities&rdquo; pane and the presentation pages do not, so the library reads unevenly. This pane uses the family&rsquo;s four items with this deck&rsquo;s nouns, and every line is a documented AI behavior on beautiful.ai. Sources: C3, C7, C11, C12, C25, C26, C27</p>
   </div>
 
-  <div class="change-block" id="block-related">
-    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> Related templates band</div><button class="comment-btn" onclick="toggleComment('block-related')">+</button></div>
+  <div class="change-block" id="block-carousel">
+    <div class="block-header"><div class="block-label"><span class="pill-opt">Optimized</span> &ldquo;Related templates&rdquo; carousel</div><button class="comment-btn" onclick="toggleComment('block-carousel')">+</button></div>
     <div class="ba-grid">
       <div class="ba-before"><div class="ba-label">Before</div>
         <p><strong>H2: Related templates</strong></p>
@@ -333,7 +334,41 @@
   ]
 }</pre></div>
   </div>
-  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> All three blocks mirror visible page content word for word, so they generate mechanically from the same slots on every presentation page. The page carries an Organization block only today, so nothing is replaced. The hero is a player embed, so this page adds no VideoObject. Sources: C19, C22, C24</p>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> All three blocks mirror visible page content word for word, so they generate mechanically from the same slots on every presentation page. The page carries an Organization block only today, so nothing is replaced. The hero is a player embed, so it carries no VideoObject; the three related-template hover videos do, in the card below. Sources: C19, C22, C24</p>
+
+  <div class="schema-wrap" style="margin-top:18px;">
+    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD for the three kept related-template videos (thumbnailUrl needs the poster frames; uploadDate needs the Webflow asset date)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-display"><pre>[
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Customer Success QBR Presentation Template",
+    "description": "Use Beautiful.ai’s customer success QBR template to showcase quarterly wins, product adoption, ROI, and opportunities for growth.",
+    "contentUrl": "https://dl.dropboxusercontent.com/s/fi/jq5fhl7d0vie09huts1wl/Customer-Success-QBR_hover.mp4?rlkey=jf7o9u0tf7r5s3lklegokf482&amp;st=cxkbutt9&amp;raw=1",
+    "thumbnailUrl": "POSTER_FRAME_FROM_CLIENT",
+    "uploadDate": "UPLOAD_DATE_FROM_WEBFLOW"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Finance Report Presentation Template",
+    "description": "Use Beautiful.ai’s finance report presentation template to present financial performance, business metrics, and strategic insights with clarity.",
+    "contentUrl": "https://dl.dropboxusercontent.com/s/fi/gg6ukmmyzmqte2cltt2zl/Financial-Report-hover-video.mp4?rlkey=o4s05rnvt93wj4eqebj5gq4q8&amp;st=jqaw9wda&amp;raw=1",
+    "thumbnailUrl": "POSTER_FRAME_FROM_CLIENT",
+    "uploadDate": "UPLOAD_DATE_FROM_WEBFLOW"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Sales Pipeline Review Presentation Template",
+    "description": "Use Beautiful.ai’s sales pipeline review presentation template to analyze pipeline health, identify risks, and align your sales team on next steps.",
+    "contentUrl": "https://dl.dropboxusercontent.com/s/fi/i83k3syylw25cfbbgtdb9/Sales-Pipeline-Reivew_Thumbnail-Video.mp4?rlkey=djla2z7iylkt3ydjyamebxbjy&amp;st=k772fjvh&amp;raw=1",
+    "thumbnailUrl": "POSTER_FRAME_FROM_CLIENT",
+    "uploadDate": "UPLOAD_DATE_FROM_WEBFLOW"
+  }
+]</pre></div>
+  </div>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The names, descriptions, and video files are the live values from the three cards. The Beautiful.ai team fills the poster frame and upload date when wiring the video-indexing work they are adding in code, the same two fields the chart template pages wait on. Sources: C21</p>
 
 </div>
 </div>
