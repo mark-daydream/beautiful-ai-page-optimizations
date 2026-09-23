@@ -427,12 +427,16 @@
   }
 
   /* ---- keep the schema Copy button working (was in bundle-ui.js) --------- */
-  global.copySchema = function () {
-    var node = document.getElementById('schema-json-store');
-    if (!node || !navigator.clipboard) return;
-    navigator.clipboard.writeText(node.textContent).then(function () {
-      var btn = document.querySelector('.schema-copy-btn');
-      if (btn) { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 2000); }
+  global.copySchema = function (btn) {
+    var wrap = btn && btn.closest ? btn.closest('.schema-wrap') : null;
+    var pres = wrap ? wrap.querySelectorAll('pre') : [];
+    var text = '';
+    for (var i = 0; i < pres.length; i++) text += (i ? '\n\n' : '') + pres[i].textContent;
+    if (!text) { var node = document.getElementById('schema-json-store'); text = node ? node.textContent : ''; }
+    if (!text || !navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(function () {
+      var b = btn || document.querySelector('.schema-copy-btn');
+      if (b) { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 2000); }
     });
   };
   /* neutralize legacy comment hook if any markup still calls it */

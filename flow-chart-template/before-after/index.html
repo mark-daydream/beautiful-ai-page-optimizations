@@ -496,8 +496,10 @@ document.querySelectorAll('.card').forEach(function(card){
   if(location.hash==='#annotated') show('annot');
 })();
 function copySchema(btn){
-  var pre=document.getElementById('schema-json-store');
-  navigator.clipboard.writeText(pre.textContent).then(function(){ btn.textContent='Copied'; setTimeout(function(){btn.textContent='Copy';},1600); });
+  var wrap=btn.closest('.schema-wrap'); var pres=wrap?wrap.querySelectorAll('pre'):[]; var text='';
+  for(var i=0;i<pres.length;i++) text+=(i?'\n\n':'')+pres[i].textContent;
+  if(!text){ var pre=document.getElementById('schema-json-store'); text=pre?pre.textContent:''; }
+  navigator.clipboard.writeText(text).then(function(){ btn.textContent='Copied'; setTimeout(function(){btn.textContent='Copy';},1600); });
 }
 </script>
 </body>
