@@ -83,7 +83,7 @@
     <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> Hero video (kept)</div><button class="comment-btn" onclick="toggleComment('block-video')">+</button></div>
     <div class="unch-block">
       <div class="ba-label">Unchanged</div>
-      <p>SWOT Slide Template &mdash; the Vimeo walkthrough showing the template&rsquo;s built-in Smart Slide animations.</p>
+      <p>SWOT Slide Template &mdash; the Bunny.net walkthrough showing the template&rsquo;s built-in Smart Slide animations.</p>
     </div>
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> Videos stay intact on every template page per the standing client constraint. The optimization layer adds around the video: a poster thumbnail, lazy loading, and the VideoObject schema block below.</p>
   </div>
@@ -303,18 +303,33 @@
   <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> All three blocks mirror visible page content verbatim, so they generate mechanically from the same slots on every template page. Also revise the existing WebPage/CreativeWork block&rsquo;s <em>url</em> host from beautiful.ai to the www canonical (one Webflow template edit, shipped with the title-suffix fix).</p>
 
   <div class="schema-wrap" style="margin-top:18px;">
-    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD for the kept hero video (two fields need Vimeo values)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD for the hero video and the how-to video (Bunny.net player)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
     <div class="schema-display"><pre>{
   "@context": "https://schema.org",
   "@type": "VideoObject",
   "name": "SWOT Slide Template",
   "description": "Walkthrough of the editable SWOT analysis template and its built-in Smart Slide animations in Beautiful.ai.",
-  "thumbnailUrl": "https://i.vimeocdn.com/video/858075969-a4d4d54e4d383a099057ebbd882c96e8b9b287308e56b95ef71dd149eca9849e-d",
-  "uploadDate": "UPLOAD_DATE_FROM_VIMEO",
-  "contentUrl": "VIMEO_URL_FROM_EMBED"
+  "thumbnailUrl": [
+    "https://cdn.prod.website-files.com/59e16042ec229e00016d3a66/5d41e2c6f65670fe94827f21_swot%20bright.avif",
+    "https://vz-3cd3e5fb-391.b-cdn.net/1fab4da5-8bb9-408a-a141-47c1dd114e94/thumbnail.jpg"
+  ],
+  "uploadDate": "2026-08-04",
+  "duration": "PT7S",
+  "contentUrl": "https://vz-3cd3e5fb-391.b-cdn.net/1fab4da5-8bb9-408a-a141-47c1dd114e94/play_480p.mp4"
+}</pre></div><div class="schema-display"><pre>{
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "name": "How to use the SWOT Analysis Template",
+  "description": "Four-step walkthrough of the swot analysis template in Beautiful.ai: open the template, add your data, adjust the design, then present or export.",
+  "thumbnailUrl": [
+    "https://vz-3cd3e5fb-391.b-cdn.net/409fa97e-d713-47ad-84d0-03363a05729d/thumbnail.jpg"
+  ],
+  "uploadDate": "2026-09-23",
+  "duration": "PT11S",
+  "contentUrl": "https://vz-3cd3e5fb-391.b-cdn.net/409fa97e-d713-47ad-84d0-03363a05729d/play_720p.mp4"
 }</pre></div>
   </div>
-  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The name and thumbnail are the video&rsquo;s real Vimeo values from the live embed. The Beautiful.ai team fills <em>uploadDate</em> and <em>contentUrl</em> from Vimeo when wiring the video-indexing work they are adding in code; this block covers the kept videos so both efforts stay in sync.</p>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The page now runs the Bunny.net player, so every value here comes from that player: the video ID is the folder in the player&rsquo;s <em>data-player-src</em> (the playlist.m3u8 URL), <em>contentUrl</em> is Bunny&rsquo;s MP4 rendition of that ID (play_480p.mp4 is the highest one the encode produced), the first <em>thumbnailUrl</em> is the poster image the player already shows, the second is Bunny&rsquo;s own frame, <em>duration</em> is read from the HLS playlist and <em>uploadDate</em> is the date Bunny processed the video (swap in the library&rsquo;s upload date if it differs). Blob-src HLS playback leaves nothing crawlable in the DOM, so this block is what makes the video indexable. <strong>One setting to change first:</strong> the Bunny zone answers 403 to any request without a Referer header, and Googlebot sends none, so Google cannot fetch <em>contentUrl</em> or the Bunny thumbnail until empty referrers are allowed (or googlebot.com is allowlisted) in the video library&rsquo;s referrer rules. The Webflow-hosted poster needs no change. The second block covers the new how-to walkthrough in the &ldquo;How to use&rdquo; section; it uses the same pattern with that player&rsquo;s ID. Its poster on the live page is still the Webflow placeholder image, so only the Bunny frame is listed until a real poster is set.</p>
 
 </div>
 </div>

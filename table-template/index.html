@@ -84,7 +84,7 @@
     <div class="block-header"><div class="block-label"><span class="pill-unch">Unchanged</span> Hero video (kept)</div><button class="comment-btn" onclick="toggleComment('block-video')">+</button></div>
     <div class="unch-block">
       <div class="ba-label">Unchanged</div>
-      <p>Table Slide Template, the Vimeo walkthrough showing the template&rsquo;s built-in Smart Slide animations.</p>
+      <p>Table Slide Template, the Bunny.net walkthrough showing the template&rsquo;s built-in Smart Slide animations.</p>
     </div>
     <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> Videos stay intact on every template page per the standing client constraint. The optimization layer adds around the video: a poster thumbnail, lazy loading, and the VideoObject schema block below.</p>
   </div>
@@ -315,18 +315,22 @@
   <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> All three blocks mirror visible page content verbatim, so they generate mechanically from the same slots on every template page. Also revise the existing WebPage/CreativeWork block&rsquo;s <em>url</em> host from beautiful.ai to the www canonical (one Webflow template edit, shipped with the title-suffix fix).</p>
 
   <div class="schema-wrap" style="margin-top:18px;">
-    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD for the kept hero video</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD for the hero video (Bunny.net player)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
     <div class="schema-display"><pre>{
   "@context": "https://schema.org",
   "@type": "VideoObject",
   "name": "Table Slide Template",
   "description": "Walkthrough of the editable table template and its built-in Smart Slide animations in Beautiful.ai.",
-  "thumbnailUrl": "https://i.vimeocdn.com/video/861561385-03a0910e5da6211da473226d0b3879a26e1734cd6d1c789b802e11ae6bc17d11-d_295x166?region=us",
-  "uploadDate": "2020-03-03 18:47:10",
-  "contentUrl": "https://vimeo.com/395323886"
+  "thumbnailUrl": [
+    "https://cdn.prod.website-files.com/59e16042ec229e00016d3a66/5e5eed668833e37be04613c1_table%20sample%203.avif",
+    "https://vz-3cd3e5fb-391.b-cdn.net/217c5c10-1a00-48b3-87dd-54e27690fdd6/thumbnail.jpg"
+  ],
+  "uploadDate": "2026-08-04",
+  "duration": "PT9S",
+  "contentUrl": "https://vz-3cd3e5fb-391.b-cdn.net/217c5c10-1a00-48b3-87dd-54e27690fdd6/play_720p.mp4"
 }</pre></div>
   </div>
-  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The name, thumbnail, and upload date are the video&rsquo;s real Vimeo values from the live embed. This block covers the kept video so it stays in sync with the video-indexing work the Beautiful.ai team is adding in code.</p>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The page now runs the Bunny.net player, so every value here comes from that player: the video ID is the folder in the player&rsquo;s <em>data-player-src</em> (the playlist.m3u8 URL), <em>contentUrl</em> is Bunny&rsquo;s MP4 rendition of that ID (play_720p.mp4 is the highest one the encode produced), the first <em>thumbnailUrl</em> is the poster image the player already shows, the second is Bunny&rsquo;s own frame, <em>duration</em> is read from the HLS playlist and <em>uploadDate</em> is the date Bunny processed the video (swap in the library&rsquo;s upload date if it differs). Blob-src HLS playback leaves nothing crawlable in the DOM, so this block is what makes the video indexable. <strong>One setting to change first:</strong> the Bunny zone answers 403 to any request without a Referer header, and Googlebot sends none, so Google cannot fetch <em>contentUrl</em> or the Bunny thumbnail until empty referrers are allowed (or googlebot.com is allowlisted) in the video library&rsquo;s referrer rules. The Webflow-hosted poster needs no change.</p>
 
 </div>
 </div>

@@ -263,18 +263,22 @@
   <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> All three blocks mirror visible page content verbatim, so they generate mechanically from the same slots as every other template page. The page also ships with the family&rsquo;s WebPage/CreativeWork block on the www canonical host. The live family carries a host mismatch there; this page does not.</p>
 
   <div class="schema-wrap" style="margin-top:18px;">
-    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD once the walkthrough video lands (three fields need Vimeo values)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
+    <div class="schema-header"><span>VideoObject JSON-LD &middot; ADD once the walkthrough video lands (Bunny.net player, four fields need Bunny values)</span><button class="schema-copy-btn" onclick="copySchema(this)">Copy</button></div>
     <div class="schema-display"><pre>{
   "@context": "https://schema.org",
   "@type": "VideoObject",
   "name": "Roadmap Slide Template",
   "description": "Walkthrough of the editable roadmap template and its built-in Smart Slide animations in Beautiful.ai.",
-  "thumbnailUrl": "THUMBNAIL_URL_FROM_VIMEO",
-  "uploadDate": "UPLOAD_DATE_FROM_VIMEO",
-  "contentUrl": "VIMEO_URL_FROM_EMBED"
+  "thumbnailUrl": [
+    "POSTER_IMAGE_URL_FROM_WEBFLOW",
+    "https://vz-3cd3e5fb-391.b-cdn.net/VIDEO_ID/thumbnail.jpg"
+  ],
+  "uploadDate": "UPLOAD_DATE_FROM_BUNNY",
+  "duration": "DURATION_FROM_BUNNY",
+  "contentUrl": "https://vz-3cd3e5fb-391.b-cdn.net/VIDEO_ID/play_720p.mp4"
 }</pre></div>
   </div>
-  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> The name and description follow the family&rsquo;s pattern. Unlike the Batch 1 pages, this page has no live embed to read values from, so all three Vimeo fields wait on the video asset in N2 below; the block ships with the page once that asset lands.</p>
+  <p style="font-size:12px;color:var(--text-subtle);margin-top:10px;"><strong>Why:</strong> No live page exists yet, so the media fields wait on the walkthrough video. Once it is uploaded to the Bunny.net library, VIDEO_ID is the folder in the player&rsquo;s <em>data-player-src</em> URL, and the three remaining fields follow the pattern on every live template page (Bunny thumbnail, Bunny processing date, ISO 8601 duration from the playlist). The zone&rsquo;s referrer rule must allow empty referrers before Google can fetch the file.</p>
 
   <div class="section-label">Claims Register</div>
   <table class="meta-table" style="font-size:12.5px;">
